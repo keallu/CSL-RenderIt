@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderIt", "RenderIt\RenderIt.csproj", "{95347763-28AE-473E-BA7A-B6F67C2C558D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95347763-28AE-473E-BA7A-B6F67C2C558D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95347763-28AE-473E-BA7A-B6F67C2C558D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95347763-28AE-473E-BA7A-B6F67C2C558D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95347763-28AE-473E-BA7A-B6F67C2C558D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD139FFB-BA7A-4F37-A9AF-AC97A5B3E950}
+	EndGlobalSection
+EndGlobal
