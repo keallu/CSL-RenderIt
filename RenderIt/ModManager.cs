@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColossalFramework.UI;
+using System;
 using UnityEngine;
 using UnityEngine.PostProcessing;
 
@@ -8,18 +9,23 @@ namespace RenderIt
     {
         private bool _initialized;
         private Camera _camera;
+        private UIButton _freeCameraButton;
+        private UIComponent _optionsPanel;
+        private OptionsMainPanel _optionsMainPanel;
 
         private PostProcessingBehaviour _postProcessingBehaviour;
         private AntialiasingModel _antialiasingModel;
         private AmbientOcclusionModel _ambientOcclusionModel;
         private BloomModel _bloomModel;
+        private ColorGradingModel _colorGradingModel;
+
+        private UITextureAtlas _renderItAtlas;
+        private UIButton _renderItButton;
 
         public void Awake()
         {
             try
             {
-                _camera = Camera.main;
-
                 ModProperties.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
             }
             catch (Exception e)
@@ -32,23 +38,53 @@ namespace RenderIt
         {
             try
             {
-                _postProcessingBehaviour = _camera.gameObject.GetComponent<PostProcessingBehaviour>();
+                _camera = Camera.main;
+                _freeCameraButton = GameObject.Find("Freecamera").GetComponent<UIButton>();
+                _optionsPanel = UIView.library.Get("OptionsPanel");
+                _optionsMainPanel = GameObject.Find("(Library) OptionsPanel").GetComponent<OptionsMainPanel>();
 
+                _postProcessingBehaviour = _camera.gameObject.GetComponent<PostProcessingBehaviour>();
                 if (_postProcessingBehaviour == null)
                 {
                     _postProcessingBehaviour = _camera.gameObject.AddComponent<PostProcessingBehaviour>();
                     _postProcessingBehaviour.profile = ScriptableObject.CreateInstance<PostProcessingProfile>();
                 }
-
                 _postProcessingBehaviour.enabled = true;
 
                 _antialiasingModel = new AntialiasingModel();
                 _ambientOcclusionModel = new AmbientOcclusionModel();
                 _bloomModel = new BloomModel();
+                _colorGradingModel = new ColorGradingModel();
+
+                _renderItAtlas = LoadResources();
+                CreateUI();
             }
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ModManager:Start -> Exception: " + e.Message);
+            }
+        }
+
+        public void Update()
+        {
+            try
+            {
+                if (!_initialized || ModConfig.Instance.ConfigUpdated)
+                {
+                    UpdateAntialiasing();
+                    UpdateAmbientOcclusion();
+                    UpdateBloom();
+                    UpdateColorGrading();
+
+                    UpdateUI();
+
+                    _initialized = true;
+                    ModConfig.Instance.ConfigUpdated = false;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:Update -> Exception: " + e.Message);
             }
         }
 
@@ -69,23 +105,102 @@ namespace RenderIt
             }
         }
 
-        public void Update()
+        private UITextureAtlas LoadResources()
         {
             try
             {
-                if (!_initialized || ModConfig.Instance.ConfigUpdated)
+                if (_renderItAtlas == null)
                 {
-                    UpdateAntialiasing();
-                    UpdateAmbientOcclusion();
-                    UpdateBloom();
+                    string[] spriteNames = new string[]
+                    {
+                        "ppslogo"
+                    };
 
-                    _initialized = true;
-                    ModConfig.Instance.ConfigUpdated = false;
+                    _renderItAtlas = ResourceLoader.CreateTextureAtlas("RenderItAtlas", spriteNames, "RenderIt.Icons.");
+
+                    UITextureAtlas defaultAtlas = ResourceLoader.GetAtlas("Ingame");
+                    Texture2D[] textures = new Texture2D[]
+                    {
+                        defaultAtlas["OptionBase"].texture,
+                        defaultAtlas["OptionBaseFocused"].texture,
+                        defaultAtlas["OptionBaseHovered"].texture,
+                        defaultAtlas["OptionBasePressed"].texture,
+                        defaultAtlas["OptionBaseDisabled"].texture
+                    };
+
+                    ResourceLoader.AddTexturesInAtlas(_renderItAtlas, textures);
                 }
+
+                return _renderItAtlas;
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModManager:Update -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModManager:LoadResources -> Exception: " + e.Message);
+                return null;
+            }
+        }
+
+        private void CreateUI()
+        {
+            try
+            {
+                _renderItButton = UIUtils.CreateButton("RenderItButton", _renderItAtlas, "ppslogo", "Render It!");
+                _renderItButton.absolutePosition = new Vector3(_freeCameraButton.absolutePosition.x - (5 * 36f) - 5f, _freeCameraButton.absolutePosition.y);
+                _renderItButton.eventClick += (component, eventParam) =>
+                {
+                    if (!eventParam.used)
+                    {
+                        if (_optionsPanel != null)
+                        {
+                            if (_optionsPanel.isVisible)
+                            {
+                                _optionsPanel.Hide();
+                                ModProperties.Instance.IsOptionsPanelNonModal = false;
+                            }
+                            else
+                            {
+                                if (_optionsMainPanel != null)
+                                {
+                                    _optionsMainPanel.SelectMod("Render It!");
+                                }
+
+                                _optionsPanel.Show();
+                                ModProperties.Instance.IsOptionsPanelNonModal = true;
+                            }
+                        }
+
+                        eventParam.Use();
+                    }
+                };
+                _renderItButton.eventMouseMove += (component, eventParam) =>
+                {
+                    if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                    {
+                        var ratio = UIView.GetAView().ratio;
+                        component.position = new Vector3(component.position.x + (eventParam.moveDelta.x * ratio), component.position.y + (eventParam.moveDelta.y * ratio), component.position.z);
+
+                        ModConfig.Instance.ButtonPositionX = component.absolutePosition.x;
+                        ModConfig.Instance.ButtonPositionY = component.absolutePosition.y;
+                        ModConfig.Instance.Save();
+                    }
+                };
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:CreateUI -> Exception: " + e.Message);
+            }
+        }
+
+        private void UpdateUI()
+        {
+            try
+            {
+                _renderItButton.isVisible = ModConfig.Instance.ShowButton;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateUI -> Exception: " + e.Message);
             }
         }
 
@@ -189,6 +304,44 @@ namespace RenderIt
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ModManager:UpdateBloom -> Exception: " + e.Message);
+            }
+        }
+
+        private void UpdateColorGrading()
+        {
+            try
+            {
+                ColorGradingModel.Settings settings = _colorGradingModel.settings;
+
+                if (ModConfig.Instance.ColorGradingEnabled)
+                {
+                    settings.basic.postExposure = ModConfig.Instance.CGPostExposure;
+                    settings.basic.temperature = ModConfig.Instance.CGTemperature;
+                    settings.basic.tint = ModConfig.Instance.CGTint;
+                    settings.basic.hueShift = ModConfig.Instance.CGHueShift;
+                    settings.basic.saturation = ModConfig.Instance.CGSaturation;
+                    settings.basic.contrast = ModConfig.Instance.CGContrast;
+                    settings.tonemapping.tonemapper = (ColorGradingModel.Tonemapper)ModConfig.Instance.CGTonemapper;
+                    settings.tonemapping.neutralBlackIn = ModConfig.Instance.CGNeutralBlackIn;
+                    settings.tonemapping.neutralWhiteIn = ModConfig.Instance.CGNeutralWhiteIn;
+                    settings.tonemapping.neutralBlackOut = ModConfig.Instance.CGNeutralBlackOut;
+                    settings.tonemapping.neutralWhiteOut = ModConfig.Instance.CGNeutralWhiteOut;
+                    settings.tonemapping.neutralWhiteLevel = ModConfig.Instance.CGNeutralWhiteLevel;
+                    settings.tonemapping.neutralWhiteClip = ModConfig.Instance.CGNeutralWhiteClip;                    
+                    _colorGradingModel.settings = settings;
+                    _colorGradingModel.enabled = true;
+                }
+                else
+                {
+                    _colorGradingModel.enabled = false;
+                }
+
+                _postProcessingBehaviour.profile.colorGrading.settings = _colorGradingModel.settings;
+                _postProcessingBehaviour.profile.colorGrading.enabled = _colorGradingModel.enabled;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateColorGrading -> Exception: " + e.Message);
             }
         }
     }

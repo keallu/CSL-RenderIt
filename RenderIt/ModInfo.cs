@@ -70,6 +70,20 @@ namespace RenderIt
             16
         };
 
+        public static readonly string[] CGTonemapperLabels =
+        {
+            "None",
+            "ACES",
+            "Neutral"
+        };
+
+        public static readonly int[] CGTonemapperValues =
+        {
+            0,
+            1,
+            2
+        };
+
         public void OnSettingsUI(UIHelperBase helper)
         {
             UIHelperBase group;
@@ -98,6 +112,13 @@ namespace RenderIt
             group.AddCheckbox("Bloom Enabled", selected, sel =>
             {
                 ModConfig.Instance.BloomEnabled = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selected = ModConfig.Instance.ColorGradingEnabled;
+            group.AddCheckbox("Color Grading Enabled", selected, sel =>
+            {
+                ModConfig.Instance.ColorGradingEnabled = sel;
                 ModConfig.Instance.Save();
             });
 
@@ -225,6 +246,99 @@ namespace RenderIt
             group.AddCheckbox("Anti Flicker", selected, sel =>
             {
                 ModConfig.Instance.BloomAntiFlicker = sel;
+                ModConfig.Instance.Save();
+            });
+
+            group = helper.AddGroup("Color Grading");
+
+            selectedFloat = ModConfig.Instance.CGPostExposure;
+            group.AddSlider("Post Exposure", -2f, 2f, 0.1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGPostExposure = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGTemperature;
+            group.AddSlider("Temperature", -100f, 100f, 1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGTemperature = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGTint;
+            group.AddSlider("Tint", -100f, 100f, 1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGTint = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGHueShift;
+            group.AddSlider("Hue Shift", -180f, 180f, 1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGHueShift = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGSaturation;
+            group.AddSlider("Saturation", 0f, 2f, 0.1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGSaturation = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGContrast;
+            group.AddSlider("Contrast", 0f, 2f, 0.1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGContrast = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedInt = ModConfig.Instance.CGTonemapper;
+            group.AddDropdown("Tonemapper", CGTonemapperLabels, selectedInt, sel =>
+            {
+                ModConfig.Instance.CGTonemapper = CGTonemapperValues[sel];
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGNeutralBlackIn;
+            group.AddSlider("Neutral Black In", -0.1f, 0.1f, 0.01f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGNeutralBlackIn = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGNeutralWhiteIn;
+            group.AddSlider("Neutral White In", 1f, 20f, 1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGNeutralWhiteIn = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGNeutralBlackOut;
+            group.AddSlider("Neutral Black Out", -0.09f, 0.1f, 0.01f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGNeutralBlackOut = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGNeutralWhiteOut;
+            group.AddSlider("Neutral White Out", 1f, 19f, 1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGNeutralWhiteOut = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGNeutralWhiteLevel;
+            group.AddSlider("Neutral White Level", 0.1f, 20f, 1f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGNeutralWhiteLevel = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selectedFloat = ModConfig.Instance.CGNeutralWhiteClip;
+            group.AddSlider("Neutral White Clip", 1f, 10f, 0.5f, selectedFloat, sel =>
+            {
+                ModConfig.Instance.CGNeutralWhiteClip = sel;
                 ModConfig.Instance.Save();
             });
         }

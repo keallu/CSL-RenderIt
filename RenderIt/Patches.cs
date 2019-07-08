@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using ColossalFramework.UI;
+using Harmony;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,8 +38,43 @@ namespace RenderIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] MaterialFactoryGetPatch:Postfix -> Exception: " + e.Message);
+                Debug.Log("[Render It!] MaterialFactoryGetPatch:Prefix -> Exception: " + e.Message);
                 return false;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(OptionsMainPanel), "OnClosed")]
+    public static class OptionsMainPanelOnClosedPatch
+    {
+        static bool Prefix()
+        {
+            try
+            {
+                if (ModProperties.Instance.IsOptionsPanelNonModal)
+                {
+                    UIComponent optionsPanel = UIView.library.Get("OptionsPanel");
+
+                    if (optionsPanel != null)
+                    {
+                        if (optionsPanel.isVisible)
+                        {
+                            optionsPanel.Hide();
+                            ModProperties.Instance.IsOptionsPanelNonModal = false;
+                        }
+                    }
+
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] OptionsMainPanelOnClosedPatch:Prefix -> Exception: " + e.Message);
+                return true;
             }
         }
     }
