@@ -78,4 +78,20 @@ namespace RenderIt
             }
         }
     }
+
+    [HarmonyPatch(typeof(OptionsGraphicsPanel), "InitializeQualityOptions")]
+    public static class OptionsGraphicsPanelInitializeQualityOptionsPatch
+    {
+        static void Postfix()
+        {
+            try
+            {
+                ModUtils.PatchOptionsGraphicsPanel(true);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] OptionsGraphicsPanelInitializeQualityOptionsPatch:Postfix -> Exception: " + e.Message);
+            }
+        }
+    }
 }

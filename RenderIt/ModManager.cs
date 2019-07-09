@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework;
+using ColossalFramework.UI;
 using System;
 using UnityEngine;
 using UnityEngine.PostProcessing;
@@ -216,13 +217,16 @@ namespace RenderIt
                         _antialiasingModel.enabled = false;
                         break;
                     case 1:
+                        _antialiasingModel.enabled = false;
+                        break;
+                    case 2:
                         settings.method = AntialiasingModel.Method.Fxaa;
                         AntialiasingModel.FxaaPreset preset = (AntialiasingModel.FxaaPreset)ModConfig.Instance.FXAAQuality;
                         settings.fxaaSettings.preset = preset;
                         _antialiasingModel.settings = settings;
                         _antialiasingModel.enabled = true;
                         break;
-                    case 2:
+                    case 3:
                         settings.method = AntialiasingModel.Method.Taa;
                         settings.taaSettings.jitterSpread = ModConfig.Instance.TAAJitterSpread;
                         settings.taaSettings.sharpen = ModConfig.Instance.TAASharpen;
@@ -281,10 +285,13 @@ namespace RenderIt
         {
             try
             {
+                UnityStandardAssets.ImageEffects.Bloom vanillaBloom = _camera.gameObject.GetComponent<UnityStandardAssets.ImageEffects.Bloom>();
+
                 BloomModel.Settings settings = _bloomModel.settings;
 
                 if (ModConfig.Instance.BloomEnabled)
                 {
+                    vanillaBloom.enabled = ModConfig.Instance.BloomVanillaBloomEnabled;
                     settings.bloom.intensity = ModConfig.Instance.BloomIntensity;
                     settings.bloom.threshold = ModConfig.Instance.BloomThreshold;
                     settings.bloom.softKnee = ModConfig.Instance.BloomSoftKnee;
@@ -295,6 +302,7 @@ namespace RenderIt
                 }
                 else
                 {
+                    vanillaBloom.enabled = true;
                     _bloomModel.enabled = false;
                 }
 
@@ -311,10 +319,15 @@ namespace RenderIt
         {
             try
             {
+                ToneMapping vanillaToneMapping = _camera.gameObject.GetComponent<ToneMapping>();
+                ColorCorrectionLut vanillaColorCorrectionLut = _camera.gameObject.GetComponent<ColorCorrectionLut>();
+
                 ColorGradingModel.Settings settings = _colorGradingModel.settings;
 
                 if (ModConfig.Instance.ColorGradingEnabled)
                 {
+                    vanillaToneMapping.enabled = ModConfig.Instance.CGVanillaTonemappingEnabled;
+                    vanillaColorCorrectionLut.enabled = ModConfig.Instance.CGVanillaColorCorrectionLUTEnabled;
                     settings.basic.postExposure = ModConfig.Instance.CGPostExposure;
                     settings.basic.temperature = ModConfig.Instance.CGTemperature;
                     settings.basic.tint = ModConfig.Instance.CGTint;
@@ -333,6 +346,8 @@ namespace RenderIt
                 }
                 else
                 {
+                    vanillaToneMapping.enabled = true;
+                    vanillaColorCorrectionLut.enabled = true;
                     _colorGradingModel.enabled = false;
                 }
 

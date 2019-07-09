@@ -7,7 +7,7 @@
         public bool ShowButton { get; set; } = true;
         public float ButtonPositionX { get; set; }
         public float ButtonPositionY { get; set; }
-        public int AntialiasingTechnique { get; set; } = 1;
+        public int AntialiasingTechnique { get; set; } = 0;
         public bool AmbientOcclusionEnabled { get; set; } = false;
         public bool BloomEnabled { get; set; } = false;
         public bool ColorGradingEnabled { get; set; } = false;
@@ -16,18 +16,21 @@
         public float TAASharpen { get; set; } = 0.3f;
         public float TAAStationaryBlending { get; set; } = 0.95f;
         public float TAAMotionBlending { get; set; } = 0.85f;
-        public float AOIntensity { get; set; } = 2f;
-        public float AORadius { get; set; } = 2f;
+        public float AOIntensity { get; set; } = 1f;
+        public float AORadius { get; set; } = 0.3f;
         public int AOSampleCount { get; set; } = 10;
         public bool AODownsampling { get; set; } = true;
         public bool AOForceForwardCompatibility { get; set; } = false;
         public bool AOAmbientOnly { get; set; } = false;
         public bool AOHighPrecision { get; set; } = false;
+        public bool BloomVanillaBloomEnabled { get; set; } = false;
         public float BloomIntensity { get; set; } = 0.5f;
         public float BloomThreshold { get; set; } = 1.1f;
         public float BloomSoftKnee { get; set; } = 0.5f;
         public float BloomRadius { get; set; } = 4f;
         public bool BloomAntiFlicker { get; set; } = false;
+        public bool CGVanillaTonemappingEnabled { get; set; } = false;
+        public bool CGVanillaColorCorrectionLUTEnabled { get; set; } = false;
         public float CGPostExposure { get; set; } = 0f;
         public float CGTemperature { get; set; } = 0f;
         public float CGTint { get; set; } = 0f;

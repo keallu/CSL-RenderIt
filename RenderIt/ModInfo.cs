@@ -14,16 +14,21 @@ namespace RenderIt
         {
             var harmony = HarmonyInstance.Create("com.github.keallu.csl.renderit");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            ModUtils.PatchOptionsGraphicsPanel(true);
         }
 
         public void OnDisabled()
         {
             var harmony = HarmonyInstance.Create("com.github.keallu.csl.renderit");
             harmony.UnpatchAll();
+
+            ModUtils.PatchOptionsGraphicsPanel(false);
         }
 
         public static readonly string[] AntialiasingTechniqueLabels =
         {
+            "None",
             "Default",
             "FXAA",
             "TAA"
@@ -33,7 +38,8 @@ namespace RenderIt
         {
             0,
             1,
-            2
+            2,
+            3
         };
 
         public static readonly string[] FXAAQualityLabels =
@@ -91,7 +97,6 @@ namespace RenderIt
             int selectedInt;
             float selectedFloat;
 
-
             group = helper.AddGroup(Name);
 
             selectedInt = ModConfig.Instance.AntialiasingTechnique;
@@ -99,6 +104,8 @@ namespace RenderIt
             {
                 ModConfig.Instance.AntialiasingTechnique = AntialiasingTechniqueValues[sel];
                 ModConfig.Instance.Save();
+
+                ModUtils.UpdateOptionsGraphicsPanel();
             });
 
             selected = ModConfig.Instance.AmbientOcclusionEnabled;
@@ -214,6 +221,13 @@ namespace RenderIt
 
             group = helper.AddGroup("Bloom");
 
+            selected = ModConfig.Instance.BloomVanillaBloomEnabled;
+            group.AddCheckbox("Vanilla Bloom Enabled", selected, sel =>
+            {
+                ModConfig.Instance.BloomVanillaBloomEnabled = sel;
+                ModConfig.Instance.Save();
+            });
+
             selectedFloat = ModConfig.Instance.BloomIntensity;
             group.AddSlider("Intensity", 0f, 1f, 0.1f, selectedFloat, sel =>
             {
@@ -250,6 +264,20 @@ namespace RenderIt
             });
 
             group = helper.AddGroup("Color Grading");
+
+            selected = ModConfig.Instance.CGVanillaTonemappingEnabled;
+            group.AddCheckbox("Vanilla Tonemapping Enabled", selected, sel =>
+            {
+                ModConfig.Instance.CGVanillaTonemappingEnabled = sel;
+                ModConfig.Instance.Save();
+            });
+
+            selected = ModConfig.Instance.CGVanillaColorCorrectionLUTEnabled;
+            group.AddCheckbox("Vanilla Color Correction LUT Enabled", selected, sel =>
+            {
+                ModConfig.Instance.CGVanillaColorCorrectionLUTEnabled = sel;
+                ModConfig.Instance.Save();
+            });
 
             selectedFloat = ModConfig.Instance.CGPostExposure;
             group.AddSlider("Post Exposure", -2f, 2f, 0.1f, selectedFloat, sel =>
