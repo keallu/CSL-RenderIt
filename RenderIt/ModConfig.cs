@@ -5,8 +5,8 @@
     {
         public bool ConfigUpdated { get; set; }
         public bool ShowButton { get; set; } = true;
-        public float ButtonPositionX { get; set; }
-        public float ButtonPositionY { get; set; }
+        public float ButtonPositionX { get; set; } = 0f;
+        public float ButtonPositionY { get; set; } = 0f;
         public int AntialiasingTechnique { get; set; } = 0;
         public bool AmbientOcclusionEnabled { get; set; } = false;
         public bool BloomEnabled { get; set; } = false;

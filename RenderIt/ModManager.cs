@@ -10,7 +10,7 @@ namespace RenderIt
     {
         private bool _initialized;
         private Camera _camera;
-        private UIButton _freeCameraButton;
+        private UIMultiStateButton _zoomButton;
         private UIComponent _optionsPanel;
         private OptionsMainPanel _optionsMainPanel;
 
@@ -21,6 +21,7 @@ namespace RenderIt
         private ColorGradingModel _colorGradingModel;
 
         private UITextureAtlas _renderItAtlas;
+        private UIPanel _renderItButtonPanel;
         private UIButton _renderItButton;
 
         public void Awake()
@@ -40,7 +41,7 @@ namespace RenderIt
             try
             {
                 _camera = Camera.main;
-                _freeCameraButton = GameObject.Find("Freecamera").GetComponent<UIButton>();
+                _zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
                 _optionsPanel = UIView.library.Get("OptionsPanel");
                 _optionsMainPanel = GameObject.Find("(Library) OptionsPanel").GetComponent<OptionsMainPanel>();
 
@@ -93,6 +94,18 @@ namespace RenderIt
         {
             try
             {
+                if (_renderItButton != null)
+                {
+                    Destroy(_renderItButton);
+                }
+                if (_renderItButtonPanel != null)
+                {
+                    Destroy(_renderItButtonPanel);
+                }
+                if (_renderItAtlas != null)
+                {
+                    Destroy(_renderItAtlas);
+                }
                 if (_postProcessingBehaviour != null)
                 {
                     Destroy(_postProcessingBehaviour);
@@ -114,7 +127,7 @@ namespace RenderIt
                 {
                     string[] spriteNames = new string[]
                     {
-                        "ppslogo"
+                        "renderit"
                     };
 
                     _renderItAtlas = ResourceLoader.CreateTextureAtlas("RenderItAtlas", spriteNames, "RenderIt.Icons.");
@@ -145,8 +158,26 @@ namespace RenderIt
         {
             try
             {
-                _renderItButton = UIUtils.CreateButton("RenderItButton", _renderItAtlas, "ppslogo", "Render It!");
-                _renderItButton.absolutePosition = new Vector3(_freeCameraButton.absolutePosition.x - (5 * 36f) - 5f, _freeCameraButton.absolutePosition.y);
+                _renderItButtonPanel = UIUtils.CreatePanel("RenderItButtonPanel");
+                _renderItButtonPanel.zOrder = 0;
+                _renderItButtonPanel.size = new Vector2(36f, 36f);
+                _renderItButtonPanel.eventMouseMove += (component, eventParam) =>
+                {
+                    if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                    {
+                        var ratio = UIView.GetAView().ratio;
+                        component.position = new Vector3(component.position.x + (eventParam.moveDelta.x * ratio), component.position.y + (eventParam.moveDelta.y * ratio), component.position.z);
+
+                        ModConfig.Instance.ButtonPositionX = component.absolutePosition.x;
+                        ModConfig.Instance.ButtonPositionY = component.absolutePosition.y;
+                        ModConfig.Instance.Save();
+                    }
+                };
+
+                _renderItButton = UIUtils.CreateButton(_renderItButtonPanel, "RenderItButton", _renderItAtlas, "renderit");
+                _renderItButton.tooltip = "Render It!";
+                _renderItButton.size = new Vector2(36f, 36f);
+                _renderItButton.relativePosition = new Vector3(0f, 0f);
                 _renderItButton.eventClick += (component, eventParam) =>
                 {
                     if (!eventParam.used)
@@ -173,18 +204,6 @@ namespace RenderIt
                         eventParam.Use();
                     }
                 };
-                _renderItButton.eventMouseMove += (component, eventParam) =>
-                {
-                    if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
-                    {
-                        var ratio = UIView.GetAView().ratio;
-                        component.position = new Vector3(component.position.x + (eventParam.moveDelta.x * ratio), component.position.y + (eventParam.moveDelta.y * ratio), component.position.z);
-
-                        ModConfig.Instance.ButtonPositionX = component.absolutePosition.x;
-                        ModConfig.Instance.ButtonPositionY = component.absolutePosition.y;
-                        ModConfig.Instance.Save();
-                    }
-                };
 
             }
             catch (Exception e)
@@ -197,7 +216,16 @@ namespace RenderIt
         {
             try
             {
-                _renderItButton.isVisible = ModConfig.Instance.ShowButton;
+                if (ModConfig.Instance.ButtonPositionX == 0f && ModConfig.Instance.ButtonPositionY == 0f)
+                {
+                    _renderItButtonPanel.absolutePosition = new Vector3(_zoomButton.absolutePosition.x, _zoomButton.absolutePosition.y - (2 * 36f) - 5f);
+                }
+                else
+                {
+                    _renderItButtonPanel.absolutePosition = new Vector3(ModConfig.Instance.ButtonPositionX, ModConfig.Instance.ButtonPositionY);
+                }
+
+                _renderItButtonPanel.isVisible = ModConfig.Instance.ShowButton;
             }
             catch (Exception e)
             {

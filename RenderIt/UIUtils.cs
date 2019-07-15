@@ -1,18 +1,23 @@
 ﻿using ColossalFramework.UI;
-using UnityEngine;
 
 namespace RenderIt
 {
     public class UIUtils
     {
-        public static UIButton CreateButton(string name, UITextureAtlas atlas, string spriteName, string toolTip)
+        public static UIPanel CreatePanel(string name)
         {
-            UIButton button = UIView.GetAView().AddUIComponent(typeof(UIButton)) as UIButton;
+            UIPanel panel = UIView.GetAView().AddUIComponent(typeof(UIPanel)) as UIPanel;
+            panel.name = name;
+
+            return panel;
+        }
+
+        public static UIButton CreateButton(UIComponent parent, string name, UITextureAtlas atlas, string spriteName)
+        {
+            UIButton button = parent.AddUIComponent<UIButton>();
             button.name = name;
             button.atlas = atlas;
-            button.tooltip = toolTip;
 
-            button.normalBgSprite = null;
             button.hoveredBgSprite = "OptionBaseHovered";
             button.pressedBgSprite = "OptionBasePressed";
             button.disabledBgSprite = "OptionBaseDisabled";

@@ -77,7 +77,7 @@
     <Compile Include="UIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icons\ppslogo.png" />
+    <EmbeddedResource Include="Icons\renderit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
