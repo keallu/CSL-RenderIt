@@ -4,8 +4,8 @@ namespace RenderIt
 {
     public class ModProperties
     {
-        public AssetBundle AssetBundle;
-        public bool IsOptionsPanelNonModal;
+        public AssetBundle AssetBundle { get; set; }
+        public Profile ActiveProfile { get; set; }
 
         private static ModProperties instance;
         

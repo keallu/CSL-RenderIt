@@ -21,13 +21,11 @@ namespace RenderIt
                     {
                         antialiasingDropdown.isInteractive = false;
                         antialiasingDropdown.opacity = 0.3f;
-                        antialiasingDropdown.selectedIndex = ModConfig.Instance.AntialiasingTechnique == 1 ? 1 : 0;
                     }
                     else
                     {
                         antialiasingDropdown.isInteractive = true;
                         antialiasingDropdown.opacity = 1f;
-                        antialiasingDropdown.selectedIndex = ModConfig.Instance.AntialiasingTechnique == 1 ? 1 : 0;
                     }
                 }
             }
@@ -47,7 +45,7 @@ namespace RenderIt
                 {
                     UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
 
-                    antialiasingDropdown.selectedIndex = ModConfig.Instance.AntialiasingTechnique == 1 ? 1 : 0;
+                    antialiasingDropdown.selectedIndex = ModProperties.Instance.ActiveProfile.AntialiasingTechnique == 1 ? 1 : 0;
                 }
             }
             catch (Exception e)

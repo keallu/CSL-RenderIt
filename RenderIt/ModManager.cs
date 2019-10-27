@@ -1,6 +1,7 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PostProcessing;
 
@@ -11,8 +12,7 @@ namespace RenderIt
         private bool _initialized;
         private Camera _camera;
         private UIMultiStateButton _zoomButton;
-        private UIComponent _optionsPanel;
-        private OptionsMainPanel _optionsMainPanel;
+        private MainPanel _mainPanel;
 
         private PostProcessingBehaviour _postProcessingBehaviour;
         private AntialiasingModel _antialiasingModel;
@@ -21,14 +21,21 @@ namespace RenderIt
         private ColorGradingModel _colorGradingModel;
 
         private UITextureAtlas _renderItAtlas;
-        private UIPanel _renderItButtonPanel;
-        private UIButton _renderItButton;
+        private UIPanel _buttonPanel;
+        private UIButton _button;
 
         public void Awake()
         {
             try
             {
                 ModProperties.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
+
+                if (ModConfig.Instance.Profiles == null)
+                {
+                    ModConfig.Instance.Profiles = new List<Profile> { };
+                }
+
+                SetActiveProfile();
             }
             catch (Exception e)
             {
@@ -42,8 +49,7 @@ namespace RenderIt
             {
                 _camera = Camera.main;
                 _zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
-                _optionsPanel = UIView.library.Get("OptionsPanel");
-                _optionsMainPanel = GameObject.Find("(Library) OptionsPanel").GetComponent<OptionsMainPanel>();
+                _mainPanel = GameObject.Find("RenderItMainPanel").GetComponent<MainPanel>();
 
                 _postProcessingBehaviour = _camera.gameObject.GetComponent<PostProcessingBehaviour>();
                 if (_postProcessingBehaviour == null)
@@ -73,6 +79,8 @@ namespace RenderIt
             {
                 if (!_initialized || ModConfig.Instance.ConfigUpdated)
                 {
+                    SetActiveProfile();
+
                     UpdateAntialiasing();
                     UpdateAmbientOcclusion();
                     UpdateBloom();
@@ -94,13 +102,13 @@ namespace RenderIt
         {
             try
             {
-                if (_renderItButton != null)
+                if (_button != null)
                 {
-                    Destroy(_renderItButton);
+                    Destroy(_button);
                 }
-                if (_renderItButtonPanel != null)
+                if (_buttonPanel != null)
                 {
-                    Destroy(_renderItButtonPanel);
+                    Destroy(_buttonPanel);
                 }
                 if (_renderItAtlas != null)
                 {
@@ -154,14 +162,50 @@ namespace RenderIt
             }
         }
 
+        private void SetActiveProfile()
+        {
+            try
+            {
+                if (ModConfig.Instance.Profiles.Count == 0)
+                {
+                    Profile profile = new Profile
+                    {
+                        Name = "Default",
+                        Active = true
+                    };
+                    ModConfig.Instance.Profiles.Add(profile);
+                    ModProperties.Instance.ActiveProfile = profile;
+                }
+                else if (ModConfig.Instance.Profiles.Count == 1)
+                {
+                    ModProperties.Instance.ActiveProfile = ModConfig.Instance.Profiles[0];
+                }
+                else
+                {
+                    Profile profile = ModConfig.Instance.Profiles.Find(x => x.Active == true);
+
+                    if (profile == null)
+                    {
+                        profile = ModConfig.Instance.Profiles[0];
+                    }
+
+                    ModProperties.Instance.ActiveProfile = profile;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:SetActiveProfile -> Exception: " + e.Message);
+            }
+        }
+
         private void CreateUI()
         {
             try
             {
-                _renderItButtonPanel = UIUtils.CreatePanel("RenderItButtonPanel");
-                _renderItButtonPanel.zOrder = 0;
-                _renderItButtonPanel.size = new Vector2(36f, 36f);
-                _renderItButtonPanel.eventMouseMove += (component, eventParam) =>
+                _buttonPanel = UIUtils.CreatePanel("RenderItButtonPanel");
+                _buttonPanel.zOrder = 25;
+                _buttonPanel.size = new Vector2(36f, 36f);
+                _buttonPanel.eventMouseMove += (component, eventParam) =>
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
@@ -174,37 +218,29 @@ namespace RenderIt
                     }
                 };
 
-                _renderItButton = UIUtils.CreateButton(_renderItButtonPanel, "RenderItButton", _renderItAtlas, "renderit");
-                _renderItButton.tooltip = "Render It!";
-                _renderItButton.size = new Vector2(36f, 36f);
-                _renderItButton.relativePosition = new Vector3(0f, 0f);
-                _renderItButton.eventClick += (component, eventParam) =>
+                _button = UIUtils.CreateButton(_buttonPanel, "RenderItButton", _renderItAtlas, "renderit");
+                _button.tooltip = "Render It!";
+                _button.size = new Vector2(36f, 36f);
+                _button.relativePosition = new Vector3(0f, 0f);
+                _button.eventClick += (component, eventParam) =>
                 {
                     if (!eventParam.used)
                     {
-                        if (_optionsPanel != null)
+                        if (_mainPanel != null)
                         {
-                            if (_optionsPanel.isVisible)
+                            if (_mainPanel.isVisible)
                             {
-                                _optionsPanel.Hide();
-                                ModProperties.Instance.IsOptionsPanelNonModal = false;
+                                _mainPanel.Hide();
                             }
                             else
                             {
-                                if (_optionsMainPanel != null)
-                                {
-                                    _optionsMainPanel.SelectMod("Render It!");
-                                }
-
-                                _optionsPanel.Show();
-                                ModProperties.Instance.IsOptionsPanelNonModal = true;
+                                _mainPanel.Show();
                             }
                         }
 
                         eventParam.Use();
                     }
                 };
-
             }
             catch (Exception e)
             {
@@ -218,14 +254,14 @@ namespace RenderIt
             {
                 if (ModConfig.Instance.ButtonPositionX == 0f && ModConfig.Instance.ButtonPositionY == 0f)
                 {
-                    _renderItButtonPanel.absolutePosition = new Vector3(_zoomButton.absolutePosition.x, _zoomButton.absolutePosition.y - (2 * 36f) - 5f);
+                    _buttonPanel.absolutePosition = new Vector3(_zoomButton.absolutePosition.x, _zoomButton.absolutePosition.y - (2 * 36f) - 5f);
                 }
                 else
                 {
-                    _renderItButtonPanel.absolutePosition = new Vector3(ModConfig.Instance.ButtonPositionX, ModConfig.Instance.ButtonPositionY);
+                    _buttonPanel.absolutePosition = new Vector3(ModConfig.Instance.ButtonPositionX, ModConfig.Instance.ButtonPositionY);
                 }
 
-                _renderItButtonPanel.isVisible = ModConfig.Instance.ShowButton;
+                _buttonPanel.isVisible = ModConfig.Instance.ShowButton;
             }
             catch (Exception e)
             {
@@ -239,7 +275,7 @@ namespace RenderIt
             {
                 AntialiasingModel.Settings settings = _antialiasingModel.settings;
 
-                switch (ModConfig.Instance.AntialiasingTechnique)
+                switch (ModProperties.Instance.ActiveProfile.AntialiasingTechnique)
                 {
                     case 0:
                         _antialiasingModel.enabled = false;
@@ -249,17 +285,17 @@ namespace RenderIt
                         break;
                     case 2:
                         settings.method = AntialiasingModel.Method.Fxaa;
-                        AntialiasingModel.FxaaPreset preset = (AntialiasingModel.FxaaPreset)ModConfig.Instance.FXAAQuality;
+                        AntialiasingModel.FxaaPreset preset = (AntialiasingModel.FxaaPreset)ModProperties.Instance.ActiveProfile.FXAAQuality;
                         settings.fxaaSettings.preset = preset;
                         _antialiasingModel.settings = settings;
                         _antialiasingModel.enabled = true;
                         break;
                     case 3:
                         settings.method = AntialiasingModel.Method.Taa;
-                        settings.taaSettings.jitterSpread = ModConfig.Instance.TAAJitterSpread;
-                        settings.taaSettings.sharpen = ModConfig.Instance.TAASharpen;
-                        settings.taaSettings.stationaryBlending = ModConfig.Instance.TAAStationaryBlending;
-                        settings.taaSettings.motionBlending = ModConfig.Instance.TAAMotionBlending;
+                        settings.taaSettings.jitterSpread = ModProperties.Instance.ActiveProfile.TAAJitterSpread;
+                        settings.taaSettings.sharpen = ModProperties.Instance.ActiveProfile.TAASharpen;
+                        settings.taaSettings.stationaryBlending = ModProperties.Instance.ActiveProfile.TAAStationaryBlending;
+                        settings.taaSettings.motionBlending = ModProperties.Instance.ActiveProfile.TAAMotionBlending;
                         _antialiasingModel.settings = settings;
                         _antialiasingModel.enabled = true;
                         break;
@@ -283,15 +319,15 @@ namespace RenderIt
             {
                 AmbientOcclusionModel.Settings settings = _ambientOcclusionModel.settings;
 
-                if (ModConfig.Instance.AmbientOcclusionEnabled)
+                if (ModProperties.Instance.ActiveProfile.AmbientOcclusionEnabled)
                 {
-                    settings.intensity = ModConfig.Instance.AOIntensity;
-                    settings.radius = ModConfig.Instance.AORadius;
-                    settings.sampleCount = (AmbientOcclusionModel.SampleCount)ModConfig.Instance.AOSampleCount;
-                    settings.downsampling = ModConfig.Instance.AODownsampling;
-                    settings.forceForwardCompatibility = ModConfig.Instance.AOForceForwardCompatibility;
-                    settings.ambientOnly = ModConfig.Instance.AOAmbientOnly;
-                    settings.highPrecision = ModConfig.Instance.AOHighPrecision;
+                    settings.intensity = ModProperties.Instance.ActiveProfile.AOIntensity;
+                    settings.radius = ModProperties.Instance.ActiveProfile.AORadius;
+                    settings.sampleCount = (AmbientOcclusionModel.SampleCount)ModProperties.Instance.ActiveProfile.AOSampleCount;
+                    settings.downsampling = ModProperties.Instance.ActiveProfile.AODownsampling;
+                    settings.forceForwardCompatibility = ModProperties.Instance.ActiveProfile.AOForceForwardCompatibility;
+                    settings.ambientOnly = ModProperties.Instance.ActiveProfile.AOAmbientOnly;
+                    settings.highPrecision = ModProperties.Instance.ActiveProfile.AOHighPrecision;
                     _ambientOcclusionModel.settings = settings;
                     _ambientOcclusionModel.enabled = true;
                 }
@@ -317,14 +353,14 @@ namespace RenderIt
 
                 BloomModel.Settings settings = _bloomModel.settings;
 
-                if (ModConfig.Instance.BloomEnabled)
+                if (ModProperties.Instance.ActiveProfile.BloomEnabled)
                 {
-                    vanillaBloom.enabled = ModConfig.Instance.BloomVanillaBloomEnabled;
-                    settings.bloom.intensity = ModConfig.Instance.BloomIntensity;
-                    settings.bloom.threshold = ModConfig.Instance.BloomThreshold;
-                    settings.bloom.softKnee = ModConfig.Instance.BloomSoftKnee;
-                    settings.bloom.radius = ModConfig.Instance.BloomRadius;
-                    settings.bloom.antiFlicker = ModConfig.Instance.BloomAntiFlicker;
+                    vanillaBloom.enabled = ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled;
+                    settings.bloom.intensity = ModProperties.Instance.ActiveProfile.BloomIntensity;
+                    settings.bloom.threshold = ModProperties.Instance.ActiveProfile.BloomThreshold;
+                    settings.bloom.softKnee = ModProperties.Instance.ActiveProfile.BloomSoftKnee;
+                    settings.bloom.radius = ModProperties.Instance.ActiveProfile.BloomRadius;
+                    settings.bloom.antiFlicker = ModProperties.Instance.ActiveProfile.BloomAntiFlicker;
                     _bloomModel.settings = settings;
                     _bloomModel.enabled = true;
                 }
@@ -352,23 +388,23 @@ namespace RenderIt
 
                 ColorGradingModel.Settings settings = _colorGradingModel.settings;
 
-                if (ModConfig.Instance.ColorGradingEnabled)
+                if (ModProperties.Instance.ActiveProfile.ColorGradingEnabled)
                 {
-                    vanillaToneMapping.enabled = ModConfig.Instance.CGVanillaTonemappingEnabled;
-                    vanillaColorCorrectionLut.enabled = ModConfig.Instance.CGVanillaColorCorrectionLUTEnabled;
-                    settings.basic.postExposure = ModConfig.Instance.CGPostExposure;
-                    settings.basic.temperature = ModConfig.Instance.CGTemperature;
-                    settings.basic.tint = ModConfig.Instance.CGTint;
-                    settings.basic.hueShift = ModConfig.Instance.CGHueShift;
-                    settings.basic.saturation = ModConfig.Instance.CGSaturation;
-                    settings.basic.contrast = ModConfig.Instance.CGContrast;
-                    settings.tonemapping.tonemapper = (ColorGradingModel.Tonemapper)ModConfig.Instance.CGTonemapper;
-                    settings.tonemapping.neutralBlackIn = ModConfig.Instance.CGNeutralBlackIn;
-                    settings.tonemapping.neutralWhiteIn = ModConfig.Instance.CGNeutralWhiteIn;
-                    settings.tonemapping.neutralBlackOut = ModConfig.Instance.CGNeutralBlackOut;
-                    settings.tonemapping.neutralWhiteOut = ModConfig.Instance.CGNeutralWhiteOut;
-                    settings.tonemapping.neutralWhiteLevel = ModConfig.Instance.CGNeutralWhiteLevel;
-                    settings.tonemapping.neutralWhiteClip = ModConfig.Instance.CGNeutralWhiteClip;                    
+                    vanillaToneMapping.enabled = ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled;
+                    vanillaColorCorrectionLut.enabled = ModProperties.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled;
+                    settings.basic.postExposure = ModProperties.Instance.ActiveProfile.CGPostExposure;
+                    settings.basic.temperature = ModProperties.Instance.ActiveProfile.CGTemperature;
+                    settings.basic.tint = ModProperties.Instance.ActiveProfile.CGTint;
+                    settings.basic.hueShift = ModProperties.Instance.ActiveProfile.CGHueShift;
+                    settings.basic.saturation = ModProperties.Instance.ActiveProfile.CGSaturation;
+                    settings.basic.contrast = ModProperties.Instance.ActiveProfile.CGContrast;
+                    settings.tonemapping.tonemapper = (ColorGradingModel.Tonemapper)ModProperties.Instance.ActiveProfile.CGTonemapper;
+                    settings.tonemapping.neutralBlackIn = ModProperties.Instance.ActiveProfile.CGNeutralBlackIn;
+                    settings.tonemapping.neutralWhiteIn = ModProperties.Instance.ActiveProfile.CGNeutralWhiteIn;
+                    settings.tonemapping.neutralBlackOut = ModProperties.Instance.ActiveProfile.CGNeutralBlackOut;
+                    settings.tonemapping.neutralWhiteOut = ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut;
+                    settings.tonemapping.neutralWhiteLevel = ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel;
+                    settings.tonemapping.neutralWhiteClip = ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip;
                     _colorGradingModel.settings = settings;
                     _colorGradingModel.enabled = true;
                 }
