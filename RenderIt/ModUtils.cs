@@ -39,18 +39,49 @@ namespace RenderIt
         {
             try
             {
+                UpdateAntialiasing(ModProperties.Instance.ActiveProfile.AntialiasingTechnique == 1 ? true : false);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateOptionsGraphicsPanel -> Exception: " + e.Message);
+            }
+        }
+
+        public static void UpdateAntialiasing(bool enabled)
+        {
+            try
+            {
                 OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics").GetComponent<OptionsGraphicsPanel>();
 
                 if (_optionsGraphicsPanel != null)
                 {
                     UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
 
-                    antialiasingDropdown.selectedIndex = ModProperties.Instance.ActiveProfile.AntialiasingTechnique == 1 ? 1 : 0;
+                    antialiasingDropdown.selectedIndex = enabled ? 1 : 0;
                 }
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModManager:UpdateOptionsGraphicsPanel -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModManager:UpdateAntialiasing -> Exception: " + e.Message);
+            }
+        }
+
+        public static void UpdateDepthOfField(bool enabled)
+        {
+            try
+            {
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics").GetComponent<OptionsGraphicsPanel>();
+
+                if (_optionsGraphicsPanel != null)
+                {
+                    UIDropDown dofTypeDropdown = _optionsGraphicsPanel.GetType().GetField("m_DOFTypeDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
+
+                    dofTypeDropdown.selectedIndex = enabled ? 2 : 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateDepthOfField -> Exception: " + e.Message);
             }
         }
     }

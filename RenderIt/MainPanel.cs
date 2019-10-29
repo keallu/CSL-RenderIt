@@ -693,8 +693,18 @@ namespace RenderIt
                     _optionsAntiAliasingDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
                         ModProperties.Instance.ActiveProfile.AntialiasingTechnique = value;
-                        ModUtils.UpdateOptionsGraphicsPanel();
                         ModConfig.Instance.Apply();
+
+                        if (value == 3)
+                        {
+                            ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", delegate (UIComponent comp, int ret)
+                            {
+                                if (ret == 1)
+                                {
+                                    ModUtils.UpdateDepthOfField(false);
+                                }
+                            });
+                        }
                     };
 
                     _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(panel, "OptionsAmbientOcclusionCheckBox", "Ambient Occlusion Enabled", ModProperties.Instance.ActiveProfile.AmbientOcclusionEnabled);
@@ -885,7 +895,7 @@ namespace RenderIt
                     // --- Bloom ---
                     _advancedBloomTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedBloomTitle", "Bloom");
 
-                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", "Vanilla Bloom Enabled", ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled);
+                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", "Vanilla Bloom", ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled);
                     _advancedBloomVanillaBloomCheckBox.eventCheckChanged += (component, value) =>
                     {
                         ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled = value;
@@ -940,7 +950,7 @@ namespace RenderIt
                     // --- Color Grading ---
                     _advancedCGTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedCGTitle", "Color Grading");
 
-                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", "Vanilla Tonemapping Enabled", ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
+                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", "Vanilla Tonemapping", ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
                     _advancedCGVanillaTonemappingCheckBox.eventCheckChanged += (component, value) =>
                     {
                         ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled = value;

@@ -81,6 +81,8 @@ namespace RenderIt
                 {
                     SetActiveProfile();
 
+                    ModUtils.UpdateOptionsGraphicsPanel();
+
                     UpdateAntialiasing();
                     UpdateAmbientOcclusion();
                     UpdateBloom();
