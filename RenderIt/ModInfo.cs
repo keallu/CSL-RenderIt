@@ -7,21 +7,24 @@ namespace RenderIt
 {
     public class ModInfo : IUserMod
     {
+        private readonly string _harmonyId = "com.github.keallu.csl.renderit";
+        private HarmonyInstance _harmony;
+
         public string Name => "Render It!";
         public string Description => "Allows to change render processing.";
 
     public void OnEnabled()
         {
-            var harmony = HarmonyInstance.Create("com.github.keallu.csl.renderit");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            _harmony = HarmonyInstance.Create(_harmonyId);
+            _harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             ModUtils.PatchOptionsGraphicsPanel(true);
         }
 
         public void OnDisabled()
         {
-            var harmony = HarmonyInstance.Create("com.github.keallu.csl.renderit");
-            harmony.UnpatchAll();
+            _harmony.UnpatchAll(_harmonyId);
+            _harmony = null;
 
             ModUtils.PatchOptionsGraphicsPanel(false);
         }
