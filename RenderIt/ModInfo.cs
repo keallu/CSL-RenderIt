@@ -1,7 +1,5 @@
-﻿using Harmony;
+﻿using CitiesHarmony.API;
 using ICities;
-using System;
-using System.Reflection;
 
 namespace RenderIt
 {
@@ -12,18 +10,19 @@ namespace RenderIt
 
     public void OnEnabled()
         {
-            var harmony = HarmonyInstance.Create("com.github.keallu.csl.renderit");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            HarmonyHelper.DoOnHarmonyReady(() => Patcher.PatchAll());
 
             ModUtils.PatchOptionsGraphicsPanel(true);
         }
 
         public void OnDisabled()
         {
-            var harmony = HarmonyInstance.Create("com.github.keallu.csl.renderit");
-            harmony.UnpatchAll();
-
             ModUtils.PatchOptionsGraphicsPanel(false);
+
+            if (HarmonyHelper.IsHarmonyInstalled)
+            {
+                Patcher.UnpatchAll();
+            }
         }
 
         public void OnSettingsUI(UIHelperBase helper)

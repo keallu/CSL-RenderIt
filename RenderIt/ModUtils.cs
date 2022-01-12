@@ -43,7 +43,7 @@ namespace RenderIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModManager:UpdateOptionsGraphicsPanel -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModUtils:UpdateOptionsGraphicsPanel -> Exception: " + e.Message);
             }
         }
 
@@ -62,7 +62,7 @@ namespace RenderIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModManager:UpdateAntialiasing -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModUtils:UpdateAntialiasing -> Exception: " + e.Message);
             }
         }
 
@@ -81,7 +81,7 @@ namespace RenderIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModManager:UpdateDepthOfField -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModUtils:UpdateDepthOfField -> Exception: " + e.Message);
             }
         }
     }

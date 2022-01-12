@@ -66,6 +66,19 @@ namespace RenderIt
 
                 _renderItAtlas = LoadResources();
                 CreateUI();
+
+                if (Singleton<InfoManager>.exists)
+                {
+                    Singleton<InfoManager>.instance.EventInfoModeChanged += (mode, subMode) =>
+                    {
+                        if (mode == InfoManager.InfoMode.None)
+                        {
+                            UpdateAmbientOcclusion();
+                            UpdateBloom();
+                            UpdateColorGrading();
+                        }
+                    };
+                }
             }
             catch (Exception e)
             {
