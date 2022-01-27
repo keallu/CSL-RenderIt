@@ -1,5 +1,6 @@
 ﻿using CitiesHarmony.API;
 using ICities;
+using System.Reflection;
 
 namespace RenderIt
 {
@@ -8,7 +9,7 @@ namespace RenderIt
         public string Name => "Render It!";
         public string Description => "Allows to change render processing.";
 
-    public void OnEnabled()
+        public void OnEnabled()
         {
             HarmonyHelper.DoOnHarmonyReady(() => Patcher.PatchAll());
 
@@ -30,13 +31,29 @@ namespace RenderIt
             UIHelperBase group;
             bool selected;
 
-            group = helper.AddGroup(Name);
+            AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+
+            group = helper.AddGroup(Name + " - " + assemblyName.Version.Major + "." + assemblyName.Version.Minor);
 
             selected = ModConfig.Instance.ShowButton;
             group.AddCheckbox("Show Button", selected, sel =>
             {
                 ModConfig.Instance.ShowButton = sel;
                 ModConfig.Instance.Save();
+            });
+
+            group.AddSpace(10);
+
+            group.AddButton("Reset Positioning of Panel", () =>
+            {
+                ModProperties.Instance.ResetPanelPosition();
+            });
+
+            group.AddSpace(10);
+
+            group.AddButton("Reset Positioning of Button", () =>
+            {
+                ModProperties.Instance.ResetButtonPosition();
             });
         }
     }

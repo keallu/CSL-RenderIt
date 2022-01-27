@@ -68,7 +68,7 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Loading.cs" />
-    <Compile Include="MainPanel.cs" />
+    <Compile Include="Panels\MainPanel.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />
     <Compile Include="ModInvariables.cs" />

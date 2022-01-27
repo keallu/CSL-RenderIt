@@ -2,6 +2,7 @@
 using ICities;
 using System;
 using UnityEngine;
+using RenderIt.Panels;
 
 namespace RenderIt
 {

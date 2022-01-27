@@ -9,11 +9,12 @@ namespace RenderIt
         public bool ShowButton { get; set; } = true;
         public float ButtonPositionX { get; set; } = 0f;
         public float ButtonPositionY { get; set; } = 0f;
+        public bool ShowPanel { get; set; } = true;
         public float PanelPositionX { get; set; } = 0f;
         public float PanelPositionY { get; set; } = 0f;
-        public List<Profile> Profiles { get; set; }
+        public List<Profile> Profiles { get; set; } = new List<Profile> { };
 
-        private static ModConfig instance;
+    private static ModConfig instance;
 
         public static ModConfig Instance
         {
@@ -34,14 +35,9 @@ namespace RenderIt
         }
 
         public void Save()
-        {
+        {            
             Configuration<ModConfig>.Save();
-        }
-
-        public void ApplyAndSave()
-        {
             ConfigUpdated = true;
-            Configuration<ModConfig>.Save();
         }
     }
 }

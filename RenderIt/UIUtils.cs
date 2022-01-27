@@ -19,7 +19,7 @@ namespace RenderIt
 
             return null;
         }
-        
+
         public static UIPanel CreatePanel(string name)
         {
             UIPanel panel = UIView.GetAView().AddUIComponent(typeof(UIPanel)) as UIPanel;
@@ -63,12 +63,12 @@ namespace RenderIt
         public static UILabel CreateTitle(UIComponent parent, string name, string text)
         {
             UILabel label = parent.AddUIComponent<UILabel>();
+            label.font = GetUIFont("OpenSans-Bold");
             label.name = name;
             label.text = text;
-            label.font = GetUIFont("OpenSans-Bold");
             label.autoSize = false;
             label.height = 20f;
-            label.verticalAlignment = UIVerticalAlignment.Top;
+            label.verticalAlignment = UIVerticalAlignment.Middle;
             label.relativePosition = new Vector3(0f, 0f);
 
             return label;
@@ -78,11 +78,12 @@ namespace RenderIt
         {
             UILabel label = parent.AddUIComponent<UILabel>();
             label.name = name;
-            label.text = text;
             label.font = GetUIFont("OpenSans-Regular");
+            label.textScale = 0.8125f;
+            label.text = text;
             label.autoSize = false;
             label.height = 20f;
-            label.verticalAlignment = UIVerticalAlignment.Top;
+            label.verticalAlignment = UIVerticalAlignment.Middle;
             label.relativePosition = new Vector3(0f, 0f);
 
             return label;
@@ -100,38 +101,71 @@ namespace RenderIt
             return sprite;
         }
 
+        public static UITextField CreateTextField(UIComponent parent, string name, string text)
+        {
+            UITextField textField = parent.AddUIComponent<UITextField>();
+            textField.name = name;
+            textField.font = GetUIFont("OpenSans-Regular");
+            textField.textScale = 0.875f;
+            textField.height = 32f;
+            textField.width = parent.width - 10f;
+            textField.relativePosition = new Vector3(0f, 0f);
+
+            textField.normalBgSprite = "OptionsDropboxListbox";
+            textField.hoveredBgSprite = "OptionsDropboxListboxHovered";
+            textField.focusedBgSprite = "OptionsDropboxListboxFocused";
+            textField.disabledBgSprite = "OptionsDropboxListboxDisabled";
+            textField.selectionSprite = "EmptySprite";
+
+            textField.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
+            textField.horizontalAlignment = UIHorizontalAlignment.Left;
+            textField.verticalAlignment = UIVerticalAlignment.Middle;
+
+            textField.padding = new RectOffset(10, 5, 10, 5);
+
+            textField.builtinKeyNavigation = true;
+            textField.text = text;
+
+            return textField;
+        }
+
         public static UIDropDown CreateDropDown(UIComponent parent, string name)
         {
             UIDropDown dropDown = parent.AddUIComponent<UIDropDown>();
             dropDown.name = name;
-
+            dropDown.font = GetUIFont("OpenSans-Regular");
+            dropDown.textScale = 0.875f;
             dropDown.height = 32f;
             dropDown.width = parent.width - 10f;
             dropDown.relativePosition = new Vector3(0f, 0f);
+
             dropDown.listBackground = "OptionsDropboxListbox";
             dropDown.listHeight = 200;
+
             dropDown.itemHeight = 24;
             dropDown.itemHover = "ListItemHover";
             dropDown.itemHighlight = "ListItemHighlight";
+
             dropDown.normalBgSprite = "OptionsDropbox";
             dropDown.hoveredBgSprite = "OptionsDropboxHovered";
             dropDown.focusedBgSprite = "OptionsDropboxFocused";
             dropDown.disabledBgSprite = "OptionsDropboxDisabled";
+
             dropDown.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
-            dropDown.horizontalAlignment = UIHorizontalAlignment.Left;
+            dropDown.horizontalAlignment = UIHorizontalAlignment.Center;
             dropDown.verticalAlignment = UIVerticalAlignment.Middle;
-            dropDown.textFieldPadding = new RectOffset(14, 0, 8, 0);
-            dropDown.itemPadding = new RectOffset(14, 0, 4, 0);
-            dropDown.popupColor = new Color32(170, 170, 170, 255);
+
+            dropDown.itemPadding = new RectOffset(5, 5, 5, 5);
+            dropDown.listPadding = new RectOffset(5, 5, 5, 5);
+            dropDown.textFieldPadding = new RectOffset(10, 5, 10, 5);
+
+            dropDown.popupColor = new Color32(255, 255, 255, 255);
+            dropDown.popupTextColor = new Color32(170, 170, 170, 255);
 
             UIButton button = dropDown.AddUIComponent<UIButton>();
             button.height = dropDown.height;
             button.width = dropDown.width;
             button.relativePosition = new Vector3(0f, 0f);
-            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
-            button.textVerticalAlignment = UIVerticalAlignment.Middle;
-            button.horizontalAlignment = UIHorizontalAlignment.Right;
-            button.verticalAlignment = UIVerticalAlignment.Middle;
 
             dropDown.triggerButton = button;
 
@@ -148,7 +182,6 @@ namespace RenderIt
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
             checkBox.name = name;
-
             checkBox.height = 16f;
             checkBox.width = parent.width - 10f;
 
@@ -161,16 +194,16 @@ namespace RenderIt
             checkedSprite.spriteName = "check-checked";
             checkedSprite.size = new Vector2(16f, 16f);
             checkedSprite.relativePosition = Vector3.zero;
-            checkBox.checkedBoxObject = checkedSprite;
 
             checkBox.label = checkBox.AddUIComponent<UILabel>();
-            checkBox.label.text = text;
             checkBox.label.font = GetUIFont("OpenSans-Regular");
-            checkBox.label.autoSize = false;
-            checkBox.label.height = 20f;
+            checkBox.label.textScale = 0.875f;
             checkBox.label.verticalAlignment = UIVerticalAlignment.Middle;
-            checkBox.label.relativePosition = new Vector3(20f, 0f);
+            checkBox.label.height = 30f;
+            checkBox.label.relativePosition = new Vector3(25f, 2f);
+            checkBox.label.text = text;
 
+            checkBox.checkedBoxObject = checkedSprite;
             checkBox.isChecked = state;
 
             return checkBox;
@@ -180,14 +213,9 @@ namespace RenderIt
         {
             UISlider slider = parent.AddUIComponent<UISlider>();
             slider.name = name;
-
-            slider.height = 12f;
+            slider.height = 10f;
             slider.width = parent.width - 10f;
-            slider.relativePosition = new Vector3(0f, 30f);
-
-            slider.maxValue = max;
-            slider.minValue = min;
-            slider.stepSize = step;
+            slider.relativePosition = new Vector3(0f, 0f);
 
             UISlicedSprite slicedSprite = slider.AddUIComponent<UISlicedSprite>();
             slicedSprite.spriteName = "ScrollbarTrack";
@@ -199,9 +227,12 @@ namespace RenderIt
             thumbSprite.spriteName = "ScrollbarThumb";
             thumbSprite.height = 20f;
             thumbSprite.width = 10f;
-            thumbSprite.relativePosition = new Vector3(0f, -4f);
-            slider.thumbObject = thumbSprite;
+            thumbSprite.relativePosition = new Vector3(0f, -5f);
 
+            slider.maxValue = max;
+            slider.minValue = min;
+            slider.stepSize = step;
+            slider.thumbObject = thumbSprite;
             slider.value = defaultValue;
 
             slider.eventSizeChanged += (component, value) =>

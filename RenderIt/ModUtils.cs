@@ -11,7 +11,7 @@ namespace RenderIt
         {
             try
             {
-                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics").GetComponent<OptionsGraphicsPanel>();
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics")?.GetComponent<OptionsGraphicsPanel>();
 
                 if (_optionsGraphicsPanel != null)
                 {
@@ -51,7 +51,7 @@ namespace RenderIt
         {
             try
             {
-                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics").GetComponent<OptionsGraphicsPanel>();
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics")?.GetComponent<OptionsGraphicsPanel>();
 
                 if (_optionsGraphicsPanel != null)
                 {
@@ -70,7 +70,7 @@ namespace RenderIt
         {
             try
             {
-                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics").GetComponent<OptionsGraphicsPanel>();
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics")?.GetComponent<OptionsGraphicsPanel>();
 
                 if (_optionsGraphicsPanel != null)
                 {

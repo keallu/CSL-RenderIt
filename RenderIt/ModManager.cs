@@ -1,9 +1,9 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PostProcessing;
+using RenderIt.Panels;
 
 namespace RenderIt
 {
@@ -12,6 +12,11 @@ namespace RenderIt
         private bool _initialized;
         private Camera _camera;
         private UIMultiStateButton _zoomButton;
+
+        private UITextureAtlas _renderItAtlas;
+        private UIPanel _buttonPanel;
+        private UIButton _button;
+
         private MainPanel _mainPanel;
 
         private PostProcessingBehaviour _postProcessingBehaviour;
@@ -20,22 +25,11 @@ namespace RenderIt
         private BloomModel _bloomModel;
         private ColorGradingModel _colorGradingModel;
 
-        private UITextureAtlas _renderItAtlas;
-        private UIPanel _buttonPanel;
-        private UIButton _button;
-
         public void Awake()
         {
             try
             {
-                ModProperties.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
 
-                if (ModConfig.Instance.Profiles == null)
-                {
-                    ModConfig.Instance.Profiles = new List<Profile> { };
-                }
-
-                SetActiveProfile();
             }
             catch (Exception e)
             {
@@ -47,14 +41,39 @@ namespace RenderIt
         {
             try
             {
-                _camera = Camera.main;
-                _zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
-                _mainPanel = GameObject.Find("RenderItMainPanel").GetComponent<MainPanel>();
+                if (_camera == null)
+                {
+                    _camera = Camera.main;
+                }
 
-                _postProcessingBehaviour = _camera.gameObject.GetComponent<PostProcessingBehaviour>();
+                if (_zoomButton == null)
+                {
+                    _zoomButton = GameObject.Find("ZoomButton")?.GetComponent<UIMultiStateButton>();
+                }
+
+                if (_mainPanel == null)
+                {
+                    _mainPanel = GameObject.Find("RenderItMainPanel")?.GetComponent<MainPanel>();
+                }
+
+                if (_zoomButton != null)
+                {
+                    ModProperties.Instance.ButtonDefaultPositionX = _zoomButton.absolutePosition.x;
+                    ModProperties.Instance.ButtonDefaultPositionY = _zoomButton.absolutePosition.y - (2 * 36f) - 5f;
+                }
+
+                if (ModConfig.Instance.ButtonPositionX == 0f && ModConfig.Instance.ButtonPositionY == 0f)
+                {
+                    ModConfig.Instance.ButtonPositionX = ModProperties.Instance.ButtonDefaultPositionX;
+                    ModConfig.Instance.ButtonPositionY = ModProperties.Instance.ButtonDefaultPositionY;
+                }
+
+                ModProperties.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
+
+                _postProcessingBehaviour = _camera.gameObject?.GetComponent<PostProcessingBehaviour>();
                 if (_postProcessingBehaviour == null)
                 {
-                    _postProcessingBehaviour = _camera.gameObject.AddComponent<PostProcessingBehaviour>();
+                    _postProcessingBehaviour = _camera.gameObject?.AddComponent<PostProcessingBehaviour>();
                     _postProcessingBehaviour.profile = ScriptableObject.CreateInstance<PostProcessingProfile>();
                 }
                 _postProcessingBehaviour.enabled = true;
@@ -65,20 +84,15 @@ namespace RenderIt
                 _colorGradingModel = new ColorGradingModel();
 
                 _renderItAtlas = LoadResources();
-                CreateUI();
+
+                SetActiveProfile();
 
                 if (Singleton<InfoManager>.exists)
                 {
-                    Singleton<InfoManager>.instance.EventInfoModeChanged += (mode, subMode) =>
-                    {
-                        if (mode == InfoManager.InfoMode.None)
-                        {
-                            UpdateAmbientOcclusion();
-                            UpdateBloom();
-                            UpdateColorGrading();
-                        }
-                    };
+                    Singleton<InfoManager>.instance.EventInfoModeChanged += Instance_EventInfoModeChanged;
                 }
+
+                CreateUI();
             }
             catch (Exception e)
             {
@@ -102,6 +116,7 @@ namespace RenderIt
                     UpdateColorGrading();
 
                     UpdateUI();
+                    _mainPanel.ForceUpdateUI();
 
                     _initialized = true;
                     ModConfig.Instance.ConfigUpdated = false;
@@ -117,21 +132,26 @@ namespace RenderIt
         {
             try
             {
-                if (_button != null)
+                if (Singleton<InfoManager>.exists)
                 {
-                    Destroy(_button);
+                    Singleton<InfoManager>.instance.EventInfoModeChanged -= Instance_EventInfoModeChanged;
                 }
-                if (_buttonPanel != null)
+
+                if (_postProcessingBehaviour != null)
                 {
-                    Destroy(_buttonPanel);
+                    Destroy(_postProcessingBehaviour.gameObject);
                 }
                 if (_renderItAtlas != null)
                 {
                     Destroy(_renderItAtlas);
                 }
-                if (_postProcessingBehaviour != null)
+                if (_button != null)
                 {
-                    Destroy(_postProcessingBehaviour);
+                    Destroy(_button.gameObject);
+                }
+                if (_buttonPanel != null)
+                {
+                    Destroy(_buttonPanel.gameObject);
                 }
 
                 AssetBundleUtils.UnloadAndDestroyAssetBundle(ModProperties.Instance.AssetBundle);
@@ -139,6 +159,16 @@ namespace RenderIt
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ModManager:OnDestroy -> Exception: " + e.Message);
+            }
+        }
+
+        private void Instance_EventInfoModeChanged(InfoManager.InfoMode mode, InfoManager.SubInfoMode subMode)
+        {
+            if (mode == InfoManager.InfoMode.None)
+            {
+                UpdateAmbientOcclusion();
+                UpdateBloom();
+                UpdateColorGrading();
             }
         }
 
@@ -220,7 +250,7 @@ namespace RenderIt
                 _buttonPanel = UIUtils.CreatePanel("RenderItButtonPanel");
                 _buttonPanel.zOrder = 25;
                 _buttonPanel.size = new Vector2(36f, 36f);
-                _buttonPanel.eventMouseMove += (component, eventParam) =>
+                _buttonPanel.eventMouseUp += (component, eventParam) =>
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
@@ -246,10 +276,14 @@ namespace RenderIt
                             if (_mainPanel.isVisible)
                             {
                                 _mainPanel.Hide();
+                                ModConfig.Instance.ShowPanel = false;
+                                ModConfig.Instance.Save();
                             }
                             else
                             {
                                 _mainPanel.Show();
+                                ModConfig.Instance.ShowPanel = true;
+                                ModConfig.Instance.Save();
                             }
                         }
 
@@ -267,16 +301,8 @@ namespace RenderIt
         {
             try
             {
-                if (ModConfig.Instance.ButtonPositionX == 0f && ModConfig.Instance.ButtonPositionY == 0f)
-                {
-                    _buttonPanel.absolutePosition = new Vector3(_zoomButton.absolutePosition.x, _zoomButton.absolutePosition.y - (2 * 36f) - 5f);
-                }
-                else
-                {
-                    _buttonPanel.absolutePosition = new Vector3(ModConfig.Instance.ButtonPositionX, ModConfig.Instance.ButtonPositionY);
-                }
-
                 _buttonPanel.isVisible = ModConfig.Instance.ShowButton;
+                _buttonPanel.absolutePosition = new Vector3(ModConfig.Instance.ButtonPositionX, ModConfig.Instance.ButtonPositionY);
             }
             catch (Exception e)
             {
@@ -364,13 +390,16 @@ namespace RenderIt
         {
             try
             {
-                UnityStandardAssets.ImageEffects.Bloom vanillaBloom = _camera.gameObject.GetComponent<UnityStandardAssets.ImageEffects.Bloom>();
+                UnityStandardAssets.ImageEffects.Bloom vanillaBloom = _camera.gameObject?.GetComponent<UnityStandardAssets.ImageEffects.Bloom>();
 
                 BloomModel.Settings settings = _bloomModel.settings;
 
                 if (ModProperties.Instance.ActiveProfile.BloomEnabled)
                 {
-                    vanillaBloom.enabled = ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled;
+                    if (vanillaBloom != null)
+                    {
+                        vanillaBloom.enabled = ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled;
+                    }
                     settings.bloom.intensity = ModProperties.Instance.ActiveProfile.BloomIntensity;
                     settings.bloom.threshold = ModProperties.Instance.ActiveProfile.BloomThreshold;
                     settings.bloom.softKnee = ModProperties.Instance.ActiveProfile.BloomSoftKnee;
@@ -381,7 +410,10 @@ namespace RenderIt
                 }
                 else
                 {
-                    vanillaBloom.enabled = true;
+                    if (vanillaBloom != null)
+                    {
+                        vanillaBloom.enabled = true;
+                    }
                     _bloomModel.enabled = false;
                 }
 
@@ -398,15 +430,21 @@ namespace RenderIt
         {
             try
             {
-                ToneMapping vanillaToneMapping = _camera.gameObject.GetComponent<ToneMapping>();
-                ColorCorrectionLut vanillaColorCorrectionLut = _camera.gameObject.GetComponent<ColorCorrectionLut>();
+                ToneMapping vanillaToneMapping = _camera.gameObject?.GetComponent<ToneMapping>();
+                ColorCorrectionLut vanillaColorCorrectionLut = _camera.gameObject?.GetComponent<ColorCorrectionLut>();
 
                 ColorGradingModel.Settings settings = _colorGradingModel.settings;
 
                 if (ModProperties.Instance.ActiveProfile.ColorGradingEnabled)
                 {
-                    vanillaToneMapping.enabled = ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled;
-                    vanillaColorCorrectionLut.enabled = ModProperties.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled;
+                    if (vanillaToneMapping != null)
+                    {
+                        vanillaToneMapping.enabled = ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled;
+                    }
+                    if (vanillaColorCorrectionLut != null)
+                    {
+                        vanillaColorCorrectionLut.enabled = ModProperties.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled;
+                    }
                     settings.basic.postExposure = ModProperties.Instance.ActiveProfile.CGPostExposure;
                     settings.basic.temperature = ModProperties.Instance.ActiveProfile.CGTemperature;
                     settings.basic.tint = ModProperties.Instance.ActiveProfile.CGTint;
@@ -425,8 +463,14 @@ namespace RenderIt
                 }
                 else
                 {
-                    vanillaToneMapping.enabled = true;
-                    vanillaColorCorrectionLut.enabled = true;
+                    if (vanillaToneMapping != null)
+                    {
+                        vanillaToneMapping.enabled = true;
+                    }
+                    if (vanillaColorCorrectionLut != null)
+                    {
+                        vanillaColorCorrectionLut.enabled = true;
+                    }
                     _colorGradingModel.enabled = false;
                 }
 
