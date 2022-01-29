@@ -27,6 +27,7 @@ namespace RenderIt.Panels
         private UIButton _profilesRenameButton;
         private UIButton _profilesSaveButton;
 
+        private UILabel _advancedPostProcessingTitle;
         private UILabel _optionsAntiAliasingDropDownLabel;
         private UIDropDown _optionsAntiAliasingDropDown;
         private UICheckBox _optionsAmbientOcclusionCheckBox;
@@ -131,6 +132,18 @@ namespace RenderIt.Panels
         private UILabel _advancedCGNeutralWhiteClipSliderLabel;
         private UILabel _advancedCGNeutralWhiteClipSliderNumeral;
         private UISlider _advancedCGNeutralWhiteClipSlider;
+        private UILabel _advancedCGChannelDropDownLabel;
+        private UIDropDown _advancedCGChannelDropDown;
+        private UILabel _advancedCGChannelRedSliderLabel;
+        private UILabel _advancedCGChannelRedSliderNumeral;
+        private UISlider _advancedCGChannelRedSlider;
+        private UILabel _advancedCGChannelGreenSliderLabel;
+        private UILabel _advancedCGChannelGreenSliderNumeral;
+        private UISlider _advancedCGChannelGreenSlider;
+        private UILabel _advancedCGChannelBlueSliderLabel;
+        private UILabel _advancedCGChannelBlueSliderNumeral;
+        private UISlider _advancedCGChannelBlueSlider;
+
         private UISprite _advancedCGDivider;
 
         public override void Awake()
@@ -153,13 +166,9 @@ namespace RenderIt.Panels
 
             try
             {
-                ModProperties.Instance.PanelDefaultPositionX = 10f;
-                ModProperties.Instance.PanelDefaultPositionY = 75f;
-
                 if (ModConfig.Instance.PanelPositionX == 0f && ModConfig.Instance.PanelPositionY == 0f)
                 {
-                    ModConfig.Instance.PanelPositionX = ModProperties.Instance.PanelDefaultPositionX;
-                    ModConfig.Instance.PanelPositionY = ModProperties.Instance.PanelDefaultPositionY;
+                    ModProperties.Instance.ResetPanelPosition();
                 }
 
                 CreateUI();
@@ -195,464 +204,148 @@ namespace RenderIt.Panels
 
             try
             {
-                if (_title != null)
-                {
-                    Destroy(_title.gameObject);
-                }
-                if (_close != null)
-                {
-                    Destroy(_close.gameObject);
-                }
-                if (_dragHandle != null)
-                {
-                    Destroy(_dragHandle.gameObject);
-                }
-                if (_tabstrip != null)
-                {
-                    Destroy(_tabstrip.gameObject);
-                }
-                if (_tabContainer != null)
-                {
-                    Destroy(_tabContainer.gameObject);
-                }
-                if (_templateButton != null)
-                {
-                    Destroy(_templateButton.gameObject);
-                }
-                if (_profilesDropDownLabel != null)
-                {
-                    Destroy(_profilesDropDownLabel.gameObject);
-                }
-                if (_profilesDropDown != null)
-                {
-                    Destroy(_profilesDropDown.gameObject);
-                }
-                if (_profilesUITextField != null)
-                {
-                    Destroy(_profilesUITextField.gameObject);
-                }
-                if (_profilesButtonsPanel != null)
-                {
-                    Destroy(_profilesButtonsPanel.gameObject);
-                }
-                if (_profilesAddButton != null)
-                {
-                    Destroy(_profilesAddButton.gameObject);
-                }
-                if (_profilesRemoveButton != null)
-                {
-                    Destroy(_profilesRemoveButton.gameObject);
-                }
-                if (_profilesRenameButton != null)
-                {
-                    Destroy(_profilesRenameButton.gameObject);
-                }
-                if (_profilesSaveButton != null)
-                {
-                    Destroy(_profilesSaveButton.gameObject);
-                }
-                if (_optionsAntiAliasingDropDownLabel != null)
-                {
-                    Destroy(_optionsAntiAliasingDropDownLabel.gameObject);
-                }
-                if (_optionsAntiAliasingDropDown != null)
-                {
-                    Destroy(_optionsAntiAliasingDropDown.gameObject);
-                }
-                if (_optionsAmbientOcclusionCheckBox != null)
-                {
-                    Destroy(_optionsAmbientOcclusionCheckBox.gameObject);
-                }
-                if (_optionsBloomCheckBox != null)
-                {
-                    Destroy(_optionsBloomCheckBox.gameObject);
-                }
-                if (_optionsColorGradingCheckBox != null)
-                {
-                    Destroy(_optionsColorGradingCheckBox.gameObject);
-                }
-                if (_advancedScrollablePanel != null)
-                {
-                    Destroy(_advancedScrollablePanel.gameObject);
-                }
-                if (_advancedScrollbar != null)
-                {
-                    Destroy(_advancedScrollbar.gameObject);
-                }
-                if (_advancedScrollbarTrack != null)
-                {
-                    Destroy(_advancedScrollbarTrack.gameObject);
-                }
-                if (_advancedScrollbarThumb != null)
-                {
-                    Destroy(_advancedScrollbarThumb.gameObject);
-                }
-                if (_advancedFXAATitle != null)
-                {
-                    Destroy(_advancedFXAATitle.gameObject);
-                }
-                if (_advancedFXAAQualityDropDownLabel != null)
-                {
-                    Destroy(_advancedFXAAQualityDropDownLabel.gameObject);
-                }
-                if (_advancedFXAAQualityDropDown != null)
-                {
-                    Destroy(_advancedFXAAQualityDropDown.gameObject);
-                }
-                if (_advancedFXAADivider != null)
-                {
-                    Destroy(_advancedFXAADivider.gameObject);
-                }
-                if (_advancedTAATitle != null)
-                {
-                    Destroy(_advancedTAATitle.gameObject);
-                }
-                if (_advancedTAAJitterSpreadSliderLabel != null)
-                {
-                    Destroy(_advancedTAAJitterSpreadSliderLabel.gameObject);
-                }
-                if (_advancedTAAJitterSpreadSliderNumeral != null)
-                {
-                    Destroy(_advancedTAAJitterSpreadSliderNumeral.gameObject);
-                }
-                if (_advancedTAAJitterSpreadSlider != null)
-                {
-                    Destroy(_advancedTAAJitterSpreadSlider.gameObject);
-                }
-                if (_advancedTAASharpenSliderLabel != null)
-                {
-                    Destroy(_advancedTAASharpenSliderLabel.gameObject);
-                }
-                if (_advancedTAASharpenSliderNumeral != null)
-                {
-                    Destroy(_advancedTAASharpenSliderNumeral.gameObject);
-                }
-                if (_advancedTAASharpenSlider != null)
-                {
-                    Destroy(_advancedTAASharpenSlider.gameObject);
-                }
-                if (_advancedTAAStationaryBlendingSliderLabel != null)
-                {
-                    Destroy(_advancedTAAStationaryBlendingSliderLabel.gameObject);
-                }
-                if (_advancedTAAStationaryBlendingSliderNumeral != null)
-                {
-                    Destroy(_advancedTAAStationaryBlendingSliderNumeral.gameObject);
-                }
-                if (_advancedTAAStationaryBlendingSlider != null)
-                {
-                    Destroy(_advancedTAAStationaryBlendingSlider.gameObject);
-                }
-                if (_advancedTAAMotionBlendingSliderLabel != null)
-                {
-                    Destroy(_advancedTAAMotionBlendingSliderLabel.gameObject);
-                }
-                if (_advancedTAAMotionBlendingSliderNumeral != null)
-                {
-                    Destroy(_advancedTAAMotionBlendingSliderNumeral.gameObject);
-                }
-                if (_advancedTAAMotionBlendingSlider != null)
-                {
-                    Destroy(_advancedTAAMotionBlendingSlider.gameObject);
-                }
-                if (_advancedTAADivider != null)
-                {
-                    Destroy(_advancedTAADivider.gameObject);
-                }
-                if (_advancedAOTitle != null)
-                {
-                    Destroy(_advancedAOTitle.gameObject);
-                }
-                if (_advancedAOIntensitySliderLabel != null)
-                {
-                    Destroy(_advancedAOIntensitySliderLabel.gameObject);
-                }
-                if (_advancedAOIntensitySliderNumeral != null)
-                {
-                    Destroy(_advancedAOIntensitySliderNumeral.gameObject);
-                }
-                if (_advancedAOIntensitySlider != null)
-                {
-                    Destroy(_advancedAOIntensitySlider.gameObject);
-                }
-                if (_advancedAORadiusSliderLabel != null)
-                {
-                    Destroy(_advancedAORadiusSliderLabel.gameObject);
-                }
-                if (_advancedAORadiusSliderNumeral != null)
-                {
-                    Destroy(_advancedAORadiusSliderNumeral.gameObject);
-                }
-                if (_advancedAORadiusSlider != null)
-                {
-                    Destroy(_advancedAORadiusSlider.gameObject);
-                }
-                if (_advancedAOSampleCountDropDownLabel != null)
-                {
-                    Destroy(_advancedAOSampleCountDropDownLabel.gameObject);
-                }
-                if (_advancedAOSampleCountDropDown != null)
-                {
-                    Destroy(_advancedAOSampleCountDropDown.gameObject);
-                }
-                if (_advancedAODownsamplingCheckBox != null)
-                {
-                    Destroy(_advancedAODownsamplingCheckBox.gameObject);
-                }
-                if (_advancedAOForceForwardCompatibilityCheckBox != null)
-                {
-                    Destroy(_advancedAOForceForwardCompatibilityCheckBox.gameObject);
-                }
-                if (_advancedAOAmbientOnlyCheckBox != null)
-                {
-                    Destroy(_advancedAOAmbientOnlyCheckBox.gameObject);
-                }
-                if (_advancedAOHighPrecisionCheckBox != null)
-                {
-                    Destroy(_advancedAOHighPrecisionCheckBox.gameObject);
-                }
-                if (_advancedAODivider != null)
-                {
-                    Destroy(_advancedAODivider.gameObject);
-                }
-                if (_advancedBloomTitle != null)
-                {
-                    Destroy(_advancedBloomTitle.gameObject);
-                }
-                if (_advancedBloomVanillaBloomCheckBox != null)
-                {
-                    Destroy(_advancedBloomVanillaBloomCheckBox.gameObject);
-                }
-                if (_advancedBloomIntensitySliderLabel != null)
-                {
-                    Destroy(_advancedBloomIntensitySliderLabel.gameObject);
-                }
-                if (_advancedBloomIntensitySliderNumeral != null)
-                {
-                    Destroy(_advancedBloomIntensitySliderNumeral.gameObject);
-                }
-                if (_advancedBloomIntensitySlider != null)
-                {
-                    Destroy(_advancedBloomIntensitySlider.gameObject);
-                }
-                if (_advancedBloomThresholdSliderLabel != null)
-                {
-                    Destroy(_advancedBloomThresholdSliderLabel.gameObject);
-                }
-                if (_advancedBloomThresholdSliderNumeral != null)
-                {
-                    Destroy(_advancedBloomThresholdSliderNumeral.gameObject);
-                }
-                if (_advancedBloomThresholdSlider != null)
-                {
-                    Destroy(_advancedBloomThresholdSlider.gameObject);
-                }
-                if (_advancedBloomSoftKneeSliderLabel != null)
-                {
-                    Destroy(_advancedBloomSoftKneeSliderLabel.gameObject);
-                }
-                if (_advancedBloomSoftKneeSliderNumeral != null)
-                {
-                    Destroy(_advancedBloomSoftKneeSliderNumeral.gameObject);
-                }
-                if (_advancedBloomSoftKneeSlider != null)
-                {
-                    Destroy(_advancedBloomSoftKneeSlider.gameObject);
-                }
-                if (_advancedBloomRadiusSliderLabel != null)
-                {
-                    Destroy(_advancedBloomRadiusSliderLabel.gameObject);
-                }
-                if (_advancedBloomRadiusSliderNumeral != null)
-                {
-                    Destroy(_advancedBloomRadiusSliderNumeral.gameObject);
-                }
-                if (_advancedBloomRadiusSlider != null)
-                {
-                    Destroy(_advancedBloomRadiusSlider.gameObject);
-                }
-                if (_advancedBloomAntiFlickerCheckBox != null)
-                {
-                    Destroy(_advancedBloomAntiFlickerCheckBox.gameObject);
-                }
-                if (_advancedBloomDivider != null)
-                {
-                    Destroy(_advancedBloomDivider.gameObject);
-                }
-                if (_advancedCGTitle != null)
-                {
-                    Destroy(_advancedCGTitle.gameObject);
-                }
-                if (_advancedCGVanillaTonemappingCheckBox != null)
-                {
-                    Destroy(_advancedCGVanillaTonemappingCheckBox.gameObject);
-                }
-                if (_advancedCGVanillaColorCorrectionLUTCheckBox != null)
-                {
-                    Destroy(_advancedCGVanillaColorCorrectionLUTCheckBox.gameObject);
-                }
-                if (_advancedCGPostExposureSliderLabel != null)
-                {
-                    Destroy(_advancedCGPostExposureSliderLabel.gameObject);
-                }
-                if (_advancedCGPostExposureSliderNumeral != null)
-                {
-                    Destroy(_advancedCGPostExposureSliderNumeral.gameObject);
-                }
-                if (_advancedCGPostExposureSlider != null)
-                {
-                    Destroy(_advancedCGPostExposureSlider.gameObject);
-                }
-                if (_advancedCGTemperatureSliderLabel != null)
-                {
-                    Destroy(_advancedCGTemperatureSliderLabel.gameObject);
-                }
-                if (_advancedCGTemperatureSliderNumeral != null)
-                {
-                    Destroy(_advancedCGTemperatureSliderNumeral.gameObject);
-                }
-                if (_advancedCGTemperatureSlider != null)
-                {
-                    Destroy(_advancedCGTemperatureSlider.gameObject);
-                }
-                if (_advancedCGTintSliderLabel != null)
-                {
-                    Destroy(_advancedCGTintSliderLabel.gameObject);
-                }
-                if (_advancedCGTintSliderNumeral != null)
-                {
-                    Destroy(_advancedCGTintSliderNumeral.gameObject);
-                }
-                if (_advancedCGTintSlider != null)
-                {
-                    Destroy(_advancedCGTintSlider.gameObject);
-                }
-                if (_advancedCGHueShiftSliderLabel != null)
-                {
-                    Destroy(_advancedCGHueShiftSliderLabel.gameObject);
-                }
-                if (_advancedCGHueShiftSliderNumeral != null)
-                {
-                    Destroy(_advancedCGHueShiftSliderNumeral.gameObject);
-                }
-                if (_advancedCGHueShiftSlider != null)
-                {
-                    Destroy(_advancedCGHueShiftSlider.gameObject);
-                }
-                if (_advancedCGSaturationSliderLabel != null)
-                {
-                    Destroy(_advancedCGSaturationSliderLabel.gameObject);
-                }
-                if (_advancedCGSaturationSliderNumeral != null)
-                {
-                    Destroy(_advancedCGSaturationSliderNumeral.gameObject);
-                }
-                if (_advancedCGSaturationSlider != null)
-                {
-                    Destroy(_advancedCGSaturationSlider.gameObject);
-                }
-                if (_advancedCGContrastSliderLabel != null)
-                {
-                    Destroy(_advancedCGContrastSliderLabel.gameObject);
-                }
-                if (_advancedCGContrastSliderNumeral != null)
-                {
-                    Destroy(_advancedCGContrastSliderNumeral.gameObject);
-                }
-                if (_advancedCGContrastSlider != null)
-                {
-                    Destroy(_advancedCGContrastSlider.gameObject);
-                }
-                if (_advancedCGTonemapperDropDownLabel != null)
-                {
-                    Destroy(_advancedCGTonemapperDropDownLabel.gameObject);
-                }
-                if (_advancedCGTonemapperDropDown != null)
-                {
-                    Destroy(_advancedCGTonemapperDropDown.gameObject);
-                }
-                if (_advancedCGNeutralBlackInSliderLabel != null)
-                {
-                    Destroy(_advancedCGNeutralBlackInSliderLabel.gameObject);
-                }
-                if (_advancedCGNeutralBlackInSliderNumeral != null)
-                {
-                    Destroy(_advancedCGNeutralBlackInSliderNumeral.gameObject);
-                }
-                if (_advancedCGNeutralBlackInSlider != null)
-                {
-                    Destroy(_advancedCGNeutralBlackInSlider.gameObject);
-                }
-                if (_advancedCGNeutralWhiteInSliderLabel != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteInSliderLabel.gameObject);
-                }
-                if (_advancedCGNeutralWhiteInSliderNumeral != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteInSliderNumeral.gameObject);
-                }
-                if (_advancedCGNeutralWhiteInSlider != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteInSlider.gameObject);
-                }
-                if (_advancedCGNeutralBlackOutSliderLabel != null)
-                {
-                    Destroy(_advancedCGNeutralBlackOutSliderLabel.gameObject);
-                }
-                if (_advancedCGNeutralBlackOutSliderNumeral != null)
-                {
-                    Destroy(_advancedCGNeutralBlackOutSliderNumeral.gameObject);
-                }
-                if (_advancedCGNeutralBlackOutSlider != null)
-                {
-                    Destroy(_advancedCGNeutralBlackOutSlider.gameObject);
-                }
-                if (_advancedCGNeutralWhiteOutSliderLabel != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteOutSliderLabel.gameObject);
-                }
-                if (_advancedCGNeutralWhiteOutSliderNumeral != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteOutSliderNumeral.gameObject);
-                }
-                if (_advancedCGNeutralWhiteOutSlider != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteOutSlider.gameObject);
-                }
-                if (_advancedCGNeutralWhiteLevelSliderLabel != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteLevelSliderLabel.gameObject);
-                }
-                if (_advancedCGNeutralWhiteLevelSliderNumeral != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteLevelSliderNumeral.gameObject);
-                }
-                if (_advancedCGNeutralWhiteLevelSlider != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteLevelSlider.gameObject);
-                }
-                if (_advancedCGNeutralWhiteClipSliderLabel != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteClipSliderLabel.gameObject);
-                }
-                if (_advancedCGNeutralWhiteClipSliderNumeral != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteClipSliderNumeral.gameObject);
-                }
-                if (_advancedCGNeutralWhiteClipSlider != null)
-                {
-                    Destroy(_advancedCGNeutralWhiteClipSlider.gameObject);
-                }
-                if (_advancedCGDivider != null)
-                {
-                    Destroy(_advancedCGDivider.gameObject);
-                }
+                DestroyGameObject(_title);
+                DestroyGameObject(_close);
+                DestroyGameObject(_dragHandle);
+                DestroyGameObject(_tabstrip);
+                DestroyGameObject(_tabContainer);
+                DestroyGameObject(_templateButton);
+                DestroyGameObject(_profilesDropDownLabel);
+                DestroyGameObject(_profilesDropDown);
+                DestroyGameObject(_profilesUITextField);
+                DestroyGameObject(_profilesButtonsPanel);
+                DestroyGameObject(_profilesAddButton);
+                DestroyGameObject(_profilesRemoveButton);
+                DestroyGameObject(_profilesRenameButton);
+                DestroyGameObject(_profilesSaveButton);
+                DestroyGameObject(_advancedPostProcessingTitle);
+                DestroyGameObject(_optionsAntiAliasingDropDownLabel);
+                DestroyGameObject(_optionsAntiAliasingDropDown);
+                DestroyGameObject(_optionsAmbientOcclusionCheckBox);
+                DestroyGameObject(_optionsBloomCheckBox);
+                DestroyGameObject(_optionsColorGradingCheckBox);
+                DestroyGameObject(_advancedScrollablePanel);
+                DestroyGameObject(_advancedScrollbar);
+                DestroyGameObject(_advancedScrollbarTrack);
+                DestroyGameObject(_advancedScrollbarThumb);
+                DestroyGameObject(_advancedFXAATitle);
+                DestroyGameObject(_advancedFXAAQualityDropDownLabel);
+                DestroyGameObject(_advancedFXAAQualityDropDown);
+                DestroyGameObject(_advancedFXAADivider);
+                DestroyGameObject(_advancedTAATitle);
+                DestroyGameObject(_advancedTAAJitterSpreadSliderLabel);
+                DestroyGameObject(_advancedTAAJitterSpreadSliderNumeral);
+                DestroyGameObject(_advancedTAAJitterSpreadSlider);
+                DestroyGameObject(_advancedTAASharpenSliderLabel);
+                DestroyGameObject(_advancedTAASharpenSliderNumeral);
+                DestroyGameObject(_advancedTAASharpenSlider);
+                DestroyGameObject(_advancedTAAStationaryBlendingSliderLabel);
+                DestroyGameObject(_advancedTAAStationaryBlendingSliderNumeral);
+                DestroyGameObject(_advancedTAAStationaryBlendingSlider);
+                DestroyGameObject(_advancedTAAMotionBlendingSliderLabel);
+                DestroyGameObject(_advancedTAAMotionBlendingSliderNumeral);
+                DestroyGameObject(_advancedTAAMotionBlendingSlider);
+                DestroyGameObject(_advancedTAADivider);
+                DestroyGameObject(_advancedAOTitle);
+                DestroyGameObject(_advancedAOIntensitySliderLabel);
+                DestroyGameObject(_advancedAOIntensitySliderNumeral);
+                DestroyGameObject(_advancedAOIntensitySlider);
+                DestroyGameObject(_advancedAORadiusSliderLabel);
+                DestroyGameObject(_advancedAORadiusSliderNumeral);
+                DestroyGameObject(_advancedAORadiusSlider);
+                DestroyGameObject(_advancedAOSampleCountDropDownLabel);
+                DestroyGameObject(_advancedAOSampleCountDropDown);
+                DestroyGameObject(_advancedAODownsamplingCheckBox);
+                DestroyGameObject(_advancedAOForceForwardCompatibilityCheckBox);
+                DestroyGameObject(_advancedAOAmbientOnlyCheckBox);
+                DestroyGameObject(_advancedAOHighPrecisionCheckBox);
+                DestroyGameObject(_advancedAODivider);
+                DestroyGameObject(_advancedBloomTitle);
+                DestroyGameObject(_advancedBloomVanillaBloomCheckBox);
+                DestroyGameObject(_advancedBloomIntensitySliderLabel);
+                DestroyGameObject(_advancedBloomIntensitySliderNumeral);
+                DestroyGameObject(_advancedBloomIntensitySlider);
+                DestroyGameObject(_advancedBloomThresholdSliderLabel);
+                DestroyGameObject(_advancedBloomThresholdSliderNumeral);
+                DestroyGameObject(_advancedBloomThresholdSlider);
+                DestroyGameObject(_advancedBloomSoftKneeSliderLabel);
+                DestroyGameObject(_advancedBloomSoftKneeSliderNumeral);
+                DestroyGameObject(_advancedBloomSoftKneeSlider);
+                DestroyGameObject(_advancedBloomRadiusSliderLabel);
+                DestroyGameObject(_advancedBloomRadiusSliderNumeral);
+                DestroyGameObject(_advancedBloomRadiusSlider);
+                DestroyGameObject(_advancedBloomAntiFlickerCheckBox);
+                DestroyGameObject(_advancedBloomDivider);
+                DestroyGameObject(_advancedCGTitle);
+                DestroyGameObject(_advancedCGVanillaTonemappingCheckBox);
+                DestroyGameObject(_advancedCGVanillaColorCorrectionLUTCheckBox);
+                DestroyGameObject(_advancedCGVanillaColorCorrectionLUTCheckBox);
+                DestroyGameObject(_advancedCGPostExposureSliderLabel);
+                DestroyGameObject(_advancedCGPostExposureSliderNumeral);
+                DestroyGameObject(_advancedCGPostExposureSlider);
+                DestroyGameObject(_advancedCGTemperatureSliderLabel);
+                DestroyGameObject(_advancedCGTemperatureSliderNumeral);
+                DestroyGameObject(_advancedCGTemperatureSlider);
+                DestroyGameObject(_advancedCGTintSliderLabel);
+                DestroyGameObject(_advancedCGTintSliderNumeral);
+                DestroyGameObject(_advancedCGTintSlider);
+                DestroyGameObject(_advancedCGHueShiftSliderLabel);
+                DestroyGameObject(_advancedCGHueShiftSliderNumeral);
+                DestroyGameObject(_advancedCGHueShiftSlider);
+                DestroyGameObject(_advancedCGSaturationSliderLabel);
+                DestroyGameObject(_advancedCGSaturationSliderNumeral);
+                DestroyGameObject(_advancedCGSaturationSlider);
+                DestroyGameObject(_advancedCGContrastSliderLabel);
+                DestroyGameObject(_advancedCGContrastSliderNumeral);
+                DestroyGameObject(_advancedCGContrastSlider);
+                DestroyGameObject(_advancedCGTonemapperDropDownLabel);
+                DestroyGameObject(_advancedCGTonemapperDropDown);
+                DestroyGameObject(_advancedCGNeutralBlackInSliderLabel);
+                DestroyGameObject(_advancedCGNeutralBlackInSliderNumeral);
+                DestroyGameObject(_advancedCGNeutralBlackInSlider);
+                DestroyGameObject(_advancedCGNeutralWhiteInSliderLabel);
+                DestroyGameObject(_advancedCGNeutralWhiteInSliderNumeral);
+                DestroyGameObject(_advancedCGNeutralWhiteInSlider);
+                DestroyGameObject(_advancedCGNeutralBlackOutSliderLabel);
+                DestroyGameObject(_advancedCGNeutralBlackOutSliderNumeral);
+                DestroyGameObject(_advancedCGNeutralBlackOutSlider);
+                DestroyGameObject(_advancedCGNeutralWhiteOutSliderLabel);
+                DestroyGameObject(_advancedCGNeutralWhiteOutSliderNumeral);
+                DestroyGameObject(_advancedCGNeutralWhiteOutSlider);
+                DestroyGameObject(_advancedCGNeutralWhiteLevelSliderLabel);
+                DestroyGameObject(_advancedCGNeutralWhiteLevelSliderNumeral);
+                DestroyGameObject(_advancedCGNeutralWhiteLevelSlider);
+                DestroyGameObject(_advancedCGNeutralWhiteClipSliderLabel);
+                DestroyGameObject(_advancedCGNeutralWhiteClipSliderNumeral);
+                DestroyGameObject(_advancedCGNeutralWhiteClipSlider);
+                DestroyGameObject(_advancedCGChannelDropDownLabel);
+                DestroyGameObject(_advancedCGChannelDropDown);
+                DestroyGameObject(_advancedCGChannelRedSliderLabel);
+                DestroyGameObject(_advancedCGChannelRedSliderNumeral);
+                DestroyGameObject(_advancedCGChannelRedSlider);
+                DestroyGameObject(_advancedCGChannelGreenSliderLabel);
+                DestroyGameObject(_advancedCGChannelGreenSliderNumeral);
+                DestroyGameObject(_advancedCGChannelGreenSlider);
+                DestroyGameObject(_advancedCGChannelBlueSliderLabel);
+                DestroyGameObject(_advancedCGChannelBlueSliderNumeral);
+                DestroyGameObject(_advancedCGChannelBlueSlider);
+
+                DestroyGameObject(_advancedCGDivider);
             }
             catch (Exception e)
             {
                 Debug.Log("[Render It!] MainPanel:OnDestroy -> Exception: " + e.Message);
             }
         }
+
+        private void DestroyGameObject(UIComponent component)
+        {
+            if (component != null)
+            {
+                Destroy(component.gameObject);
+            }
+        }
+
         public void ForceUpdateUI()
         {
             UpdateUI();
@@ -747,8 +440,6 @@ namespace RenderIt.Panels
                             _profilesUITextField.isVisible = false;
 
                             ModConfig.Instance.Profiles[_profilesDropDown.selectedIndex].Name = value;
-
-                            Debug.Log("[Render It!] ActiveProfile -> Name: " + ModProperties.Instance.ActiveProfile.Name);
 
                             _profilesDropDown.items.SetValue(value, _profilesDropDown.selectedIndex);
 
@@ -860,6 +551,9 @@ namespace RenderIt.Panels
                     panel.autoLayoutPadding.right = 0;
                     panel.autoLayoutPadding.top = 0;
                     panel.autoLayoutPadding.bottom = 10;
+
+                    _advancedPostProcessingTitle = UIUtils.CreateTitle(panel, "AdvancedPostProcessingTitle", "Post-Processing");
+                    _advancedPostProcessingTitle.tooltip = "Post-processing is the process of applying full-screen filters and effects to a camera's image buffer before it is displayed to screen";
 
                     _optionsAntiAliasingDropDownLabel = UIUtils.CreateLabel(panel, "OptionsAntiAliasingDropDownLabel", "Anti-aliasing Technique");
                     _optionsAntiAliasingDropDownLabel.tooltip = "The Anti-aliasing techniques offers a set of algorithms designed to prevent aliasing and give a smoother appearance to graphics.\n\nFor anti-aliasing, the game uses the default Enhanced Subpixel Morphological Anti-Aliasing (SMAA) technique\nbut this can be improved with either Fast Approximate Anti-Aliasing (FXAA) or Temporal Anti-Aliasing (TAA) techniques.";
@@ -1064,7 +758,7 @@ namespace RenderIt.Panels
                     _advancedTAASharpenSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAASharpenSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAASharpenSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAASharpenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAASharpenSliderSlider", 0f, 3f, 0.03f, ModProperties.Instance.ActiveProfile.TAASharpen);
+                    _advancedTAASharpenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAASharpenSlider", 0f, 3f, 0.03f, ModProperties.Instance.ActiveProfile.TAASharpen);
                     _advancedTAASharpenSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAASharpenSliderNumeral.text = value.ToString();
@@ -1236,7 +930,7 @@ namespace RenderIt.Panels
                     _advancedBloomThresholdSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomThresholdSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomThresholdSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomThresholdSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomThresholdSlider", 0f, 2.2f, 0.02f, ModProperties.Instance.ActiveProfile.BloomThreshold);
+                    _advancedBloomThresholdSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomThresholdSlider", 0f, 10f, 0.1f, ModProperties.Instance.ActiveProfile.BloomThreshold);
                     _advancedBloomThresholdSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomThresholdSliderNumeral.text = value.ToString();
@@ -1506,12 +1200,7 @@ namespace RenderIt.Panels
 
                     _advancedCGTonemapperDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGTonemapperDropDown");
                     _advancedCGTonemapperDropDown.items = ModInvariables.CGTonemapper;
-                    _advancedCGTonemapperDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.CGTonemapper;
-                    _advancedCGTonemapperDropDown.eventSelectedIndexChanged += (component, value) =>
-                    {
-                        ModProperties.Instance.ActiveProfile.CGTonemapper = value;
-                        ModConfig.Instance.Apply();
-                    };
+                    
 
                     _advancedCGNeutralBlackInSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralBlackInSliderLabel", "Neutral Black In");
                     _advancedCGNeutralBlackInSliderLabel.tooltip = "Inner control point for the black point when using neutral tonemapper";
@@ -1674,6 +1363,256 @@ namespace RenderIt.Panels
                             ModConfig.Instance.Apply();
                         }
                     };
+
+                    _advancedCGChannelDropDownLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGChannelDropDownLabel", "Channel");
+                    _advancedCGChannelDropDownLabel.tooltip = "The Channel Mixer is used to modify the influence of each input color channel (RGB) on the overall mix of the output channel";
+
+                    _advancedCGChannelDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGChannelDropDown");
+                    _advancedCGChannelDropDown.items = ModInvariables.CGChannel;
+
+                    _advancedCGChannelRedSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGChannelRedSliderLabel", "Red");
+
+                    _advancedCGChannelRedSliderNumeral = UIUtils.CreateLabel(_advancedCGChannelRedSliderLabel, "AdvancedCGChannelRedSliderNumeral", "");
+                    _advancedCGChannelRedSliderNumeral.width = 100f;
+                    _advancedCGChannelRedSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _advancedCGChannelRedSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelRedSliderNumeral.width - 10f, 0f);
+
+                    _advancedCGChannelRedSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelRedSlider", 0f, 1f, 0.01f, 0f);
+                    _advancedCGChannelRedSlider.eventValueChanged += (component, value) =>
+                    {
+                        _advancedCGChannelRedSliderNumeral.text = value.ToString();
+
+                        switch (_advancedCGChannelDropDown.selectedIndex)
+                        {
+                            case 0:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed = value;
+                                break;
+                            case 1:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed = value;
+                                break;
+                            case 2:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed = value;
+                                break;
+                        }
+
+                        ModConfig.Instance.Apply();
+                    };
+                    _advancedCGChannelRedSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            switch (_advancedCGChannelDropDown.selectedIndex)
+                            {
+                                case 0:
+                                    _advancedCGChannelRedSlider.value = 1f;
+                                    _advancedCGChannelRedSliderNumeral.text = _advancedCGChannelRedSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed = _advancedCGChannelRedSlider.value;
+                                    break;
+                                case 1:
+                                    _advancedCGChannelRedSlider.value = 0f;
+                                    _advancedCGChannelRedSliderNumeral.text = _advancedCGChannelRedSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed = _advancedCGChannelRedSlider.value;
+                                    break;
+                                case 2:
+                                    _advancedCGChannelRedSlider.value = 0f;
+                                    _advancedCGChannelRedSliderNumeral.text = _advancedCGChannelRedSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed = _advancedCGChannelRedSlider.value;
+                                    break;
+                            }
+
+                            ModConfig.Instance.Apply();
+                        }
+                    };
+
+                    _advancedCGChannelGreenSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGChannelGreenSliderLabel", "Green");
+
+                    _advancedCGChannelGreenSliderNumeral = UIUtils.CreateLabel(_advancedCGChannelGreenSliderLabel, "AdvancedCGChannelGreenSliderNumeral", "");
+                    _advancedCGChannelGreenSliderNumeral.width = 100f;
+                    _advancedCGChannelGreenSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _advancedCGChannelGreenSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelGreenSliderNumeral.width - 10f, 0f);
+
+                    _advancedCGChannelGreenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelGreenSlider", 0f, 1f, 0.01f, 0f);
+                    _advancedCGChannelGreenSlider.eventValueChanged += (component, value) =>
+                    {
+                        _advancedCGChannelGreenSliderNumeral.text = value.ToString();
+
+                        switch (_advancedCGChannelDropDown.selectedIndex)
+                        {
+                            case 0:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen = value;
+                                break;
+                            case 1:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen = value;
+                                break;
+                            case 2:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen = value;
+                                break;
+                        }
+
+                        ModConfig.Instance.Apply();
+                    };
+                    _advancedCGChannelGreenSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            switch (_advancedCGChannelDropDown.selectedIndex)
+                            {
+                                case 0:
+                                    _advancedCGChannelGreenSlider.value = 0f;
+                                    _advancedCGChannelGreenSliderNumeral.text = _advancedCGChannelGreenSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen = _advancedCGChannelGreenSlider.value;
+                                    break;
+                                case 1:
+                                    _advancedCGChannelGreenSlider.value = 1f;
+                                    _advancedCGChannelGreenSliderNumeral.text = _advancedCGChannelGreenSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen = _advancedCGChannelGreenSlider.value;
+                                    break;
+                                case 2:
+                                    _advancedCGChannelGreenSlider.value = 0f;
+                                    _advancedCGChannelGreenSliderNumeral.text = _advancedCGChannelGreenSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen = _advancedCGChannelGreenSlider.value;
+                                    break;
+                            }
+
+                            ModConfig.Instance.Apply();
+                        }
+                    };
+
+                    _advancedCGChannelBlueSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGChannelBlueSliderLabel", "Blue");
+
+                    _advancedCGChannelBlueSliderNumeral = UIUtils.CreateLabel(_advancedCGChannelBlueSliderLabel, "AdvancedCGChannelBlueSliderNumeral", "");
+                    _advancedCGChannelBlueSliderNumeral.width = 100f;
+                    _advancedCGChannelBlueSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _advancedCGChannelBlueSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelBlueSliderNumeral.width - 10f, 0f);
+
+                    _advancedCGChannelBlueSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelBlueSlider", 0f, 1f, 0.01f, 0f);
+                    _advancedCGChannelBlueSlider.eventValueChanged += (component, value) =>
+                    {
+                        _advancedCGChannelBlueSliderNumeral.text = value.ToString();
+
+                        switch (_advancedCGChannelDropDown.selectedIndex)
+                        {
+                            case 0:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue = value;
+                                break;
+                            case 1:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue = value;
+                                break;
+                            case 2:
+                                ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue = value;
+                                break;
+                        }
+
+                        ModConfig.Instance.Apply();
+                    };
+                    _advancedCGChannelBlueSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            switch (_advancedCGChannelDropDown.selectedIndex)
+                            {
+                                case 0:
+                                    _advancedCGChannelBlueSlider.value = 0f;
+                                    _advancedCGChannelBlueSliderNumeral.text = _advancedCGChannelBlueSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue = _advancedCGChannelBlueSlider.value;
+                                    break;
+                                case 1:
+                                    _advancedCGChannelBlueSlider.value = 0f;
+                                    _advancedCGChannelBlueSliderNumeral.text = _advancedCGChannelBlueSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue = _advancedCGChannelBlueSlider.value;
+                                    break;
+                                case 2:
+                                    _advancedCGChannelBlueSlider.value = 1f;
+                                    _advancedCGChannelBlueSliderNumeral.text = _advancedCGChannelBlueSlider.value.ToString();
+                                    ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue = _advancedCGChannelBlueSlider.value;
+                                    break;
+                            }
+
+                            ModConfig.Instance.Apply();
+                        }
+                    };
+
+                    _advancedCGTonemapperDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        ModProperties.Instance.ActiveProfile.CGTonemapper = value;
+                        ModConfig.Instance.Apply();
+
+                        if (value == 2)
+                        {
+                            _advancedCGNeutralBlackInSliderLabel.isVisible = true;
+                            _advancedCGNeutralBlackInSliderNumeral.isVisible = true;
+                            _advancedCGNeutralBlackInSlider.isVisible = true;
+                            _advancedCGNeutralWhiteInSliderLabel.isVisible = true;
+                            _advancedCGNeutralWhiteInSliderNumeral.isVisible = true;
+                            _advancedCGNeutralWhiteInSlider.isVisible = true;
+                            _advancedCGNeutralBlackOutSliderLabel.isVisible = true;
+                            _advancedCGNeutralBlackOutSliderNumeral.isVisible = true;
+                            _advancedCGNeutralBlackOutSlider.isVisible = true;
+                            _advancedCGNeutralWhiteOutSliderLabel.isVisible = true;
+                            _advancedCGNeutralWhiteOutSliderNumeral.isVisible = true;
+                            _advancedCGNeutralWhiteOutSlider.isVisible = true;
+                            _advancedCGNeutralWhiteLevelSliderLabel.isVisible = true;
+                            _advancedCGNeutralWhiteLevelSliderNumeral.isVisible = true;
+                            _advancedCGNeutralWhiteLevelSlider.isVisible = true;
+                            _advancedCGNeutralWhiteClipSliderLabel.isVisible = true;
+                            _advancedCGNeutralWhiteClipSliderNumeral.isVisible = true;
+                            _advancedCGNeutralWhiteClipSlider.isVisible = true;
+                        }
+                        else
+                        {
+                            _advancedCGNeutralBlackInSliderLabel.isVisible = false;
+                            _advancedCGNeutralBlackInSliderNumeral.isVisible = false;
+                            _advancedCGNeutralBlackInSlider.isVisible = false;
+                            _advancedCGNeutralWhiteInSliderLabel.isVisible = false;
+                            _advancedCGNeutralWhiteInSliderNumeral.isVisible = false;
+                            _advancedCGNeutralWhiteInSlider.isVisible = false;
+                            _advancedCGNeutralBlackOutSliderLabel.isVisible = false;
+                            _advancedCGNeutralBlackOutSliderNumeral.isVisible = false;
+                            _advancedCGNeutralBlackOutSlider.isVisible = false;
+                            _advancedCGNeutralWhiteOutSliderLabel.isVisible = false;
+                            _advancedCGNeutralWhiteOutSliderNumeral.isVisible = false;
+                            _advancedCGNeutralWhiteOutSlider.isVisible = false;
+                            _advancedCGNeutralWhiteLevelSliderLabel.isVisible = false;
+                            _advancedCGNeutralWhiteLevelSliderNumeral.isVisible = false;
+                            _advancedCGNeutralWhiteLevelSlider.isVisible = false;
+                            _advancedCGNeutralWhiteClipSliderLabel.isVisible = false;
+                            _advancedCGNeutralWhiteClipSliderNumeral.isVisible = false;
+                            _advancedCGNeutralWhiteClipSlider.isVisible = false;
+                        }
+                    };
+                    _advancedCGTonemapperDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.CGTonemapper;
+
+                    _advancedCGChannelDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        switch (value)
+                        {
+                            case 0:
+                                _advancedCGChannelRedSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed.ToString();
+                                _advancedCGChannelGreenSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen.ToString();
+                                _advancedCGChannelBlueSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue.ToString();
+                                _advancedCGChannelRedSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed;
+                                _advancedCGChannelGreenSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen;
+                                _advancedCGChannelBlueSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue;
+                                break;
+                            case 1:
+                                _advancedCGChannelRedSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed.ToString();
+                                _advancedCGChannelGreenSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen.ToString();
+                                _advancedCGChannelBlueSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue.ToString();
+                                _advancedCGChannelRedSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed;
+                                _advancedCGChannelGreenSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen;
+                                _advancedCGChannelBlueSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue;
+                                break;
+                            case 2:
+                                _advancedCGChannelRedSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed.ToString();
+                                _advancedCGChannelGreenSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen.ToString();
+                                _advancedCGChannelBlueSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue.ToString();
+                                _advancedCGChannelRedSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed;
+                                _advancedCGChannelGreenSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen;
+                                _advancedCGChannelBlueSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue;
+                                break;
+                        }
+                    };
+                    _advancedCGChannelDropDown.selectedIndex = 0;
 
                     _advancedCGDivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedCGDivider");
                 }

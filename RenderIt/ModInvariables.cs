@@ -33,5 +33,12 @@
             "ACES",
             "Neutral"
         };
+
+        public static readonly string[] CGChannel =
+        {
+            "Red",
+            "Green",
+            "Blue"
+        };
     }
 }

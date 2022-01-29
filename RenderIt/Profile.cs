@@ -41,6 +41,15 @@
         public float CGNeutralWhiteOut { get; set; } = 10f;
         public float CGNeutralWhiteLevel { get; set; } = 5.3f;
         public float CGNeutralWhiteClip { get; set; } = 10f;
+        public float CGChannelMixerRedRed { get; set; } = 1f;
+        public float CGChannelMixerRedGreen { get; set; } = 0f;
+        public float CGChannelMixerRedBlue { get; set; } = 0f;
+        public float CGChannelMixerGreenRed { get; set; } = 0f;
+        public float CGChannelMixerGreenGreen { get; set; } = 1f;
+        public float CGChannelMixerGreenBlue { get; set; } = 0f;
+        public float CGChannelMixerBlueRed { get; set; } = 0f;
+        public float CGChannelMixerBlueGreen { get; set; } = 0f;
+        public float CGChannelMixerBlueBlue { get; set; } = 1f;
 
         public Profile()
         {

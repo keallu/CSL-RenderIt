@@ -1,14 +1,11 @@
-﻿using System;
+﻿using ColossalFramework.UI;
+using System;
 using UnityEngine;
 
 namespace RenderIt
 {
     public class ModProperties
     {
-        public float ButtonDefaultPositionX { get; set; }
-        public float ButtonDefaultPositionY { get; set; }
-        public float PanelDefaultPositionX { get; set; }
-        public float PanelDefaultPositionY { get; set; }
         public AssetBundle AssetBundle { get; set; }
         public Profile ActiveProfile { get; set; }
 
@@ -26,8 +23,10 @@ namespace RenderIt
         {
             try
             {
-                ModConfig.Instance.ButtonPositionX = ButtonDefaultPositionX;
-                ModConfig.Instance.ButtonPositionY = ButtonDefaultPositionY;
+                int modCollectionButtonPosition = 2;
+
+                ModConfig.Instance.ButtonPositionX = 10f;
+                ModConfig.Instance.ButtonPositionY = UIView.GetAView().GetScreenResolution().y * 0.875f - (modCollectionButtonPosition * 36f) - 5f;
                 ModConfig.Instance.Save();
             }
             catch (Exception e)
@@ -40,8 +39,8 @@ namespace RenderIt
         {
             try
             {
-                ModConfig.Instance.PanelPositionX = PanelDefaultPositionX;
-                ModConfig.Instance.PanelPositionY = PanelDefaultPositionY;
+                ModConfig.Instance.PanelPositionX = 10f;
+                ModConfig.Instance.PanelPositionY = UIView.GetAView().GetScreenResolution().y / 6f;
                 ModConfig.Instance.Save();
             }
             catch (Exception e)

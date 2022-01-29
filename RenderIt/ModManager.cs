@@ -11,7 +11,6 @@ namespace RenderIt
     {
         private bool _initialized;
         private Camera _camera;
-        private UIMultiStateButton _zoomButton;
 
         private UITextureAtlas _renderItAtlas;
         private UIPanel _buttonPanel;
@@ -46,26 +45,14 @@ namespace RenderIt
                     _camera = Camera.main;
                 }
 
-                if (_zoomButton == null)
-                {
-                    _zoomButton = GameObject.Find("ZoomButton")?.GetComponent<UIMultiStateButton>();
-                }
-
                 if (_mainPanel == null)
                 {
                     _mainPanel = GameObject.Find("RenderItMainPanel")?.GetComponent<MainPanel>();
                 }
 
-                if (_zoomButton != null)
-                {
-                    ModProperties.Instance.ButtonDefaultPositionX = _zoomButton.absolutePosition.x;
-                    ModProperties.Instance.ButtonDefaultPositionY = _zoomButton.absolutePosition.y - (2 * 36f) - 5f;
-                }
-
                 if (ModConfig.Instance.ButtonPositionX == 0f && ModConfig.Instance.ButtonPositionY == 0f)
                 {
-                    ModConfig.Instance.ButtonPositionX = ModProperties.Instance.ButtonDefaultPositionX;
-                    ModConfig.Instance.ButtonPositionY = ModProperties.Instance.ButtonDefaultPositionY;
+                    ModProperties.Instance.ResetButtonPosition();
                 }
 
                 ModProperties.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
@@ -250,7 +237,7 @@ namespace RenderIt
                 _buttonPanel = UIUtils.CreatePanel("RenderItButtonPanel");
                 _buttonPanel.zOrder = 25;
                 _buttonPanel.size = new Vector2(36f, 36f);
-                _buttonPanel.eventMouseUp += (component, eventParam) =>
+                _buttonPanel.eventMouseMove += (component, eventParam) =>
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
@@ -458,6 +445,9 @@ namespace RenderIt
                     settings.tonemapping.neutralWhiteOut = ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut;
                     settings.tonemapping.neutralWhiteLevel = ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel;
                     settings.tonemapping.neutralWhiteClip = ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip;
+                    settings.channelMixer.red = new Vector3(ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed, ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen, ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue);
+                    settings.channelMixer.green = new Vector3(ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed, ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen, ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue);
+                    settings.channelMixer.blue = new Vector3(ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed, ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen, ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue);
                     _colorGradingModel.settings = settings;
                     _colorGradingModel.enabled = true;
                 }
