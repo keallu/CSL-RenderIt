@@ -40,7 +40,7 @@ namespace RenderIt
             try
             {
                 ModConfig.Instance.PanelPositionX = 10f;
-                ModConfig.Instance.PanelPositionY = UIView.GetAView().GetScreenResolution().y / 6f;
+                ModConfig.Instance.PanelPositionY = 10f;
                 ModConfig.Instance.Save();
             }
             catch (Exception e)
