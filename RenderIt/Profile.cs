@@ -4,6 +4,8 @@
     {
         public string Name { get; set; } = "Unnamed";
         public bool Active { get; set; } = false;
+        public float SunIntensity { get; set; } = float.NaN;
+        public float MoonIntensity { get; set; } = float.NaN;
         public int AntialiasingTechnique { get; set; } = 0;
         public bool AmbientOcclusionEnabled { get; set; } = false;
         public bool BloomEnabled { get; set; } = false;

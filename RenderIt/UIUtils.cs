@@ -209,7 +209,7 @@ namespace RenderIt
             return checkBox;
         }
 
-        public static UISlider CreateSlider(UIComponent parent, string name, float min, float max, float step, float defaultValue)
+        public static UISlider CreateSlider(UIComponent parent, string name, float min, float max, float step, float scrollWheel, float defaultValue)
         {
             UISlider slider = parent.AddUIComponent<UISlider>();
             slider.name = name;
@@ -232,6 +232,7 @@ namespace RenderIt
             slider.maxValue = max;
             slider.minValue = min;
             slider.stepSize = step;
+            slider.scrollWheelAmount = scrollWheel;
             slider.thumbObject = thumbSprite;
             slider.value = defaultValue;
 
@@ -313,16 +314,6 @@ namespace RenderIt
             button.normalBgSprite = "buttonclose";
             button.hoveredBgSprite = "buttonclosehover";
             button.pressedBgSprite = "buttonclosepressed";
-
-            button.eventClick += (component, eventParam) =>
-            {
-                if (!eventParam.used)
-                {
-                    parent.Hide();
-
-                    eventParam.Use();
-                }
-            };
 
             return button;
         }

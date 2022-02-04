@@ -7,7 +7,7 @@ namespace RenderIt
 {
     public static class ModUtils
     {
-        public static void PatchOptionsGraphicsPanel(bool patch)
+        public static int GetAntialiasingInOptionsGraphicsPanel()
         {
             try
             {
@@ -17,37 +17,19 @@ namespace RenderIt
                 {
                     UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
 
-                    if (patch)
-                    {
-                        antialiasingDropdown.isInteractive = false;
-                        antialiasingDropdown.opacity = 0.3f;
-                    }
-                    else
-                    {
-                        antialiasingDropdown.isInteractive = true;
-                        antialiasingDropdown.opacity = 1f;
-                    }
+                    return antialiasingDropdown.selectedIndex;
                 }
+
+                return -1;
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModUtils:PatchOptionsGraphicsPanel -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModUtils:GetAntialiasingInOptionsGraphicsPanel -> Exception: " + e.Message);
+                return -1;
             }
         }
 
-        public static void UpdateOptionsGraphicsPanel()
-        {
-            try
-            {
-                UpdateAntialiasing(ModProperties.Instance.ActiveProfile.AntialiasingTechnique == 1 ? true : false);
-            }
-            catch (Exception e)
-            {
-                Debug.Log("[Render It!] ModUtils:UpdateOptionsGraphicsPanel -> Exception: " + e.Message);
-            }
-        }
-
-        public static void UpdateAntialiasing(bool enabled)
+        public static void SetAntialiasingInOptionsGraphicsPanel(bool enabled)
         {
             try
             {
@@ -62,11 +44,33 @@ namespace RenderIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModUtils:UpdateAntialiasing -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModUtils:SetAntialiasingInOptionsGraphicsPanel -> Exception: " + e.Message);
             }
         }
 
-        public static void UpdateDepthOfField(bool enabled)
+        public static int GetDepthOfFieldInOptionsGraphicsPanel()
+        {
+            try
+            {
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics")?.GetComponent<OptionsGraphicsPanel>();
+
+                if (_optionsGraphicsPanel != null)
+                {
+                    UIDropDown dofTypeDropdown = _optionsGraphicsPanel.GetType().GetField("m_DOFTypeDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
+
+                    return dofTypeDropdown.selectedIndex;
+                }
+
+                return -1;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModUtils:GetDepthOfFieldInOptionsGraphicsPanel -> Exception: " + e.Message);
+                return -1;
+            }
+        }
+
+        public static void SetDepthOfFieldInOptionsGraphicsPanel(bool enabled)
         {
             try
             {
@@ -81,7 +85,7 @@ namespace RenderIt
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] ModUtils:UpdateDepthOfField -> Exception: " + e.Message);
+                Debug.Log("[Render It!] ModUtils:SetDepthOfFieldInOptionsGraphicsPanel -> Exception: " + e.Message);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
+using RenderIt.Managers;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -13,11 +14,9 @@ namespace RenderIt.Panels
         private UILabel _title;
         private UIButton _close;
         private UIDragHandle _dragHandle;
-
         private UITabstrip _tabstrip;
         private UITabContainer _tabContainer;
         private UIButton _templateButton;
-
         private UILabel _profilesDropDownLabel;
         private UIDropDown _profilesDropDown;
         private UITextField _profilesUITextField;
@@ -27,7 +26,18 @@ namespace RenderIt.Panels
         private UIButton _profilesRenameButton;
         private UIButton _profilesSaveButton;
 
-        private UILabel _advancedPostProcessingTitle;
+        private UILabel _optionsDropDownLabel;
+        private UIDropDown _optionsDropDown;
+
+        private UIPanel _optionsLightingPanel;
+        private UILabel _optionsSunIntensitySliderLabel;
+        private UILabel _optionsSunIntensitySliderNumeral;
+        private UISlider _optionsSunIntensitySlider;
+        private UILabel _optionsMoonIntensitySliderLabel;
+        private UILabel _optionsMoonIntensitySliderNumeral;
+        private UISlider _optionsMoonIntensitySlider;
+
+        private UIPanel _optionsPostProcessingPanel;
         private UILabel _optionsAntiAliasingDropDownLabel;
         private UIDropDown _optionsAntiAliasingDropDown;
         private UICheckBox _optionsAmbientOcclusionCheckBox;
@@ -38,27 +48,24 @@ namespace RenderIt.Panels
         private UIScrollbar _advancedScrollbar;
         private UISlicedSprite _advancedScrollbarTrack;
         private UISlicedSprite _advancedScrollbarThumb;
-
         private UILabel _advancedFXAATitle;
         private UILabel _advancedFXAAQualityDropDownLabel;
         private UIDropDown _advancedFXAAQualityDropDown;
         private UISprite _advancedFXAADivider;
-
         private UILabel _advancedTAATitle;
         private UILabel _advancedTAAJitterSpreadSliderLabel;
         private UILabel _advancedTAAJitterSpreadSliderNumeral;
         private UISlider _advancedTAAJitterSpreadSlider;
-        private UILabel _advancedTAASharpenSliderLabel;
-        private UILabel _advancedTAASharpenSliderNumeral;
-        private UISlider _advancedTAASharpenSlider;
         private UILabel _advancedTAAStationaryBlendingSliderLabel;
         private UILabel _advancedTAAStationaryBlendingSliderNumeral;
         private UISlider _advancedTAAStationaryBlendingSlider;
         private UILabel _advancedTAAMotionBlendingSliderLabel;
         private UILabel _advancedTAAMotionBlendingSliderNumeral;
         private UISlider _advancedTAAMotionBlendingSlider;
+        private UILabel _advancedTAASharpenSliderLabel;
+        private UILabel _advancedTAASharpenSliderNumeral;
+        private UISlider _advancedTAASharpenSlider;
         private UISprite _advancedTAADivider;
-
         private UILabel _advancedAOTitle;
         private UILabel _advancedAOIntensitySliderLabel;
         private UILabel _advancedAOIntensitySliderNumeral;
@@ -73,7 +80,6 @@ namespace RenderIt.Panels
         private UICheckBox _advancedAOAmbientOnlyCheckBox;
         private UICheckBox _advancedAOHighPrecisionCheckBox;
         private UISprite _advancedAODivider;
-
         private UILabel _advancedBloomTitle;
         private UICheckBox _advancedBloomVanillaBloomCheckBox;
         private UILabel _advancedBloomIntensitySliderLabel;
@@ -90,7 +96,6 @@ namespace RenderIt.Panels
         private UISlider _advancedBloomRadiusSlider;
         private UICheckBox _advancedBloomAntiFlickerCheckBox;
         private UISprite _advancedBloomDivider;
-
         private UILabel _advancedCGTitle;
         private UICheckBox _advancedCGVanillaTonemappingCheckBox;
         private UICheckBox _advancedCGVanillaColorCorrectionLUTCheckBox;
@@ -143,7 +148,6 @@ namespace RenderIt.Panels
         private UILabel _advancedCGChannelBlueSliderLabel;
         private UILabel _advancedCGChannelBlueSliderNumeral;
         private UISlider _advancedCGChannelBlueSlider;
-
         private UISprite _advancedCGDivider;
 
         public override void Awake()
@@ -218,7 +222,16 @@ namespace RenderIt.Panels
                 DestroyGameObject(_profilesRemoveButton);
                 DestroyGameObject(_profilesRenameButton);
                 DestroyGameObject(_profilesSaveButton);
-                DestroyGameObject(_advancedPostProcessingTitle);
+                DestroyGameObject(_optionsDropDownLabel);
+                DestroyGameObject(_optionsDropDown);
+                DestroyGameObject(_optionsLightingPanel);
+                DestroyGameObject(_optionsSunIntensitySliderLabel);
+                DestroyGameObject(_optionsSunIntensitySliderNumeral);
+                DestroyGameObject(_optionsSunIntensitySlider);
+                DestroyGameObject(_optionsMoonIntensitySliderLabel);
+                DestroyGameObject(_optionsMoonIntensitySliderNumeral);
+                DestroyGameObject(_optionsMoonIntensitySlider);
+                DestroyGameObject(_optionsPostProcessingPanel);
                 DestroyGameObject(_optionsAntiAliasingDropDownLabel);
                 DestroyGameObject(_optionsAntiAliasingDropDown);
                 DestroyGameObject(_optionsAmbientOcclusionCheckBox);
@@ -236,15 +249,15 @@ namespace RenderIt.Panels
                 DestroyGameObject(_advancedTAAJitterSpreadSliderLabel);
                 DestroyGameObject(_advancedTAAJitterSpreadSliderNumeral);
                 DestroyGameObject(_advancedTAAJitterSpreadSlider);
-                DestroyGameObject(_advancedTAASharpenSliderLabel);
-                DestroyGameObject(_advancedTAASharpenSliderNumeral);
-                DestroyGameObject(_advancedTAASharpenSlider);
                 DestroyGameObject(_advancedTAAStationaryBlendingSliderLabel);
                 DestroyGameObject(_advancedTAAStationaryBlendingSliderNumeral);
                 DestroyGameObject(_advancedTAAStationaryBlendingSlider);
                 DestroyGameObject(_advancedTAAMotionBlendingSliderLabel);
                 DestroyGameObject(_advancedTAAMotionBlendingSliderNumeral);
                 DestroyGameObject(_advancedTAAMotionBlendingSlider);
+                DestroyGameObject(_advancedTAASharpenSliderLabel);
+                DestroyGameObject(_advancedTAASharpenSliderNumeral);
+                DestroyGameObject(_advancedTAASharpenSlider);
                 DestroyGameObject(_advancedTAADivider);
                 DestroyGameObject(_advancedAOTitle);
                 DestroyGameObject(_advancedAOIntensitySliderLabel);
@@ -329,7 +342,6 @@ namespace RenderIt.Panels
                 DestroyGameObject(_advancedCGChannelBlueSliderLabel);
                 DestroyGameObject(_advancedCGChannelBlueSliderNumeral);
                 DestroyGameObject(_advancedCGChannelBlueSlider);
-
                 DestroyGameObject(_advancedCGDivider);
             }
             catch (Exception e)
@@ -367,6 +379,17 @@ namespace RenderIt.Panels
 
                 _close = UIUtils.CreateMenuPanelCloseButton(this);
                 _close.relativePosition = new Vector3(width - 37f, 3f);
+                _close.eventClick += (component, eventParam) =>
+                {
+                    if (!eventParam.used)
+                    {
+                        _close.parent.Hide();
+                        ModConfig.Instance.ShowPanel = false;
+                        ModConfig.Instance.Save();
+
+                        eventParam.Use();
+                    }
+                };
 
                 _dragHandle = UIUtils.CreateMenuPanelDragHandle(this);
                 _dragHandle.width = width - 40f;
@@ -410,24 +433,18 @@ namespace RenderIt.Panels
                     _profilesDropDownLabel = UIUtils.CreateLabel(panel, "ProfilesDropDownLabel", "Active");
 
                     _profilesDropDown = UIUtils.CreateDropDown(panel, "ProfilesDropDown");
-                    foreach (Profile profile in ModConfig.Instance.Profiles)
+                    foreach (Profile profile in ProfileManager.Instance.AllProfiles)
                     {
                         _profilesDropDown.AddItem(profile.Name);
                     }
-                    _profilesDropDown.selectedValue = ModConfig.Instance.Profiles.Find(x => x.Active == true).Name;
+                    _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
                     _profilesDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
                         if (value != -1)
                         {
-                            foreach (Profile profile in ModConfig.Instance.Profiles)
-                            {
-                                profile.Active = false;
-                            }
+                            ProfileManager.Instance.ActiveProfile = ProfileManager.Instance.AllProfiles[value];
 
-                            ModProperties.Instance.ActiveProfile = ModConfig.Instance.Profiles[value];
-                            ModConfig.Instance.Profiles[value].Active = true;
-
-                            ApplyActiveProfile();
+                            ApplyProfile(ProfileManager.Instance.ActiveProfile);
                         }
                     };
 
@@ -435,11 +452,11 @@ namespace RenderIt.Panels
                     _profilesUITextField.isVisible = false;
                     _profilesUITextField.eventTextSubmitted += (component, value) =>
                     {
-                        if (ModConfig.Instance.Profiles.Count > 1)
+                        if (ProfileManager.Instance.AllProfiles.Count > 1)
                         {
                             _profilesUITextField.isVisible = false;
 
-                            ModConfig.Instance.Profiles[_profilesDropDown.selectedIndex].Name = value;
+                            ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name = value;
 
                             _profilesDropDown.items.SetValue(value, _profilesDropDown.selectedIndex);
 
@@ -474,8 +491,8 @@ namespace RenderIt.Panels
                                 Name = profileName,
                                 Active = true
                             };
-                            ModConfig.Instance.Profiles.Add(profile);
-                            ModProperties.Instance.ActiveProfile = profile;
+                            ProfileManager.Instance.AllProfiles.Add(profile);
+                            ProfileManager.Instance.ActiveProfile = profile;
 
                             _profilesDropDown.AddItem(profile.Name);
                             _profilesDropDown.selectedValue = profile.Name;
@@ -491,13 +508,13 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            if (ModConfig.Instance.Profiles.Count > 1)
+                            if (ProfileManager.Instance.AllProfiles.Count > 1)
                             {
-                                ModConfig.Instance.Profiles.Remove(ModConfig.Instance.Profiles[_profilesDropDown.selectedIndex]);
-                                ModProperties.Instance.ActiveProfile = ModConfig.Instance.Profiles[0];
+                                ProfileManager.Instance.AllProfiles.Remove(ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex]);
+                                ProfileManager.Instance.ActiveProfile = ProfileManager.Instance.AllProfiles[0];
 
                                 _profilesDropDown.items = _profilesDropDown.items.Where((w, i) => i != _profilesDropDown.selectedIndex).ToArray();
-                                _profilesDropDown.selectedValue = ModConfig.Instance.Profiles[0].Name;
+                                _profilesDropDown.selectedValue = ProfileManager.Instance.AllProfiles[0].Name;
                             }
 
                             eventParam.Use();
@@ -511,11 +528,11 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            if (ModConfig.Instance.Profiles.Count > 1)
+                            if (ProfileManager.Instance.AllProfiles.Count > 1)
                             {
                                 _profilesDropDown.isVisible = false;
 
-                                _profilesUITextField.text = ModConfig.Instance.Profiles[_profilesDropDown.selectedIndex].Name;
+                                _profilesUITextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
 
                                 _profilesUITextField.isVisible = true;
                                 _profilesUITextField.Focus();
@@ -532,7 +549,7 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            ModConfig.Instance.Save();
+                            ProfileManager.Instance.Save();
 
                             eventParam.Use();
                         }
@@ -552,59 +569,154 @@ namespace RenderIt.Panels
                     panel.autoLayoutPadding.top = 0;
                     panel.autoLayoutPadding.bottom = 10;
 
-                    _advancedPostProcessingTitle = UIUtils.CreateTitle(panel, "AdvancedPostProcessingTitle", "Post-Processing");
-                    _advancedPostProcessingTitle.tooltip = "Post-processing is the process of applying full-screen filters and effects to a camera's image buffer before it is displayed to screen";
+                    _optionsDropDownLabel = UIUtils.CreateLabel(panel, "OptionsDropDownLabel", "Options");
+                    _optionsDropDownLabel.tooltip = "Select which type of options you want to change";
 
-                    _optionsAntiAliasingDropDownLabel = UIUtils.CreateLabel(panel, "OptionsAntiAliasingDropDownLabel", "Anti-aliasing Technique");
-                    _optionsAntiAliasingDropDownLabel.tooltip = "The Anti-aliasing techniques offers a set of algorithms designed to prevent aliasing and give a smoother appearance to graphics.\n\nFor anti-aliasing, the game uses the default Enhanced Subpixel Morphological Anti-Aliasing (SMAA) technique\nbut this can be improved with either Fast Approximate Anti-Aliasing (FXAA) or Temporal Anti-Aliasing (TAA) techniques.";
+                    _optionsDropDown = UIUtils.CreateDropDown(panel, "OptionsDropDown");
+                    _optionsDropDown.items = new string[] { "Lighting", "Post-Processing" };
 
-                    _optionsAntiAliasingDropDown = UIUtils.CreateDropDown(panel, "OptionsAntiAliasingDropDown");
-                    _optionsAntiAliasingDropDown.items = ModInvariables.AntialiasingTechnique;
-                    _optionsAntiAliasingDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.AntialiasingTechnique;
-                    _optionsAntiAliasingDropDown.eventSelectedIndexChanged += (component, value) =>
+                    _optionsLightingPanel = UIUtils.CreatePanel(panel, "OptionsLightingPanel");
+                    _optionsLightingPanel.isVisible = false;
+                    _optionsLightingPanel.width = _optionsLightingPanel.parent.width;
+                    _optionsLightingPanel.height = 500f;
+                    _optionsLightingPanel.autoLayout = true;
+                    _optionsLightingPanel.autoLayoutStart = LayoutStart.TopLeft;
+                    _optionsLightingPanel.autoLayoutDirection = LayoutDirection.Vertical;
+                    _optionsLightingPanel.autoLayoutPadding.left = 0;
+                    _optionsLightingPanel.autoLayoutPadding.right = 0;
+                    _optionsLightingPanel.autoLayoutPadding.top = 0;
+                    _optionsLightingPanel.autoLayoutPadding.bottom = 10;
+
+                    _optionsSunIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSunIntensitySliderLabel", "Sun Intensity");
+                    _optionsSunIntensitySliderLabel.tooltip = "";
+
+                    _optionsSunIntensitySliderNumeral = UIUtils.CreateLabel(_optionsSunIntensitySliderLabel, "OptionsSunIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.SunIntensity.ToString());
+                    _optionsSunIntensitySliderNumeral.width = 100f;
+                    _optionsSunIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsSunIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSunIntensitySliderNumeral.width - 10f, 0f);
+
+                    _optionsSunIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunIntensitySlider", 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SunIntensity);
+                    _optionsSunIntensitySlider.eventValueChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AntialiasingTechnique = value;
-                        ModConfig.Instance.Apply();
-
-                        if (value == 3)
+                        _optionsSunIntensitySliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.SunIntensity = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsSunIntensitySlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
-                            ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", delegate (UIComponent comp, int ret)
-                            {
-                                if (ret == 1)
-                                {
-                                    ModUtils.UpdateDepthOfField(false);
-                                }
-                            });
+                            _optionsSunIntensitySlider.value = (float)DefaultManager.Instance.Get("SunIntensity");
                         }
                     };
 
-                    _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(panel, "OptionsAmbientOcclusionCheckBox", "Ambient Occlusion Enabled", ModProperties.Instance.ActiveProfile.AmbientOcclusionEnabled);
+                    _optionsMoonIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonIntensitySliderLabel", "Moon Intensity");
+                    _optionsMoonIntensitySliderLabel.tooltip = "";
+
+                    _optionsMoonIntensitySliderNumeral = UIUtils.CreateLabel(_optionsMoonIntensitySliderLabel, "OptionsMoonIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.MoonIntensity.ToString());
+                    _optionsMoonIntensitySliderNumeral.width = 100f;
+                    _optionsMoonIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsMoonIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsMoonIntensitySliderNumeral.width - 10f, 0f);
+
+                    _optionsMoonIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonIntensitySlider", 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.MoonIntensity);
+                    _optionsMoonIntensitySlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsMoonIntensitySliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.MoonIntensity = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsMoonIntensitySlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsMoonIntensitySlider.value = (float)DefaultManager.Instance.Get("MoonIntensity");
+                        }
+                    };
+
+                    _optionsPostProcessingPanel = UIUtils.CreatePanel(panel, "OptionsPostProcessingPanel");
+                    _optionsPostProcessingPanel.isVisible = false;
+                    _optionsPostProcessingPanel.width = _optionsPostProcessingPanel.parent.width;
+                    _optionsPostProcessingPanel.height = 500f;
+                    _optionsPostProcessingPanel.autoLayout = true;
+                    _optionsPostProcessingPanel.autoLayoutStart = LayoutStart.TopLeft;
+                    _optionsPostProcessingPanel.autoLayoutDirection = LayoutDirection.Vertical;
+                    _optionsPostProcessingPanel.autoLayoutPadding.left = 0;
+                    _optionsPostProcessingPanel.autoLayoutPadding.right = 0;
+                    _optionsPostProcessingPanel.autoLayoutPadding.top = 0;
+                    _optionsPostProcessingPanel.autoLayoutPadding.bottom = 10;
+
+                    _optionsAntiAliasingDropDownLabel = UIUtils.CreateLabel(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDownLabel", "Anti-aliasing Technique");
+                    _optionsAntiAliasingDropDownLabel.tooltip = "The Anti-aliasing techniques offers a set of algorithms designed to prevent aliasing and give a smoother appearance to graphics.\n\nFor anti-aliasing, the game uses the default Enhanced Subpixel Morphological Anti-Aliasing (SMAA) technique\nbut this can be improved with either Fast Approximate Anti-Aliasing (FXAA) or Temporal Anti-Aliasing (TAA) techniques.";
+
+                    _optionsAntiAliasingDropDown = UIUtils.CreateDropDown(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDown");
+                    _optionsAntiAliasingDropDown.items = ModInvariables.AntialiasingTechnique;
+                    _optionsAntiAliasingDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.AntialiasingTechnique;
+                    _optionsAntiAliasingDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.AntialiasingTechnique = value;
+                        ProfileManager.Instance.Apply();
+
+                        if (value == 3)
+                        {
+                            if (ModUtils.GetDepthOfFieldInOptionsGraphicsPanel() != 0)
+                            {
+                                ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", delegate (UIComponent comp, int ret)
+                                {
+                                    if (ret == 1)
+                                    {
+                                        ModUtils.SetDepthOfFieldInOptionsGraphicsPanel(false);
+                                    }
+                                });
+                            }
+                        }
+                    };
+
+                    _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsAmbientOcclusionCheckBox", "Ambient Occlusion Enabled", ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled);
                     _optionsAmbientOcclusionCheckBox.tooltip = "Ambient Occlusion darkens creases, holes, intersections and surfaces that are close to each other";
                     _optionsAmbientOcclusionCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AmbientOcclusionEnabled = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled = value;
+                        ProfileManager.Instance.Apply();
                     };
-                    _optionsBloomCheckBox = UIUtils.CreateCheckBox(panel, "OptionsBloomCheckBox", "Bloom Enabled", ModProperties.Instance.ActiveProfile.BloomEnabled);
+                    _optionsBloomCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsBloomCheckBox", "Bloom Enabled", ProfileManager.Instance.ActiveProfile.BloomEnabled);
                     _optionsBloomCheckBox.tooltip = "Bloom creates fringes of light extending from the borders of bright areas in an image,\ncontributing to the illusion of an extremely bright light overwhelming the camera";
                     _optionsBloomCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.BloomEnabled = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomEnabled = value;
+                        ProfileManager.Instance.Apply();
                     };
-                    _optionsColorGradingCheckBox = UIUtils.CreateCheckBox(panel, "OptionsColorGradingCheckBox", "Color Grading Enabled", ModProperties.Instance.ActiveProfile.ColorGradingEnabled);
+                    _optionsColorGradingCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsColorGradingCheckBox", "Color Grading Enabled", ProfileManager.Instance.ActiveProfile.ColorGradingEnabled);
                     _optionsColorGradingCheckBox.tooltip = "Color Grading alters or corrects the color and luminance of the final image that is rendered";
                     _optionsColorGradingCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.ColorGradingEnabled = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.ColorGradingEnabled = value;
+                        ProfileManager.Instance.Apply();
                     };
+
+                    _optionsDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        switch (value)
+                        {
+                            case 0:
+                                _optionsLightingPanel.isVisible = true;
+                                _optionsPostProcessingPanel.isVisible = false;
+                                break;
+                            case 1:
+                                _optionsLightingPanel.isVisible = false;
+                                _optionsPostProcessingPanel.isVisible = true;
+                                break;
+                            default:
+                                _optionsLightingPanel.isVisible = true;
+                                _optionsPostProcessingPanel.isVisible = false;
+                                break;
+                        }
+                    };
+                    _optionsDropDown.selectedIndex = 0;
                 }
 
                 _tabstrip.AddTab("Advanced", _templateButton, true);
                 _tabstrip.selectedIndex = 2;
                 panel = _tabstrip.tabContainer.components[2] as UIPanel;
-
                 if (panel != null)
                 {
                     _advancedScrollablePanel = UIUtils.CreateScrollablePanel(panel, "AdvancedScrollablePanel");
@@ -656,11 +768,11 @@ namespace RenderIt.Panels
 
                     _advancedFXAAQualityDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedFXAAQualityDropDown");
                     _advancedFXAAQualityDropDown.items = ModInvariables.FXAAQuality;
-                    _advancedFXAAQualityDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.FXAAQuality;
+                    _advancedFXAAQualityDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.FXAAQuality;
                     _advancedFXAAQualityDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.FXAAQuality = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.FXAAQuality = value;
+                        ProfileManager.Instance.Apply();
                     };
 
                     _advancedFXAADivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedFXAADivider");
@@ -672,108 +784,92 @@ namespace RenderIt.Panels
                     _advancedTAAJitterSpreadSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedTAAJitterSpreadSliderLabel", "Jitter Spread");
                     _advancedTAAJitterSpreadSliderLabel.tooltip = "Set the diameter (in texels) inside which jitter samples are spread. Smaller values result in crisper\nbut a more aliased output. Larger values result in more stable but blurrier output";
 
-                    _advancedTAAJitterSpreadSliderNumeral = UIUtils.CreateLabel(_advancedTAAJitterSpreadSliderLabel, "AdvancedTAAJitterSpreadSliderNumeral", ModProperties.Instance.ActiveProfile.TAAJitterSpread.ToString());
+                    _advancedTAAJitterSpreadSliderNumeral = UIUtils.CreateLabel(_advancedTAAJitterSpreadSliderLabel, "AdvancedTAAJitterSpreadSliderNumeral", ProfileManager.Instance.ActiveProfile.TAAJitterSpread.ToString());
                     _advancedTAAJitterSpreadSliderNumeral.width = 100f;
                     _advancedTAAJitterSpreadSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAAJitterSpreadSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAAJitterSpreadSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAAJitterSpreadSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAJitterSpreadSlider", 0.1f, 1f, 0.01f, ModProperties.Instance.ActiveProfile.TAAJitterSpread);
+                    _advancedTAAJitterSpreadSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAJitterSpreadSlider", 0.1f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAJitterSpread);
                     _advancedTAAJitterSpreadSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAAJitterSpreadSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.TAAJitterSpread = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.TAAJitterSpread = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedTAAJitterSpreadSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedTAAJitterSpreadSlider.value = 0.75f;
-
-                            _advancedTAAJitterSpreadSliderNumeral.text = _advancedTAAJitterSpreadSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.TAAJitterSpread = _advancedTAAJitterSpreadSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedTAAStationaryBlendingSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedTAAStationaryBlendingSliderLabel", "Stationary Blending");
                     _advancedTAAStationaryBlendingSliderLabel.tooltip = "Set the blend coefficient for stationary fragments. This setting controls the percentage of history sample\nblended into final color for fragments with minimal active motion";
 
-                    _advancedTAAStationaryBlendingSliderNumeral = UIUtils.CreateLabel(_advancedTAAStationaryBlendingSliderLabel, "AdvancedTAAStationaryBlendingSliderNumeral", ModProperties.Instance.ActiveProfile.TAAStationaryBlending.ToString());
+                    _advancedTAAStationaryBlendingSliderNumeral = UIUtils.CreateLabel(_advancedTAAStationaryBlendingSliderLabel, "AdvancedTAAStationaryBlendingSliderNumeral", ProfileManager.Instance.ActiveProfile.TAAStationaryBlending.ToString());
                     _advancedTAAStationaryBlendingSliderNumeral.width = 100f;
                     _advancedTAAStationaryBlendingSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAAStationaryBlendingSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAAStationaryBlendingSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAAStationaryBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAStationaryBlendingSlider", 0f, 0.99f, 0.01f, ModProperties.Instance.ActiveProfile.TAAStationaryBlending);
+                    _advancedTAAStationaryBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAStationaryBlendingSlider", 0f, 0.99f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAStationaryBlending);
                     _advancedTAAStationaryBlendingSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAAStationaryBlendingSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.TAAStationaryBlending = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.TAAStationaryBlending = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedTAAStationaryBlendingSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedTAAStationaryBlendingSlider.value = 0.95f;
-
-                            _advancedTAAStationaryBlendingSliderNumeral.text = _advancedTAAStationaryBlendingSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.TAAStationaryBlending = _advancedTAAStationaryBlendingSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedTAAMotionBlendingSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedTAAMotionBlendingSliderLabel", "Motion Blending");
                     _advancedTAAMotionBlendingSliderLabel.tooltip = "Set the blending coefficient for moving fragments. This setting controls the percentage of history sample\nblended into the final color for fragments with significant active motion";
 
-                    _advancedTAAMotionBlendingSliderNumeral = UIUtils.CreateLabel(_advancedTAAMotionBlendingSliderLabel, "AdvancedTAAMotionBlendingSliderNumeral", ModProperties.Instance.ActiveProfile.TAAMotionBlending.ToString());
+                    _advancedTAAMotionBlendingSliderNumeral = UIUtils.CreateLabel(_advancedTAAMotionBlendingSliderLabel, "AdvancedTAAMotionBlendingSliderNumeral", ProfileManager.Instance.ActiveProfile.TAAMotionBlending.ToString());
                     _advancedTAAMotionBlendingSliderNumeral.width = 100f;
                     _advancedTAAMotionBlendingSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAAMotionBlendingSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAAMotionBlendingSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAAMotionBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAMotionBlendingSlider", 0f, 0.99f, 0.01f, ModProperties.Instance.ActiveProfile.TAAMotionBlending);
+                    _advancedTAAMotionBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAMotionBlendingSlider", 0f, 0.99f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAMotionBlending);
                     _advancedTAAMotionBlendingSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAAMotionBlendingSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.TAAMotionBlending = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.TAAMotionBlending = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedTAAMotionBlendingSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedTAAMotionBlendingSlider.value = 0.85f;
-
-                            _advancedTAAMotionBlendingSliderNumeral.text = _advancedTAAMotionBlendingSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.TAAMotionBlending = _advancedTAAMotionBlendingSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedTAASharpenSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedTAASharpenSliderLabel", "Sharpen");
                     _advancedTAASharpenSliderLabel.tooltip = "Set the sharpness to alleviate the slight loss of details in high frequency regions";
 
-                    _advancedTAASharpenSliderNumeral = UIUtils.CreateLabel(_advancedTAASharpenSliderLabel, "AdvancedTAASharpenSliderNumeral", ModProperties.Instance.ActiveProfile.TAASharpen.ToString());
+                    _advancedTAASharpenSliderNumeral = UIUtils.CreateLabel(_advancedTAASharpenSliderLabel, "AdvancedTAASharpenSliderNumeral", ProfileManager.Instance.ActiveProfile.TAASharpen.ToString());
                     _advancedTAASharpenSliderNumeral.width = 100f;
                     _advancedTAASharpenSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAASharpenSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAASharpenSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAASharpenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAASharpenSlider", 0f, 3f, 0.03f, ModProperties.Instance.ActiveProfile.TAASharpen);
+                    _advancedTAASharpenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAASharpenSlider", 0f, 3f, 0.03f, 0.03f, ProfileManager.Instance.ActiveProfile.TAASharpen);
                     _advancedTAASharpenSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAASharpenSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.TAASharpen = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.TAASharpen = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedTAASharpenSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedTAASharpenSlider.value = 0.3f;
-
-                            _advancedTAASharpenSliderNumeral.text = _advancedTAASharpenSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.TAASharpen = _advancedTAASharpenSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
@@ -786,54 +882,46 @@ namespace RenderIt.Panels
                     _advancedAOIntensitySliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedAOIntensitySliderLabel", "Intensity");
                     _advancedAOIntensitySliderLabel.tooltip = "Degree of darkness produced";
 
-                    _advancedAOIntensitySliderNumeral = UIUtils.CreateLabel(_advancedAOIntensitySliderLabel, "AdvancedAOIntensitySliderNumeral", ModProperties.Instance.ActiveProfile.AOIntensity.ToString());
+                    _advancedAOIntensitySliderNumeral = UIUtils.CreateLabel(_advancedAOIntensitySliderLabel, "AdvancedAOIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.AOIntensity.ToString());
                     _advancedAOIntensitySliderNumeral.width = 100f;
                     _advancedAOIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedAOIntensitySliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedAOIntensitySliderNumeral.width - 10f, 0f);
 
-                    _advancedAOIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAOIntensitySlider", 0f, 4f, 0.05f, ModProperties.Instance.ActiveProfile.AOIntensity);
+                    _advancedAOIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAOIntensitySlider", 0f, 4f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.AOIntensity);
                     _advancedAOIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _advancedAOIntensitySliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.AOIntensity = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AOIntensity = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedAOIntensitySlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedAOIntensitySlider.value = 1f;
-
-                            _advancedAOIntensitySliderNumeral.text = _advancedAOIntensitySlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.AOIntensity = _advancedAOIntensitySlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedAORadiusSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedAORadiusSliderLabel", "Radius");
                     _advancedAORadiusSliderLabel.tooltip = "Radius of sample points, which affects extent of darkened areas";
 
-                    _advancedAORadiusSliderNumeral = UIUtils.CreateLabel(_advancedAORadiusSliderLabel, "AdvancedAORadiusSliderNumeral", ModProperties.Instance.ActiveProfile.AORadius.ToString());
+                    _advancedAORadiusSliderNumeral = UIUtils.CreateLabel(_advancedAORadiusSliderLabel, "AdvancedAORadiusSliderNumeral", ProfileManager.Instance.ActiveProfile.AORadius.ToString());
                     _advancedAORadiusSliderNumeral.width = 100f;
                     _advancedAORadiusSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedAORadiusSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedAORadiusSliderNumeral.width - 10f, 0f);
 
-                    _advancedAORadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAORadiusSlider", 0f, 4f, 0.05f, ModProperties.Instance.ActiveProfile.AORadius);
+                    _advancedAORadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAORadiusSlider", 0f, 4f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.AORadius);
                     _advancedAORadiusSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedAORadiusSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.AORadius = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AORadius = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedAORadiusSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedAORadiusSlider.value = 0.3f;
-
-                            _advancedAORadiusSliderNumeral.text = _advancedAORadiusSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.AORadius = _advancedAORadiusSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
@@ -842,43 +930,43 @@ namespace RenderIt.Panels
 
                     _advancedAOSampleCountDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedAOSampleCountDropDown");
                     _advancedAOSampleCountDropDown.items = ModInvariables.AOSampleCount;
-                    _advancedAOSampleCountDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.AOSampleCount;
+                    _advancedAOSampleCountDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.AOSampleCount;
                     _advancedAOSampleCountDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AOSampleCount = ConvertAmbientOcclusionSampleCount(value);
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AOSampleCount = ConvertAmbientOcclusionSampleCount(value);
+                        ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAODownsamplingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAODownsamplingCheckBox", "Downsampling", ModProperties.Instance.ActiveProfile.AODownsampling);
+                    _advancedAODownsamplingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAODownsamplingCheckBox", "Downsampling", ProfileManager.Instance.ActiveProfile.AODownsampling);
                     _advancedAODownsamplingCheckBox.tooltip = "Halves the resolution of the effect to increase performance at the cost of visual quality";
                     _advancedAODownsamplingCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AODownsampling = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AODownsampling = value;
+                        ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAOForceForwardCompatibilityCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOForceForwardCompatibilityCheckBox", "Force Forward Compatibility", ModProperties.Instance.ActiveProfile.AOForceForwardCompatibility);
+                    _advancedAOForceForwardCompatibilityCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOForceForwardCompatibilityCheckBox", "Force Forward Compatibility", ProfileManager.Instance.ActiveProfile.AOForceForwardCompatibility);
                     _advancedAOForceForwardCompatibilityCheckBox.tooltip = "Forces compatibility with forward rendered objects when working with the deferred rendering path";
                     _advancedAOForceForwardCompatibilityCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AOForceForwardCompatibility = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AOForceForwardCompatibility = value;
+                        ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAOHighPrecisionCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOHighPrecisionCheckBox", "High Precision", ModProperties.Instance.ActiveProfile.AOHighPrecision);
+                    _advancedAOHighPrecisionCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOHighPrecisionCheckBox", "High Precision", ProfileManager.Instance.ActiveProfile.AOHighPrecision);
                     _advancedAOHighPrecisionCheckBox.tooltip = "Uses higher precision depth texture with the forward rendering path which may impact performances";
                     _advancedAOHighPrecisionCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AOHighPrecision = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AOHighPrecision = value;
+                        ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAOAmbientOnlyCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOAmbientOnlyCheckBox", "Ambient Only", ModProperties.Instance.ActiveProfile.AOAmbientOnly);
+                    _advancedAOAmbientOnlyCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOAmbientOnlyCheckBox", "Ambient Only", ProfileManager.Instance.ActiveProfile.AOAmbientOnly);
                     _advancedAOAmbientOnlyCheckBox.tooltip = "Enables the ambient-only mode in that ambient occlusion only affects ambient lighting";
                     _advancedAOAmbientOnlyCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.AOAmbientOnly = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.AOAmbientOnly = value;
+                        ProfileManager.Instance.Apply();
                     };
 
                     _advancedAODivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedAODivider");
@@ -887,128 +975,112 @@ namespace RenderIt.Panels
                     _advancedBloomTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedBloomTitle", "Bloom");
                     _advancedBloomTitle.tooltip = "Bloom creates fringes of light extending from the borders of bright areas in an image,\ncontributing to the illusion of an extremely bright light overwhelming the camera";
 
-                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", "Vanilla Bloom", ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled);
+                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", "Vanilla Bloom", ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled);
                     _advancedBloomVanillaBloomCheckBox.tooltip = "Keeps bloom produced by the game";
                     _advancedBloomVanillaBloomCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled = value;
+                        ProfileManager.Instance.Apply();
                     };
 
                     _advancedBloomIntensitySliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedBloomIntensitySliderLabel", "Intensity");
                     _advancedBloomIntensitySliderLabel.tooltip = "Degree of bloom produced";
 
-                    _advancedBloomIntensitySliderNumeral = UIUtils.CreateLabel(_advancedBloomIntensitySliderLabel, "AdvancedBloomIntensitySliderNumeral", ModProperties.Instance.ActiveProfile.BloomIntensity.ToString());
+                    _advancedBloomIntensitySliderNumeral = UIUtils.CreateLabel(_advancedBloomIntensitySliderLabel, "AdvancedBloomIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.BloomIntensity.ToString());
                     _advancedBloomIntensitySliderNumeral.width = 100f;
                     _advancedBloomIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomIntensitySliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomIntensitySliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomIntensitySlider", 0f, 1f, 0.01f, ModProperties.Instance.ActiveProfile.BloomIntensity);
+                    _advancedBloomIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomIntensitySlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.BloomIntensity);
                     _advancedBloomIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomIntensitySliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.BloomIntensity = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomIntensity = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedBloomIntensitySlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedBloomIntensitySlider.value = 0.5f;
-
-                            _advancedBloomIntensitySliderNumeral.text = _advancedBloomIntensitySlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.BloomIntensity = _advancedBloomIntensitySlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedBloomThresholdSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedBloomThresholdSliderLabel", "Threshold");
                     _advancedBloomThresholdSliderLabel.tooltip = "Filters out pixels under this level of brightness";
 
-                    _advancedBloomThresholdSliderNumeral = UIUtils.CreateLabel(_advancedBloomThresholdSliderLabel, "AdvancedBloomThresholdSliderNumeral", ModProperties.Instance.ActiveProfile.BloomThreshold.ToString());
+                    _advancedBloomThresholdSliderNumeral = UIUtils.CreateLabel(_advancedBloomThresholdSliderLabel, "AdvancedBloomThresholdSliderNumeral", ProfileManager.Instance.ActiveProfile.BloomThreshold.ToString());
                     _advancedBloomThresholdSliderNumeral.width = 100f;
                     _advancedBloomThresholdSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomThresholdSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomThresholdSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomThresholdSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomThresholdSlider", 0f, 10f, 0.1f, ModProperties.Instance.ActiveProfile.BloomThreshold);
+                    _advancedBloomThresholdSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomThresholdSlider", 0f, 10f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.BloomThreshold);
                     _advancedBloomThresholdSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomThresholdSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.BloomThreshold = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomThreshold = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedBloomThresholdSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedBloomThresholdSlider.value = 1.1f;
-
-                            _advancedBloomThresholdSliderNumeral.text = _advancedBloomThresholdSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.BloomThreshold = _advancedBloomThresholdSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedBloomSoftKneeSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedBloomSoftKneeSliderLabel", "Soft Knee");
                     _advancedBloomSoftKneeSliderLabel.tooltip = "Makes transition between under/over-threshold gradual";
 
-                    _advancedBloomSoftKneeSliderNumeral = UIUtils.CreateLabel(_advancedBloomSoftKneeSliderLabel, "AdvancedBloomSoftKneeSliderNumeral", ModProperties.Instance.ActiveProfile.BloomSoftKnee.ToString());
+                    _advancedBloomSoftKneeSliderNumeral = UIUtils.CreateLabel(_advancedBloomSoftKneeSliderLabel, "AdvancedBloomSoftKneeSliderNumeral", ProfileManager.Instance.ActiveProfile.BloomSoftKnee.ToString());
                     _advancedBloomSoftKneeSliderNumeral.width = 100f;
                     _advancedBloomSoftKneeSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomSoftKneeSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomSoftKneeSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomSoftKneeSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomSoftKneeSlider", 0f, 1f, 0.01f, ModProperties.Instance.ActiveProfile.BloomSoftKnee);
+                    _advancedBloomSoftKneeSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomSoftKneeSlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.BloomSoftKnee);
                     _advancedBloomSoftKneeSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomSoftKneeSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.BloomSoftKnee = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomSoftKnee = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedBloomSoftKneeSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedBloomSoftKneeSlider.value = 0.5f;
-
-                            _advancedBloomSoftKneeSliderNumeral.text = _advancedBloomSoftKneeSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.BloomSoftKnee = _advancedBloomSoftKneeSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedBloomRadiusSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedBloomRadiusSliderLabel", "Radius");
                     _advancedBloomRadiusSliderLabel.tooltip = "Changes extent of veiling in a screen resolution-independent fashion";
 
-                    _advancedBloomRadiusSliderNumeral = UIUtils.CreateLabel(_advancedBloomRadiusSliderLabel, "AdvancedBloomRadiusSliderNumeral", ModProperties.Instance.ActiveProfile.BloomRadius.ToString());
+                    _advancedBloomRadiusSliderNumeral = UIUtils.CreateLabel(_advancedBloomRadiusSliderLabel, "AdvancedBloomRadiusSliderNumeral", ProfileManager.Instance.ActiveProfile.BloomRadius.ToString());
                     _advancedBloomRadiusSliderNumeral.width = 100f;
                     _advancedBloomRadiusSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomRadiusSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomRadiusSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomRadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomRadiusSlider", 1f, 7f, 0.05f, ModProperties.Instance.ActiveProfile.BloomRadius);
+                    _advancedBloomRadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomRadiusSlider", 1f, 7f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.BloomRadius);
                     _advancedBloomRadiusSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomRadiusSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.BloomRadius = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomRadius = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedBloomRadiusSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedBloomRadiusSlider.value = 4f;
-
-                            _advancedBloomRadiusSliderNumeral.text = _advancedBloomRadiusSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.BloomRadius = _advancedBloomRadiusSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
-                    _advancedBloomAntiFlickerCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomAntiFlickerCheckBox", "Anti Flicker", ModProperties.Instance.ActiveProfile.BloomAntiFlicker);
+                    _advancedBloomAntiFlickerCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomAntiFlickerCheckBox", "Anti Flicker", ProfileManager.Instance.ActiveProfile.BloomAntiFlicker);
                     _advancedBloomAntiFlickerCheckBox.tooltip = "Reduces flashing noise with an additional filter";
                     _advancedBloomAntiFlickerCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.BloomAntiFlicker = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.BloomAntiFlicker = value;
+                        ProfileManager.Instance.Apply();
                     };
 
                     _advancedBloomDivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedBloomDivider");
@@ -1017,181 +1089,157 @@ namespace RenderIt.Panels
                     _advancedCGTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedCGTitle", "Color Grading");
                     _advancedCGTitle.tooltip = "Color Grading alters or corrects the color and luminance of the final image that is rendered";
 
-                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", "Vanilla Tonemapping", ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
+                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", "Vanilla Tonemapping", ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
                     _advancedCGVanillaTonemappingCheckBox.tooltip = "Keeps tonemapping produced by the game";
                     _advancedCGVanillaTonemappingCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled = value;
+                        ProfileManager.Instance.Apply();
                     };
 
-                    _advancedCGVanillaColorCorrectionLUTCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaColorCorrectionLUTCheckBox", "Vanilla Color Correction LUT", ModProperties.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled);
+                    _advancedCGVanillaColorCorrectionLUTCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaColorCorrectionLUTCheckBox", "Vanilla Color Correction LUT", ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled);
                     _advancedCGVanillaColorCorrectionLUTCheckBox.tooltip = "Keeps color correction LUT produced by the game";
                     _advancedCGVanillaColorCorrectionLUTCheckBox.eventCheckChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled = value;
+                        ProfileManager.Instance.Apply();
                     };
 
                     _advancedCGPostExposureSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGPostExposureSliderLabel", "Post Exposure");
                     _advancedCGPostExposureSliderLabel.tooltip = "Adjusts the overall exposure of the scene";
 
-                    _advancedCGPostExposureSliderNumeral = UIUtils.CreateLabel(_advancedCGPostExposureSliderLabel, "AdvancedCGPostExposureSliderNumeral", ModProperties.Instance.ActiveProfile.CGPostExposure.ToString());
+                    _advancedCGPostExposureSliderNumeral = UIUtils.CreateLabel(_advancedCGPostExposureSliderLabel, "AdvancedCGPostExposureSliderNumeral", ProfileManager.Instance.ActiveProfile.CGPostExposure.ToString());
                     _advancedCGPostExposureSliderNumeral.width = 100f;
                     _advancedCGPostExposureSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGPostExposureSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGPostExposureSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGPostExposureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGPostExposureSlider", -2f, 2f, 0.05f, ModProperties.Instance.ActiveProfile.CGPostExposure);
+                    _advancedCGPostExposureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGPostExposureSlider", -2f, 2f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.CGPostExposure);
                     _advancedCGPostExposureSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGPostExposureSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGPostExposure = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGPostExposure = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGPostExposureSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGPostExposureSlider.value = 0f;
-
-                            _advancedCGPostExposureSliderNumeral.text = _advancedCGPostExposureSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGPostExposure = _advancedCGPostExposureSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGTemperatureSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGTemperatureSliderLabel", "Temperature");
                     _advancedCGTemperatureSliderLabel.tooltip = "Sets the white balance to a custom color temperature";
 
-                    _advancedCGTemperatureSliderNumeral = UIUtils.CreateLabel(_advancedCGTemperatureSliderLabel, "AdvancedCGTemperatureSliderNumeral", ModProperties.Instance.ActiveProfile.CGTemperature.ToString());
+                    _advancedCGTemperatureSliderNumeral = UIUtils.CreateLabel(_advancedCGTemperatureSliderLabel, "AdvancedCGTemperatureSliderNumeral", ProfileManager.Instance.ActiveProfile.CGTemperature.ToString());
                     _advancedCGTemperatureSliderNumeral.width = 100f;
                     _advancedCGTemperatureSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGTemperatureSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGTemperatureSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGTemperatureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTemperatureSlider", -100f, 100f, 2f, ModProperties.Instance.ActiveProfile.CGTemperature);
+                    _advancedCGTemperatureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTemperatureSlider", -100f, 100f, 2f, 2f, ProfileManager.Instance.ActiveProfile.CGTemperature);
                     _advancedCGTemperatureSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGTemperatureSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGTemperature = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGTemperature = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGTemperatureSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGTemperatureSlider.value = 0f;
-
-                            _advancedCGTemperatureSliderNumeral.text = _advancedCGTemperatureSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGTemperature = _advancedCGTemperatureSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGTintSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGTintSliderLabel", "Tint");
                     _advancedCGTintSliderLabel.tooltip = "Sets the white balance to compensate for a green or magenta tint";
 
-                    _advancedCGTintSliderNumeral = UIUtils.CreateLabel(_advancedCGTintSliderLabel, "AdvancedCGTintSliderNumeral", ModProperties.Instance.ActiveProfile.CGTint.ToString());
+                    _advancedCGTintSliderNumeral = UIUtils.CreateLabel(_advancedCGTintSliderLabel, "AdvancedCGTintSliderNumeral", ProfileManager.Instance.ActiveProfile.CGTint.ToString());
                     _advancedCGTintSliderNumeral.width = 100f;
                     _advancedCGTintSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGTintSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGTintSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGTintSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTintSlider", -100f, 100f, 2f, ModProperties.Instance.ActiveProfile.CGTint);
+                    _advancedCGTintSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTintSlider", -100f, 100f, 2f, 2f, ProfileManager.Instance.ActiveProfile.CGTint);
                     _advancedCGTintSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGTintSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGTint = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGTint = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGTintSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGTintSlider.value = 0f;
-
-                            _advancedCGTintSliderNumeral.text = _advancedCGTintSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGTint = _advancedCGTintSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGHueShiftSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGHueShiftSliderLabel", "Hue Shift");
                     _advancedCGHueShiftSliderLabel.tooltip = "Shift the hue of all colors";
 
-                    _advancedCGHueShiftSliderNumeral = UIUtils.CreateLabel(_advancedCGHueShiftSliderLabel, "AdvancedCGHueShiftSliderNumeral", ModProperties.Instance.ActiveProfile.CGHueShift.ToString());
+                    _advancedCGHueShiftSliderNumeral = UIUtils.CreateLabel(_advancedCGHueShiftSliderLabel, "AdvancedCGHueShiftSliderNumeral", ProfileManager.Instance.ActiveProfile.CGHueShift.ToString());
                     _advancedCGHueShiftSliderNumeral.width = 100f;
                     _advancedCGHueShiftSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGHueShiftSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGHueShiftSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGHueShiftSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGHueShiftSlider", -180f, 180f, 3f, ModProperties.Instance.ActiveProfile.CGHueShift);
+                    _advancedCGHueShiftSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGHueShiftSlider", -180f, 180f, 3f, 3f, ProfileManager.Instance.ActiveProfile.CGHueShift);
                     _advancedCGHueShiftSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGHueShiftSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGHueShift = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGHueShift = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGHueShiftSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGHueShiftSlider.value = 0f;
-
-                            _advancedCGHueShiftSliderNumeral.text = _advancedCGHueShiftSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGHueShift = _advancedCGHueShiftSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGSaturationSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGSaturationSliderLabel", "Saturation");
                     _advancedCGSaturationSliderLabel.tooltip = "Pushes the intensity of all colors";
 
-                    _advancedCGSaturationSliderNumeral = UIUtils.CreateLabel(_advancedCGSaturationSliderLabel, "AdvancedCGSaturationSliderNumeral", ModProperties.Instance.ActiveProfile.CGSaturation.ToString());
+                    _advancedCGSaturationSliderNumeral = UIUtils.CreateLabel(_advancedCGSaturationSliderLabel, "AdvancedCGSaturationSliderNumeral", ProfileManager.Instance.ActiveProfile.CGSaturation.ToString());
                     _advancedCGSaturationSliderNumeral.width = 100f;
                     _advancedCGSaturationSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGSaturationSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGSaturationSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGSaturationSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGSaturationSlider", 0f, 2f, 0.02f, ModProperties.Instance.ActiveProfile.CGSaturation);
+                    _advancedCGSaturationSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGSaturationSlider", 0f, 2f, 0.02f, 0.02f, ProfileManager.Instance.ActiveProfile.CGSaturation);
                     _advancedCGSaturationSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGSaturationSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGSaturation = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGSaturation = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGSaturationSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGSaturationSlider.value = 1f;
-
-                            _advancedCGSaturationSliderNumeral.text = _advancedCGSaturationSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGSaturation = _advancedCGSaturationSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGContrastSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGContrastSliderLabel", "Contrast");
                     _advancedCGContrastSliderLabel.tooltip = "Expands or shrinks the overall range of tonal values";
 
-                    _advancedCGContrastSliderNumeral = UIUtils.CreateLabel(_advancedCGContrastSliderLabel, "AdvancedCGContrastSliderNumeral", ModProperties.Instance.ActiveProfile.CGContrast.ToString());
+                    _advancedCGContrastSliderNumeral = UIUtils.CreateLabel(_advancedCGContrastSliderLabel, "AdvancedCGContrastSliderNumeral", ProfileManager.Instance.ActiveProfile.CGContrast.ToString());
                     _advancedCGContrastSliderNumeral.width = 100f;
                     _advancedCGContrastSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGContrastSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGContrastSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGContrastSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGContrastSlider", 0f, 2f, 0.02f, ModProperties.Instance.ActiveProfile.CGContrast);
+                    _advancedCGContrastSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGContrastSlider", 0f, 2f, 0.02f, 0.02f, ProfileManager.Instance.ActiveProfile.CGContrast);
                     _advancedCGContrastSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGContrastSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGContrast = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGContrast = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGContrastSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGContrastSlider.value = 1f;
-
-                            _advancedCGContrastSliderNumeral.text = _advancedCGContrastSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGContrast = _advancedCGContrastSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
@@ -1200,167 +1248,143 @@ namespace RenderIt.Panels
 
                     _advancedCGTonemapperDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGTonemapperDropDown");
                     _advancedCGTonemapperDropDown.items = ModInvariables.CGTonemapper;
-                    
+
 
                     _advancedCGNeutralBlackInSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralBlackInSliderLabel", "Neutral Black In");
                     _advancedCGNeutralBlackInSliderLabel.tooltip = "Inner control point for the black point when using neutral tonemapper";
 
-                    _advancedCGNeutralBlackInSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralBlackInSliderLabel, "AdvancedCGNeutralBlackInSliderNumeral", ModProperties.Instance.ActiveProfile.CGNeutralBlackIn.ToString());
+                    _advancedCGNeutralBlackInSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralBlackInSliderLabel, "AdvancedCGNeutralBlackInSliderNumeral", ProfileManager.Instance.ActiveProfile.CGNeutralBlackIn.ToString());
                     _advancedCGNeutralBlackInSliderNumeral.width = 100f;
                     _advancedCGNeutralBlackInSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralBlackInSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralBlackInSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralBlackInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackInSlider", -0.1f, 0.1f, 0.002f, ModProperties.Instance.ActiveProfile.CGNeutralBlackIn);
+                    _advancedCGNeutralBlackInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackInSlider", -0.1f, 0.1f, 0.002f, 0.002f, ProfileManager.Instance.ActiveProfile.CGNeutralBlackIn);
                     _advancedCGNeutralBlackInSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralBlackInSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGNeutralBlackIn = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGNeutralBlackIn = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGNeutralBlackInSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGNeutralBlackInSlider.value = 0.02f;
-
-                            _advancedCGNeutralBlackInSliderNumeral.text = _advancedCGNeutralBlackInSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGNeutralBlackIn = _advancedCGNeutralBlackInSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGNeutralWhiteInSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralWhiteInSliderLabel", "Neutral White In");
                     _advancedCGNeutralWhiteInSliderLabel.tooltip = "Inner control point for the white point when using neutral tonemapper";
 
-                    _advancedCGNeutralWhiteInSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteInSliderLabel, "AdvancedCGNeutralWhiteInSliderNumeral", ModProperties.Instance.ActiveProfile.CGNeutralWhiteIn.ToString());
+                    _advancedCGNeutralWhiteInSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteInSliderLabel, "AdvancedCGNeutralWhiteInSliderNumeral", ProfileManager.Instance.ActiveProfile.CGNeutralWhiteIn.ToString());
                     _advancedCGNeutralWhiteInSliderNumeral.width = 100f;
                     _advancedCGNeutralWhiteInSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteInSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteInSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteInSlider", 1f, 20f, 0.2f, ModProperties.Instance.ActiveProfile.CGNeutralWhiteIn);
+                    _advancedCGNeutralWhiteInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteInSlider", 1f, 20f, 0.2f, 0.2f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteIn);
                     _advancedCGNeutralWhiteInSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteInSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGNeutralWhiteIn = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGNeutralWhiteIn = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGNeutralWhiteInSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGNeutralWhiteInSlider.value = 10f;
-
-                            _advancedCGNeutralWhiteInSliderNumeral.text = _advancedCGNeutralWhiteInSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGNeutralWhiteIn = _advancedCGNeutralWhiteInSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGNeutralBlackOutSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralBlackOutSliderLabel", "Neutral Black Out");
                     _advancedCGNeutralBlackOutSliderLabel.tooltip = "Outer control point for the black point when using neutral tonemapper";
 
-                    _advancedCGNeutralBlackOutSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralBlackOutSliderLabel, "AdvancedCGNeutralBlackOutSliderNumeral", ModProperties.Instance.ActiveProfile.CGNeutralBlackOut.ToString());
+                    _advancedCGNeutralBlackOutSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralBlackOutSliderLabel, "AdvancedCGNeutralBlackOutSliderNumeral", ProfileManager.Instance.ActiveProfile.CGNeutralBlackOut.ToString());
                     _advancedCGNeutralBlackOutSliderNumeral.width = 100f;
                     _advancedCGNeutralBlackOutSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralBlackOutSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralBlackOutSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralBlackOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackOutSlider", -0.09f, 0.1f, 0.002f, ModProperties.Instance.ActiveProfile.CGNeutralBlackOut);
+                    _advancedCGNeutralBlackOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackOutSlider", -0.09f, 0.1f, 0.002f, 0.002f, ProfileManager.Instance.ActiveProfile.CGNeutralBlackOut);
                     _advancedCGNeutralBlackOutSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralBlackOutSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGNeutralBlackOut = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGNeutralBlackOut = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGNeutralBlackOutSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGNeutralBlackOutSlider.value = 0f;
-
-                            _advancedCGNeutralBlackOutSliderNumeral.text = _advancedCGNeutralBlackOutSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGNeutralBlackOut = _advancedCGNeutralBlackOutSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGNeutralWhiteOutSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralWhiteOutSliderLabel", "Neutral White Out");
                     _advancedCGNeutralWhiteOutSliderLabel.tooltip = "Outer control point for the white point when using neutral tonemapper";
 
-                    _advancedCGNeutralWhiteOutSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteOutSliderLabel, "AdvancedCGNeutralWhiteOutSliderNumeral", ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut.ToString());
+                    _advancedCGNeutralWhiteOutSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteOutSliderLabel, "AdvancedCGNeutralWhiteOutSliderNumeral", ProfileManager.Instance.ActiveProfile.CGNeutralWhiteOut.ToString());
                     _advancedCGNeutralWhiteOutSliderNumeral.width = 100f;
                     _advancedCGNeutralWhiteOutSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteOutSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteOutSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteOutSlider", 1f, 19f, 0.2f, ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut);
+                    _advancedCGNeutralWhiteOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteOutSlider", 1f, 19f, 0.2f, 0.2f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteOut);
                     _advancedCGNeutralWhiteOutSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteOutSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGNeutralWhiteOut = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGNeutralWhiteOutSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGNeutralWhiteOutSlider.value = 10f;
-
-                            _advancedCGNeutralWhiteOutSliderNumeral.text = _advancedCGNeutralWhiteOutSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut = _advancedCGNeutralWhiteOutSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGNeutralWhiteLevelSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralWhiteLevelSliderLabel", "Neutral White Level");
                     _advancedCGNeutralWhiteLevelSliderLabel.tooltip = "Pre-curve white point adjustment when using neutral tonemapper";
 
-                    _advancedCGNeutralWhiteLevelSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteLevelSliderLabel, "AdvancedCGNeutralWhiteLevelSliderNumeral", ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel.ToString());
+                    _advancedCGNeutralWhiteLevelSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteLevelSliderLabel, "AdvancedCGNeutralWhiteLevelSliderNumeral", ProfileManager.Instance.ActiveProfile.CGNeutralWhiteLevel.ToString());
                     _advancedCGNeutralWhiteLevelSliderNumeral.width = 100f;
                     _advancedCGNeutralWhiteLevelSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteLevelSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteLevelSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteLevelSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteLevelSlider", 0.1f, 20f, 0.1f, ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel);
+                    _advancedCGNeutralWhiteLevelSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteLevelSlider", 0.1f, 20f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteLevel);
                     _advancedCGNeutralWhiteLevelSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteLevelSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGNeutralWhiteLevel = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGNeutralWhiteLevelSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGNeutralWhiteLevelSlider.value = 5.3f;
-
-                            _advancedCGNeutralWhiteLevelSliderNumeral.text = _advancedCGNeutralWhiteLevelSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel = _advancedCGNeutralWhiteLevelSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
                     _advancedCGNeutralWhiteClipSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGNeutralWhiteClipSliderLabel", "Neutral White Clip");
                     _advancedCGNeutralWhiteClipSliderLabel.tooltip = "Post-curve white point adjustment using neutral tonemapper";
 
-                    _advancedCGNeutralWhiteClipSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteClipSliderLabel, "AdvancedCGNeutralWhiteClipSliderNumeral", ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip.ToString());
+                    _advancedCGNeutralWhiteClipSliderNumeral = UIUtils.CreateLabel(_advancedCGNeutralWhiteClipSliderLabel, "AdvancedCGNeutralWhiteClipSliderNumeral", ProfileManager.Instance.ActiveProfile.CGNeutralWhiteClip.ToString());
                     _advancedCGNeutralWhiteClipSliderNumeral.width = 100f;
                     _advancedCGNeutralWhiteClipSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteClipSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteClipSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteClipSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteClipSlider", 1f, 10f, 0.1f, ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip);
+                    _advancedCGNeutralWhiteClipSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteClipSlider", 1f, 10f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteClip);
                     _advancedCGNeutralWhiteClipSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteClipSliderNumeral.text = value.ToString();
-                        ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGNeutralWhiteClip = value;
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGNeutralWhiteClipSlider.eventMouseUp += (component, eventParam) =>
                     {
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _advancedCGNeutralWhiteClipSlider.value = 10f;
-
-                            _advancedCGNeutralWhiteClipSliderNumeral.text = _advancedCGNeutralWhiteClipSlider.value.ToString();
-                            ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip = _advancedCGNeutralWhiteClipSlider.value;
-                            ModConfig.Instance.Apply();
                         }
                     };
 
@@ -1377,7 +1401,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelRedSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGChannelRedSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelRedSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGChannelRedSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelRedSlider", 0f, 1f, 0.01f, 0f);
+                    _advancedCGChannelRedSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelRedSlider", 0f, 1f, 0.01f, 0.01f, 0f);
                     _advancedCGChannelRedSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGChannelRedSliderNumeral.text = value.ToString();
@@ -1385,17 +1409,17 @@ namespace RenderIt.Panels
                         switch (_advancedCGChannelDropDown.selectedIndex)
                         {
                             case 0:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed = value;
                                 break;
                             case 1:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed = value;
                                 break;
                             case 2:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed = value;
                                 break;
                         }
 
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGChannelRedSlider.eventMouseUp += (component, eventParam) =>
                     {
@@ -1405,22 +1429,16 @@ namespace RenderIt.Panels
                             {
                                 case 0:
                                     _advancedCGChannelRedSlider.value = 1f;
-                                    _advancedCGChannelRedSliderNumeral.text = _advancedCGChannelRedSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed = _advancedCGChannelRedSlider.value;
                                     break;
                                 case 1:
                                     _advancedCGChannelRedSlider.value = 0f;
-                                    _advancedCGChannelRedSliderNumeral.text = _advancedCGChannelRedSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed = _advancedCGChannelRedSlider.value;
                                     break;
                                 case 2:
                                     _advancedCGChannelRedSlider.value = 0f;
-                                    _advancedCGChannelRedSliderNumeral.text = _advancedCGChannelRedSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed = _advancedCGChannelRedSlider.value;
                                     break;
                             }
 
-                            ModConfig.Instance.Apply();
+                            ProfileManager.Instance.Apply();
                         }
                     };
 
@@ -1431,7 +1449,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelGreenSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGChannelGreenSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelGreenSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGChannelGreenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelGreenSlider", 0f, 1f, 0.01f, 0f);
+                    _advancedCGChannelGreenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelGreenSlider", 0f, 1f, 0.01f, 0.01f, 0f);
                     _advancedCGChannelGreenSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGChannelGreenSliderNumeral.text = value.ToString();
@@ -1439,17 +1457,17 @@ namespace RenderIt.Panels
                         switch (_advancedCGChannelDropDown.selectedIndex)
                         {
                             case 0:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen = value;
                                 break;
                             case 1:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen = value;
                                 break;
                             case 2:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen = value;
                                 break;
                         }
 
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGChannelGreenSlider.eventMouseUp += (component, eventParam) =>
                     {
@@ -1459,22 +1477,16 @@ namespace RenderIt.Panels
                             {
                                 case 0:
                                     _advancedCGChannelGreenSlider.value = 0f;
-                                    _advancedCGChannelGreenSliderNumeral.text = _advancedCGChannelGreenSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen = _advancedCGChannelGreenSlider.value;
                                     break;
                                 case 1:
                                     _advancedCGChannelGreenSlider.value = 1f;
-                                    _advancedCGChannelGreenSliderNumeral.text = _advancedCGChannelGreenSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen = _advancedCGChannelGreenSlider.value;
                                     break;
                                 case 2:
                                     _advancedCGChannelGreenSlider.value = 0f;
-                                    _advancedCGChannelGreenSliderNumeral.text = _advancedCGChannelGreenSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen = _advancedCGChannelGreenSlider.value;
                                     break;
                             }
 
-                            ModConfig.Instance.Apply();
+                            ProfileManager.Instance.Apply();
                         }
                     };
 
@@ -1485,7 +1497,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelBlueSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGChannelBlueSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelBlueSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGChannelBlueSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelBlueSlider", 0f, 1f, 0.01f, 0f);
+                    _advancedCGChannelBlueSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelBlueSlider", 0f, 1f, 0.01f, 0.01f, 0f);
                     _advancedCGChannelBlueSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGChannelBlueSliderNumeral.text = value.ToString();
@@ -1493,17 +1505,17 @@ namespace RenderIt.Panels
                         switch (_advancedCGChannelDropDown.selectedIndex)
                         {
                             case 0:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue = value;
                                 break;
                             case 1:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue = value;
                                 break;
                             case 2:
-                                ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue = value;
+                                ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue = value;
                                 break;
                         }
 
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.Apply();
                     };
                     _advancedCGChannelBlueSlider.eventMouseUp += (component, eventParam) =>
                     {
@@ -1513,29 +1525,23 @@ namespace RenderIt.Panels
                             {
                                 case 0:
                                     _advancedCGChannelBlueSlider.value = 0f;
-                                    _advancedCGChannelBlueSliderNumeral.text = _advancedCGChannelBlueSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue = _advancedCGChannelBlueSlider.value;
                                     break;
                                 case 1:
                                     _advancedCGChannelBlueSlider.value = 0f;
-                                    _advancedCGChannelBlueSliderNumeral.text = _advancedCGChannelBlueSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue = _advancedCGChannelBlueSlider.value;
                                     break;
                                 case 2:
                                     _advancedCGChannelBlueSlider.value = 1f;
-                                    _advancedCGChannelBlueSliderNumeral.text = _advancedCGChannelBlueSlider.value.ToString();
-                                    ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue = _advancedCGChannelBlueSlider.value;
                                     break;
                             }
 
-                            ModConfig.Instance.Apply();
+                            ProfileManager.Instance.Apply();
                         }
                     };
 
                     _advancedCGTonemapperDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ModProperties.Instance.ActiveProfile.CGTonemapper = value;
-                        ModConfig.Instance.Apply();
+                        ProfileManager.Instance.ActiveProfile.CGTonemapper = value;
+                        ProfileManager.Instance.Apply();
 
                         if (value == 2)
                         {
@@ -1580,35 +1586,35 @@ namespace RenderIt.Panels
                             _advancedCGNeutralWhiteClipSlider.isVisible = false;
                         }
                     };
-                    _advancedCGTonemapperDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.CGTonemapper;
+                    _advancedCGTonemapperDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.CGTonemapper;
 
                     _advancedCGChannelDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
                         switch (value)
                         {
                             case 0:
-                                _advancedCGChannelRedSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed.ToString();
-                                _advancedCGChannelGreenSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen.ToString();
-                                _advancedCGChannelBlueSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue.ToString();
-                                _advancedCGChannelRedSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerRedRed;
-                                _advancedCGChannelGreenSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerRedGreen;
-                                _advancedCGChannelBlueSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerRedBlue;
+                                _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed.ToString();
+                                _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen.ToString();
+                                _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue.ToString();
+                                _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed;
+                                _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen;
+                                _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue;
                                 break;
                             case 1:
-                                _advancedCGChannelRedSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed.ToString();
-                                _advancedCGChannelGreenSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen.ToString();
-                                _advancedCGChannelBlueSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue.ToString();
-                                _advancedCGChannelRedSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenRed;
-                                _advancedCGChannelGreenSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenGreen;
-                                _advancedCGChannelBlueSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerGreenBlue;
+                                _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed.ToString();
+                                _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen.ToString();
+                                _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue.ToString();
+                                _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed;
+                                _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen;
+                                _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue;
                                 break;
                             case 2:
-                                _advancedCGChannelRedSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed.ToString();
-                                _advancedCGChannelGreenSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen.ToString();
-                                _advancedCGChannelBlueSliderNumeral.text = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue.ToString();
-                                _advancedCGChannelRedSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueRed;
-                                _advancedCGChannelGreenSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueGreen;
-                                _advancedCGChannelBlueSlider.value = ModProperties.Instance.ActiveProfile.CGChannelMixerBlueBlue;
+                                _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed.ToString();
+                                _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen.ToString();
+                                _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue.ToString();
+                                _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed;
+                                _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen;
+                                _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue;
                                 break;
                         }
                     };
@@ -1636,56 +1642,59 @@ namespace RenderIt.Panels
             }
         }
 
-        private void ApplyActiveProfile()
+        private void ApplyProfile(Profile profile)
         {
             try
             {
-                _optionsAntiAliasingDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.AntialiasingTechnique;
-                _optionsAmbientOcclusionCheckBox.isChecked = ModProperties.Instance.ActiveProfile.AmbientOcclusionEnabled;
-                _optionsBloomCheckBox.isChecked = ModProperties.Instance.ActiveProfile.BloomEnabled;
-                _optionsColorGradingCheckBox.isChecked = ModProperties.Instance.ActiveProfile.ColorGradingEnabled;
+                _optionsSunIntensitySlider.value = profile.SunIntensity;
+                _optionsMoonIntensitySlider.value = profile.MoonIntensity;
 
-                _advancedFXAAQualityDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.FXAAQuality;
+                _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
+                _optionsAmbientOcclusionCheckBox.isChecked = profile.AmbientOcclusionEnabled;
+                _optionsBloomCheckBox.isChecked = profile.BloomEnabled;
+                _optionsColorGradingCheckBox.isChecked = profile.ColorGradingEnabled;
 
-                _advancedTAAJitterSpreadSlider.value = ModProperties.Instance.ActiveProfile.TAAJitterSpread;
-                _advancedTAASharpenSlider.value = ModProperties.Instance.ActiveProfile.TAASharpen;
-                _advancedTAAStationaryBlendingSlider.value = ModProperties.Instance.ActiveProfile.TAAStationaryBlending;
-                _advancedTAAMotionBlendingSlider.value = ModProperties.Instance.ActiveProfile.TAAMotionBlending;
+                _advancedFXAAQualityDropDown.selectedIndex = profile.FXAAQuality;
 
-                _advancedAOIntensitySlider.value = ModProperties.Instance.ActiveProfile.AOIntensity;
-                _advancedAORadiusSlider.value = ModProperties.Instance.ActiveProfile.AORadius;
-                _advancedAOSampleCountDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.AOSampleCount;
-                _advancedAODownsamplingCheckBox.isChecked = ModProperties.Instance.ActiveProfile.AODownsampling;
-                _advancedAOForceForwardCompatibilityCheckBox.isChecked = ModProperties.Instance.ActiveProfile.AOForceForwardCompatibility;
-                _advancedAOAmbientOnlyCheckBox.isChecked = ModProperties.Instance.ActiveProfile.AOAmbientOnly;
-                _advancedAOHighPrecisionCheckBox.isChecked = ModProperties.Instance.ActiveProfile.AOHighPrecision;
+                _advancedTAAJitterSpreadSlider.value = profile.TAAJitterSpread;
+                _advancedTAAStationaryBlendingSlider.value = profile.TAAStationaryBlending;
+                _advancedTAAMotionBlendingSlider.value = profile.TAAMotionBlending;
+                _advancedTAASharpenSlider.value = profile.TAASharpen;
 
-                _advancedBloomVanillaBloomCheckBox.isChecked = ModProperties.Instance.ActiveProfile.BloomVanillaBloomEnabled;
-                _advancedBloomIntensitySlider.value = ModProperties.Instance.ActiveProfile.BloomIntensity;
-                _advancedBloomThresholdSlider.value = ModProperties.Instance.ActiveProfile.BloomThreshold;
-                _advancedBloomSoftKneeSlider.value = ModProperties.Instance.ActiveProfile.BloomSoftKnee;
-                _advancedBloomRadiusSlider.value = ModProperties.Instance.ActiveProfile.BloomRadius;
-                _advancedBloomAntiFlickerCheckBox.isChecked = ModProperties.Instance.ActiveProfile.BloomAntiFlicker;
+                _advancedAOIntensitySlider.value = profile.AOIntensity;
+                _advancedAORadiusSlider.value = profile.AORadius;
+                _advancedAOSampleCountDropDown.selectedIndex = profile.AOSampleCount;
+                _advancedAODownsamplingCheckBox.isChecked = profile.AODownsampling;
+                _advancedAOForceForwardCompatibilityCheckBox.isChecked = profile.AOForceForwardCompatibility;
+                _advancedAOAmbientOnlyCheckBox.isChecked = profile.AOAmbientOnly;
+                _advancedAOHighPrecisionCheckBox.isChecked = profile.AOHighPrecision;
 
-                _advancedCGVanillaTonemappingCheckBox.isChecked = ModProperties.Instance.ActiveProfile.CGVanillaTonemappingEnabled;
-                _advancedCGVanillaColorCorrectionLUTCheckBox.isChecked = ModProperties.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled;
-                _advancedCGPostExposureSlider.value = ModProperties.Instance.ActiveProfile.CGPostExposure;
-                _advancedCGTemperatureSlider.value = ModProperties.Instance.ActiveProfile.CGTemperature;
-                _advancedCGTintSlider.value = ModProperties.Instance.ActiveProfile.CGTint;
-                _advancedCGHueShiftSlider.value = ModProperties.Instance.ActiveProfile.CGHueShift;
-                _advancedCGSaturationSlider.value = ModProperties.Instance.ActiveProfile.CGSaturation;
-                _advancedCGContrastSlider.value = ModProperties.Instance.ActiveProfile.CGContrast;
-                _advancedCGTonemapperDropDown.selectedIndex = ModProperties.Instance.ActiveProfile.CGTonemapper;
-                _advancedCGNeutralBlackInSlider.value = ModProperties.Instance.ActiveProfile.CGNeutralBlackIn;
-                _advancedCGNeutralWhiteInSlider.value = ModProperties.Instance.ActiveProfile.CGNeutralWhiteIn;
-                _advancedCGNeutralBlackOutSlider.value = ModProperties.Instance.ActiveProfile.CGNeutralBlackOut;
-                _advancedCGNeutralWhiteOutSlider.value = ModProperties.Instance.ActiveProfile.CGNeutralWhiteOut;
-                _advancedCGNeutralWhiteLevelSlider.value = ModProperties.Instance.ActiveProfile.CGNeutralWhiteLevel;
-                _advancedCGNeutralWhiteClipSlider.value = ModProperties.Instance.ActiveProfile.CGNeutralWhiteClip;
+                _advancedBloomVanillaBloomCheckBox.isChecked = profile.BloomVanillaBloomEnabled;
+                _advancedBloomIntensitySlider.value = profile.BloomIntensity;
+                _advancedBloomThresholdSlider.value = profile.BloomThreshold;
+                _advancedBloomSoftKneeSlider.value = profile.BloomSoftKnee;
+                _advancedBloomRadiusSlider.value = profile.BloomRadius;
+                _advancedBloomAntiFlickerCheckBox.isChecked = profile.BloomAntiFlicker;
+
+                _advancedCGVanillaTonemappingCheckBox.isChecked = profile.CGVanillaTonemappingEnabled;
+                _advancedCGVanillaColorCorrectionLUTCheckBox.isChecked = profile.CGVanillaColorCorrectionLUTEnabled;
+                _advancedCGPostExposureSlider.value = profile.CGPostExposure;
+                _advancedCGTemperatureSlider.value = profile.CGTemperature;
+                _advancedCGTintSlider.value = profile.CGTint;
+                _advancedCGHueShiftSlider.value = profile.CGHueShift;
+                _advancedCGSaturationSlider.value = profile.CGSaturation;
+                _advancedCGContrastSlider.value = profile.CGContrast;
+                _advancedCGTonemapperDropDown.selectedIndex = profile.CGTonemapper;
+                _advancedCGNeutralBlackInSlider.value = profile.CGNeutralBlackIn;
+                _advancedCGNeutralWhiteInSlider.value = profile.CGNeutralWhiteIn;
+                _advancedCGNeutralBlackOutSlider.value = profile.CGNeutralBlackOut;
+                _advancedCGNeutralWhiteOutSlider.value = profile.CGNeutralWhiteOut;
+                _advancedCGNeutralWhiteLevelSlider.value = profile.CGNeutralWhiteLevel;
+                _advancedCGNeutralWhiteClipSlider.value = profile.CGNeutralWhiteClip;
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] MainPanel:ApplyActiveProfile -> Exception: " + e.Message);
+                Debug.Log("[Render It!] MainPanel:ApplyProfile -> Exception: " + e.Message);
             }
         }
 

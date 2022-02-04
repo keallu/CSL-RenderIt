@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using RenderIt.Managers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace RenderIt
 
                 if (!___m_Materials.TryGetValue(shaderName, out material))
                 {
-                    var shader = AssetBundleUtils.Find(ModProperties.Instance.AssetBundle, shaderName);
+                    var shader = AssetBundleUtils.Find(AssetManager.Instance.AssetBundle, shaderName);
 
                     if (shader == null)
                         throw new ArgumentException(string.Format("Shader not found ({0})", shaderName));

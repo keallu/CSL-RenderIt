@@ -12,14 +12,10 @@ namespace RenderIt
         public void OnEnabled()
         {
             HarmonyHelper.DoOnHarmonyReady(() => Patcher.PatchAll());
-
-            ModUtils.PatchOptionsGraphicsPanel(true);
         }
 
         public void OnDisabled()
         {
-            ModUtils.PatchOptionsGraphicsPanel(false);
-
             if (HarmonyHelper.IsHarmonyInstalled)
             {
                 Patcher.UnpatchAll();
