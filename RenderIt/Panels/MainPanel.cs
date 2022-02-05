@@ -30,12 +30,20 @@ namespace RenderIt.Panels
         private UIDropDown _optionsDropDown;
 
         private UIPanel _optionsLightingPanel;
+        private UILabel _optionsSunTitle;
         private UILabel _optionsSunIntensitySliderLabel;
         private UILabel _optionsSunIntensitySliderNumeral;
         private UISlider _optionsSunIntensitySlider;
+        private UILabel _optionsSunShadowStrengthSliderLabel;
+        private UILabel _optionsSunShadowStrengthSliderNumeral;
+        private UISlider _optionsSunShadowStrengthSlider;
+        private UILabel _optionsMoonTitle;
         private UILabel _optionsMoonIntensitySliderLabel;
         private UILabel _optionsMoonIntensitySliderNumeral;
         private UISlider _optionsMoonIntensitySlider;
+        private UILabel _optionsMoonShadowStrengthSliderLabel;
+        private UILabel _optionsMoonShadowStrengthSliderNumeral;
+        private UISlider _optionsMoonShadowStrengthSlider;
 
         private UIPanel _optionsPostProcessingPanel;
         private UILabel _optionsAntiAliasingDropDownLabel;
@@ -225,12 +233,20 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsDropDownLabel);
                 DestroyGameObject(_optionsDropDown);
                 DestroyGameObject(_optionsLightingPanel);
+                DestroyGameObject(_optionsSunTitle);
                 DestroyGameObject(_optionsSunIntensitySliderLabel);
                 DestroyGameObject(_optionsSunIntensitySliderNumeral);
                 DestroyGameObject(_optionsSunIntensitySlider);
+                DestroyGameObject(_optionsSunShadowStrengthSliderLabel);
+                DestroyGameObject(_optionsSunShadowStrengthSliderNumeral);
+                DestroyGameObject(_optionsSunShadowStrengthSlider);
+                DestroyGameObject(_optionsMoonTitle);
                 DestroyGameObject(_optionsMoonIntensitySliderLabel);
                 DestroyGameObject(_optionsMoonIntensitySliderNumeral);
                 DestroyGameObject(_optionsMoonIntensitySlider);
+                DestroyGameObject(_optionsMoonShadowStrengthSliderLabel);
+                DestroyGameObject(_optionsMoonShadowStrengthSliderNumeral);
+                DestroyGameObject(_optionsMoonShadowStrengthSlider);
                 DestroyGameObject(_optionsPostProcessingPanel);
                 DestroyGameObject(_optionsAntiAliasingDropDownLabel);
                 DestroyGameObject(_optionsAntiAliasingDropDown);
@@ -587,8 +603,10 @@ namespace RenderIt.Panels
                     _optionsLightingPanel.autoLayoutPadding.top = 0;
                     _optionsLightingPanel.autoLayoutPadding.bottom = 10;
 
-                    _optionsSunIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSunIntensitySliderLabel", "Sun Intensity");
-                    _optionsSunIntensitySliderLabel.tooltip = "";
+                    _optionsSunTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSunTitle", "Sun");
+
+                    _optionsSunIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSunIntensitySliderLabel", "Intensity");
+                    _optionsSunIntensitySliderLabel.tooltip = "Set the intensity (brightness) of the sun";
 
                     _optionsSunIntensitySliderNumeral = UIUtils.CreateLabel(_optionsSunIntensitySliderLabel, "OptionsSunIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.SunIntensity.ToString());
                     _optionsSunIntensitySliderNumeral.width = 100f;
@@ -610,8 +628,33 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsMoonIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonIntensitySliderLabel", "Moon Intensity");
-                    _optionsMoonIntensitySliderLabel.tooltip = "";
+                    _optionsSunShadowStrengthSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSunShadowStrengthSliderLabel", "Shadow Strength");
+                    _optionsSunShadowStrengthSliderLabel.tooltip = "Set the strength (darkness) of cast shadow from the sun";
+
+                    _optionsSunShadowStrengthSliderNumeral = UIUtils.CreateLabel(_optionsSunShadowStrengthSliderLabel, "OptionsSunShadowStrengthSliderNumeral", ProfileManager.Instance.ActiveProfile.SunShadowStrength.ToString());
+                    _optionsSunShadowStrengthSliderNumeral.width = 100f;
+                    _optionsSunShadowStrengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsSunShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSunShadowStrengthSliderNumeral.width - 10f, 0f);
+
+                    _optionsSunShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunShadowStrengthSlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.SunShadowStrength);
+                    _optionsSunShadowStrengthSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsSunShadowStrengthSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.SunShadowStrength = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsSunShadowStrengthSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsSunShadowStrengthSlider.value = (float)DefaultManager.Instance.Get("SunShadowStrength");
+                        }
+                    };
+
+                    _optionsMoonTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsMoonTitle", "Moon");
+
+                    _optionsMoonIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonIntensitySliderLabel", "Intensity");
+                    _optionsMoonIntensitySliderLabel.tooltip = "Set the intensity (brightness) of the moon";
 
                     _optionsMoonIntensitySliderNumeral = UIUtils.CreateLabel(_optionsMoonIntensitySliderLabel, "OptionsMoonIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.MoonIntensity.ToString());
                     _optionsMoonIntensitySliderNumeral.width = 100f;
@@ -630,6 +673,29 @@ namespace RenderIt.Panels
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _optionsMoonIntensitySlider.value = (float)DefaultManager.Instance.Get("MoonIntensity");
+                        }
+                    };
+
+                    _optionsMoonShadowStrengthSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonShadowStrengthSliderLabel", "Shadow Strength");
+                    _optionsMoonShadowStrengthSliderLabel.tooltip = "Set the strength (darkness) of cast shadow from the moon";
+
+                    _optionsMoonShadowStrengthSliderNumeral = UIUtils.CreateLabel(_optionsMoonShadowStrengthSliderLabel, "OptionsMoonShadowStrengthSliderNumeral", ProfileManager.Instance.ActiveProfile.MoonShadowStrength.ToString());
+                    _optionsMoonShadowStrengthSliderNumeral.width = 100f;
+                    _optionsMoonShadowStrengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsMoonShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsMoonShadowStrengthSliderNumeral.width - 10f, 0f);
+
+                    _optionsMoonShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonShadowStrengthSlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.MoonShadowStrength);
+                    _optionsMoonShadowStrengthSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsMoonShadowStrengthSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.MoonShadowStrength = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsMoonShadowStrengthSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsMoonShadowStrengthSlider.value = (float)DefaultManager.Instance.Get("MoonShadowStrength");
                         }
                     };
 
@@ -1647,7 +1713,9 @@ namespace RenderIt.Panels
             try
             {
                 _optionsSunIntensitySlider.value = profile.SunIntensity;
+                _optionsSunShadowStrengthSlider.value = profile.SunShadowStrength;
                 _optionsMoonIntensitySlider.value = profile.MoonIntensity;
+                _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
 
                 _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
                 _optionsAmbientOcclusionCheckBox.isChecked = profile.AmbientOcclusionEnabled;

@@ -264,7 +264,9 @@ namespace RenderIt
             try
             {
                 DayNightProperties.instance.m_SunIntensity = ProfileManager.Instance.ActiveProfile.SunIntensity;
+                DayNightProperties.instance.sunLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.SunShadowStrength;
                 DayNightProperties.instance.m_MoonIntensity = ProfileManager.Instance.ActiveProfile.MoonIntensity;
+                DayNightProperties.instance.moonLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.MoonShadowStrength;
             }
             catch (Exception e)
             {

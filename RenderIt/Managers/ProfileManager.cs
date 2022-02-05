@@ -90,9 +90,19 @@ namespace RenderIt.Managers
                 _activeProfile.SunIntensity = (float)DefaultManager.Instance.Get("SunIntensity");
             }
 
+            if (float.IsNaN(_activeProfile.SunShadowStrength))
+            {
+                _activeProfile.SunShadowStrength = (float)DefaultManager.Instance.Get("SunShadowStrength");
+            }
+
             if (float.IsNaN(_activeProfile.MoonIntensity))
             {
                 _activeProfile.MoonIntensity = (float)DefaultManager.Instance.Get("MoonIntensity");
+            }
+
+            if (float.IsNaN(_activeProfile.MoonShadowStrength))
+            {
+                _activeProfile.MoonShadowStrength = (float)DefaultManager.Instance.Get("MoonShadowStrength");
             }
         }
     }

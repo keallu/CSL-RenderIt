@@ -21,7 +21,9 @@ namespace RenderIt.Managers
             _defaults.Clear();
 
             _defaults.Add("SunIntensity", DayNightProperties.instance.m_SunIntensity);
+            _defaults.Add("SunShadowStrength", DayNightProperties.instance.sunLightSource.shadowStrength);
             _defaults.Add("MoonIntensity", DayNightProperties.instance.m_MoonIntensity);
+            _defaults.Add("MoonShadowStrength", DayNightProperties.instance.moonLightSource.shadowStrength);
         }
 
         public object Get(string name)
