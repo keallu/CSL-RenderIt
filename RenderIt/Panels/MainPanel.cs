@@ -28,7 +28,6 @@ namespace RenderIt.Panels
 
         private UILabel _optionsDropDownLabel;
         private UIDropDown _optionsDropDown;
-
         private UIPanel _optionsLightingPanel;
         private UILabel _optionsSunTitle;
         private UILabel _optionsSunIntensitySliderLabel;
@@ -44,10 +43,20 @@ namespace RenderIt.Panels
         private UILabel _optionsMoonShadowStrengthSliderLabel;
         private UILabel _optionsMoonShadowStrengthSliderNumeral;
         private UISlider _optionsMoonShadowStrengthSlider;
-
+        private UIPanel _optionsTexturesPanel;
+        private UILabel _optionsSharpnessTitle;
+        private UILabel _optionsSharpnessAssetTypeDropDownLabel;
+        private UIDropDown _optionsSharpnessAssetTypeDropDown;
+        private UILabel _optionsSharpnessAnisoLevelDropDownLabel;
+        private UIDropDown _optionsSharpnessAnisoLevelDropDown;
+        private UILabel _optionsSharpnessMipMapBiasDropDownLabel;
+        private UIDropDown _optionsSharpnessMipMapBiasDropDown;
+        private UICheckBox _optionsSharpnessLODCheckBox;
+        private UILabel _optionsAntiAliasingTitle;
         private UIPanel _optionsPostProcessingPanel;
         private UILabel _optionsAntiAliasingDropDownLabel;
         private UIDropDown _optionsAntiAliasingDropDown;
+        private UILabel _optionsEffectsTitle;
         private UICheckBox _optionsAmbientOcclusionCheckBox;
         private UICheckBox _optionsBloomCheckBox;
         private UICheckBox _optionsColorGradingCheckBox;
@@ -247,9 +256,20 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsMoonShadowStrengthSliderLabel);
                 DestroyGameObject(_optionsMoonShadowStrengthSliderNumeral);
                 DestroyGameObject(_optionsMoonShadowStrengthSlider);
+                DestroyGameObject(_optionsTexturesPanel);
+                DestroyGameObject(_optionsSharpnessTitle);
+                DestroyGameObject(_optionsSharpnessAssetTypeDropDownLabel);
+                DestroyGameObject(_optionsSharpnessAssetTypeDropDown);
+                DestroyGameObject(_optionsSharpnessAnisoLevelDropDownLabel);
+                DestroyGameObject(_optionsSharpnessAnisoLevelDropDown);
+                DestroyGameObject(_optionsSharpnessMipMapBiasDropDownLabel);
+                DestroyGameObject(_optionsSharpnessMipMapBiasDropDown);
+                DestroyGameObject(_optionsSharpnessLODCheckBox);
+                DestroyGameObject(_optionsAntiAliasingTitle);
                 DestroyGameObject(_optionsPostProcessingPanel);
                 DestroyGameObject(_optionsAntiAliasingDropDownLabel);
                 DestroyGameObject(_optionsAntiAliasingDropDown);
+                DestroyGameObject(_optionsEffectsTitle);
                 DestroyGameObject(_optionsAmbientOcclusionCheckBox);
                 DestroyGameObject(_optionsBloomCheckBox);
                 DestroyGameObject(_optionsColorGradingCheckBox);
@@ -589,7 +609,7 @@ namespace RenderIt.Panels
                     _optionsDropDownLabel.tooltip = "Select which type of options you want to change";
 
                     _optionsDropDown = UIUtils.CreateDropDown(panel, "OptionsDropDown");
-                    _optionsDropDown.items = new string[] { "Lighting", "Post-Processing" };
+                    _optionsDropDown.items = new string[] { "Lighting", "Textures", "Post-Processing" };
 
                     _optionsLightingPanel = UIUtils.CreatePanel(panel, "OptionsLightingPanel");
                     _optionsLightingPanel.isVisible = false;
@@ -699,6 +719,180 @@ namespace RenderIt.Panels
                         }
                     };
 
+                    _optionsTexturesPanel = UIUtils.CreatePanel(panel, "OptionsTexturesPanel");
+                    _optionsTexturesPanel.isVisible = false;
+                    _optionsTexturesPanel.width = _optionsLightingPanel.parent.width;
+                    _optionsTexturesPanel.height = 500f;
+                    _optionsTexturesPanel.autoLayout = true;
+                    _optionsTexturesPanel.autoLayoutStart = LayoutStart.TopLeft;
+                    _optionsTexturesPanel.autoLayoutDirection = LayoutDirection.Vertical;
+                    _optionsTexturesPanel.autoLayoutPadding.left = 0;
+                    _optionsTexturesPanel.autoLayoutPadding.right = 0;
+                    _optionsTexturesPanel.autoLayoutPadding.top = 0;
+                    _optionsTexturesPanel.autoLayoutPadding.bottom = 10;
+
+                    _optionsSharpnessTitle = UIUtils.CreateTitle(_optionsTexturesPanel, "OptionsSharpnessTitle", "Sharpness");
+
+                    _optionsSharpnessAssetTypeDropDownLabel = UIUtils.CreateLabel(_optionsTexturesPanel, "OptionsSharpnessAssetTypeDropDownLabel", "Type");
+                    _optionsSharpnessAssetTypeDropDownLabel.tooltip = "Select the asset type for which to set sharpness of textures";
+
+                    _optionsSharpnessAssetTypeDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessAssetTypeDropDown");
+                    _optionsSharpnessAssetTypeDropDown.items = ModInvariables.SharpnessAssetType;
+
+                    _optionsSharpnessAnisoLevelDropDownLabel = UIUtils.CreateLabel(_optionsTexturesPanel, "OptionsSharpnessAnisoLevelDropDownLabel", "Anisotropic Filtering Level");
+                    _optionsSharpnessAnisoLevelDropDownLabel.tooltip = "Set the anisotropic filtering level which makes texture look better when viewed at a shallow angle";
+
+                    _optionsSharpnessAnisoLevelDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessAnisoLevelDropDown");
+                    _optionsSharpnessAnisoLevelDropDown.items = ModInvariables.AnisoLevels;
+                    _optionsSharpnessAnisoLevelDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            switch (_optionsSharpnessAssetTypeDropDown.selectedIndex)
+                            {
+                                case 0:
+                                    ProfileManager.Instance.ActiveProfile.GeneralAnisoLevel = value;
+                                    break;
+                                case 1:
+                                    ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel = value;
+                                    break;
+                                case 2:
+                                    ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel = value;
+                                    break;
+                                case 3:
+                                    ProfileManager.Instance.ActiveProfile.PropsAnisoLevel = value;
+                                    break;
+                                case 4:
+                                    ProfileManager.Instance.ActiveProfile.CitizensAnisoLevel = value;
+                                    break;
+                                case 5:
+                                    ProfileManager.Instance.ActiveProfile.VehiclesAnisoLevel = value;
+                                    break;
+                                case 6:
+                                    ProfileManager.Instance.ActiveProfile.TreesAnisoLevel = value;
+                                    break;
+                            }
+
+                            ProfileManager.Instance.Apply();
+                        }
+                    };
+
+                    _optionsSharpnessMipMapBiasDropDownLabel = UIUtils.CreateLabel(_optionsTexturesPanel, "OptionsSharpnessMipMapBiasDropDownLabel", "Mip Map Bias");
+                    _optionsSharpnessMipMapBiasDropDownLabel.tooltip = "Set the mip map bias which sharpens or blurs the texture";
+
+                    _optionsSharpnessMipMapBiasDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessMipMapBiasDropDown");
+                    _optionsSharpnessMipMapBiasDropDown.items = ModInvariables.MipMapBias;
+                    _optionsSharpnessMipMapBiasDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            switch (_optionsSharpnessAssetTypeDropDown.selectedIndex)
+                            {
+                                case 0:
+                                    ProfileManager.Instance.ActiveProfile.GeneralMipMapBias = value;
+                                    break;
+                                case 1:
+                                    ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias = value;
+                                    break;
+                                case 2:
+                                    ProfileManager.Instance.ActiveProfile.NetworksMipMapBias = value;
+                                    break;
+                                case 3:
+                                    ProfileManager.Instance.ActiveProfile.PropsMipMapBias = value;
+                                    break;
+                                case 4:
+                                    ProfileManager.Instance.ActiveProfile.CitizensMipMapBias = value;
+                                    break;
+                                case 5:
+                                    ProfileManager.Instance.ActiveProfile.VehiclesMipMapBias = value;
+                                    break;
+                                case 6:
+                                    ProfileManager.Instance.ActiveProfile.TreesMipMapBias = value;
+                                    break;
+                            }
+
+                            ProfileManager.Instance.Apply();
+                        }
+                    };
+
+                    _optionsSharpnessLODCheckBox = UIUtils.CreateCheckBox(_optionsTexturesPanel, "OptionsSharpnessLODCheckBox", "Apply also to LOD textures", false);
+                    _optionsSharpnessLODCheckBox.tooltip = "Sharpness will also be applied to Level of Detail (LOD) textures";
+                    _optionsSharpnessLODCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        switch (_optionsSharpnessAssetTypeDropDown.selectedIndex)
+                        {
+                            case 0:
+                                ProfileManager.Instance.ActiveProfile.GeneralLODIncluded = value;
+                                break;
+                            case 1:
+                                ProfileManager.Instance.ActiveProfile.BuildingsLODIncluded = value;
+                                break;
+                            case 2:
+                                ProfileManager.Instance.ActiveProfile.NetworksLODIncluded = value;
+                                break;
+                            case 3:
+                                ProfileManager.Instance.ActiveProfile.PropsLODIncluded = value;
+                                break;
+                            case 4:
+                                ProfileManager.Instance.ActiveProfile.CitizensLODIncluded = value;
+                                break;
+                            case 5:
+                                ProfileManager.Instance.ActiveProfile.VehiclesLODIncluded = value;
+                                break;
+                            case 6:
+                                ProfileManager.Instance.ActiveProfile.TreesLODIncluded = value;
+                                break;
+                        }
+
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsSharpnessAssetTypeDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            switch (value)
+                            {
+                                case 0:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.GeneralAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.GeneralMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.GeneralLODIncluded;
+                                    break;
+                                case 1:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.BuildingsLODIncluded;
+                                    break;
+                                case 2:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.NetworksMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.NetworksLODIncluded;
+                                    break;
+                                case 3:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.PropsAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.PropsMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.PropsLODIncluded;
+                                    break;
+                                case 4:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.CitizensAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.CitizensMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.CitizensLODIncluded;
+                                    break;
+                                case 5:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.VehiclesAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.VehiclesMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.VehiclesLODIncluded;
+                                    break;
+                                case 6:
+                                    _optionsSharpnessAnisoLevelDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.TreesAnisoLevel;
+                                    _optionsSharpnessMipMapBiasDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.TreesMipMapBias;
+                                    _optionsSharpnessLODCheckBox.isChecked = ProfileManager.Instance.ActiveProfile.TreesLODIncluded;
+                                    break;
+                            }
+                        }
+                    };
+                    _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
+
                     _optionsPostProcessingPanel = UIUtils.CreatePanel(panel, "OptionsPostProcessingPanel");
                     _optionsPostProcessingPanel.isVisible = false;
                     _optionsPostProcessingPanel.width = _optionsPostProcessingPanel.parent.width;
@@ -711,7 +905,9 @@ namespace RenderIt.Panels
                     _optionsPostProcessingPanel.autoLayoutPadding.top = 0;
                     _optionsPostProcessingPanel.autoLayoutPadding.bottom = 10;
 
-                    _optionsAntiAliasingDropDownLabel = UIUtils.CreateLabel(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDownLabel", "Anti-aliasing Technique");
+                    _optionsAntiAliasingTitle = UIUtils.CreateTitle(_optionsPostProcessingPanel, "OptionsAntiAliasingTitle", "Anti-aliasing");
+
+                    _optionsAntiAliasingDropDownLabel = UIUtils.CreateLabel(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDownLabel", "Technique");
                     _optionsAntiAliasingDropDownLabel.tooltip = "The Anti-aliasing techniques offers a set of algorithms designed to prevent aliasing and give a smoother appearance to graphics.\n\nFor anti-aliasing, the game uses the default Enhanced Subpixel Morphological Anti-Aliasing (SMAA) technique\nbut this can be improved with either Fast Approximate Anti-Aliasing (FXAA) or Temporal Anti-Aliasing (TAA) techniques.";
 
                     _optionsAntiAliasingDropDown = UIUtils.CreateDropDown(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDown");
@@ -719,23 +915,28 @@ namespace RenderIt.Panels
                     _optionsAntiAliasingDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.AntialiasingTechnique;
                     _optionsAntiAliasingDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ProfileManager.Instance.ActiveProfile.AntialiasingTechnique = value;
-                        ProfileManager.Instance.Apply();
-
-                        if (value == 3)
+                        if (value != -1)
                         {
-                            if (ModUtils.GetDepthOfFieldInOptionsGraphicsPanel() != 0)
+                            ProfileManager.Instance.ActiveProfile.AntialiasingTechnique = value;
+                            ProfileManager.Instance.Apply();
+
+                            if (value == 3)
                             {
-                                ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", delegate (UIComponent comp, int ret)
+                                if (ModUtils.GetDepthOfFieldInOptionsGraphicsPanel() != 0)
                                 {
-                                    if (ret == 1)
+                                    ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", delegate (UIComponent comp, int ret)
                                     {
-                                        ModUtils.SetDepthOfFieldInOptionsGraphicsPanel(false);
-                                    }
-                                });
+                                        if (ret == 1)
+                                        {
+                                            ModUtils.SetDepthOfFieldInOptionsGraphicsPanel(false);
+                                        }
+                                    });
+                                }
                             }
                         }
                     };
+
+                    _optionsEffectsTitle = UIUtils.CreateTitle(_optionsPostProcessingPanel, "OptionsEffectsTitle", "Effects");
 
                     _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsAmbientOcclusionCheckBox", "Ambient Occlusion Enabled", ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled);
                     _optionsAmbientOcclusionCheckBox.tooltip = "Ambient Occlusion darkens creases, holes, intersections and surfaces that are close to each other";
@@ -761,20 +962,31 @@ namespace RenderIt.Panels
 
                     _optionsDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        switch (value)
+                        if (value != -1)
                         {
-                            case 0:
-                                _optionsLightingPanel.isVisible = true;
-                                _optionsPostProcessingPanel.isVisible = false;
-                                break;
-                            case 1:
-                                _optionsLightingPanel.isVisible = false;
-                                _optionsPostProcessingPanel.isVisible = true;
-                                break;
-                            default:
-                                _optionsLightingPanel.isVisible = true;
-                                _optionsPostProcessingPanel.isVisible = false;
-                                break;
+                            switch (value)
+                            {
+                                case 0:
+                                    _optionsLightingPanel.isVisible = true;
+                                    _optionsTexturesPanel.isVisible = false;
+                                    _optionsPostProcessingPanel.isVisible = false;
+                                    break;
+                                case 1:
+                                    _optionsLightingPanel.isVisible = false;
+                                    _optionsTexturesPanel.isVisible = true;
+                                    _optionsPostProcessingPanel.isVisible = false;
+                                    break;
+                                case 2:
+                                    _optionsLightingPanel.isVisible = false;
+                                    _optionsTexturesPanel.isVisible = false;
+                                    _optionsPostProcessingPanel.isVisible = true;
+                                    break;
+                                default:
+                                    _optionsLightingPanel.isVisible = true;
+                                    _optionsTexturesPanel.isVisible = false;
+                                    _optionsPostProcessingPanel.isVisible = false;
+                                    break;
+                            }
                         }
                     };
                     _optionsDropDown.selectedIndex = 0;
@@ -837,8 +1049,11 @@ namespace RenderIt.Panels
                     _advancedFXAAQualityDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.FXAAQuality;
                     _advancedFXAAQualityDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ProfileManager.Instance.ActiveProfile.FXAAQuality = value;
-                        ProfileManager.Instance.Apply();
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.FXAAQuality = value;
+                            ProfileManager.Instance.Apply();
+                        }
                     };
 
                     _advancedFXAADivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedFXAADivider");
@@ -999,8 +1214,11 @@ namespace RenderIt.Panels
                     _advancedAOSampleCountDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.AOSampleCount;
                     _advancedAOSampleCountDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ProfileManager.Instance.ActiveProfile.AOSampleCount = ConvertAmbientOcclusionSampleCount(value);
-                        ProfileManager.Instance.Apply();
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.AOSampleCount = ConvertAmbientOcclusionSampleCount(value);
+                            ProfileManager.Instance.Apply();
+                        }
                     };
 
                     _advancedAODownsamplingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAODownsamplingCheckBox", "Downsampling", ProfileManager.Instance.ActiveProfile.AODownsampling);
@@ -1606,82 +1824,88 @@ namespace RenderIt.Panels
 
                     _advancedCGTonemapperDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        ProfileManager.Instance.ActiveProfile.CGTonemapper = value;
-                        ProfileManager.Instance.Apply();
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.CGTonemapper = value;
+                            ProfileManager.Instance.Apply();
 
-                        if (value == 2)
-                        {
-                            _advancedCGNeutralBlackInSliderLabel.isVisible = true;
-                            _advancedCGNeutralBlackInSliderNumeral.isVisible = true;
-                            _advancedCGNeutralBlackInSlider.isVisible = true;
-                            _advancedCGNeutralWhiteInSliderLabel.isVisible = true;
-                            _advancedCGNeutralWhiteInSliderNumeral.isVisible = true;
-                            _advancedCGNeutralWhiteInSlider.isVisible = true;
-                            _advancedCGNeutralBlackOutSliderLabel.isVisible = true;
-                            _advancedCGNeutralBlackOutSliderNumeral.isVisible = true;
-                            _advancedCGNeutralBlackOutSlider.isVisible = true;
-                            _advancedCGNeutralWhiteOutSliderLabel.isVisible = true;
-                            _advancedCGNeutralWhiteOutSliderNumeral.isVisible = true;
-                            _advancedCGNeutralWhiteOutSlider.isVisible = true;
-                            _advancedCGNeutralWhiteLevelSliderLabel.isVisible = true;
-                            _advancedCGNeutralWhiteLevelSliderNumeral.isVisible = true;
-                            _advancedCGNeutralWhiteLevelSlider.isVisible = true;
-                            _advancedCGNeutralWhiteClipSliderLabel.isVisible = true;
-                            _advancedCGNeutralWhiteClipSliderNumeral.isVisible = true;
-                            _advancedCGNeutralWhiteClipSlider.isVisible = true;
-                        }
-                        else
-                        {
-                            _advancedCGNeutralBlackInSliderLabel.isVisible = false;
-                            _advancedCGNeutralBlackInSliderNumeral.isVisible = false;
-                            _advancedCGNeutralBlackInSlider.isVisible = false;
-                            _advancedCGNeutralWhiteInSliderLabel.isVisible = false;
-                            _advancedCGNeutralWhiteInSliderNumeral.isVisible = false;
-                            _advancedCGNeutralWhiteInSlider.isVisible = false;
-                            _advancedCGNeutralBlackOutSliderLabel.isVisible = false;
-                            _advancedCGNeutralBlackOutSliderNumeral.isVisible = false;
-                            _advancedCGNeutralBlackOutSlider.isVisible = false;
-                            _advancedCGNeutralWhiteOutSliderLabel.isVisible = false;
-                            _advancedCGNeutralWhiteOutSliderNumeral.isVisible = false;
-                            _advancedCGNeutralWhiteOutSlider.isVisible = false;
-                            _advancedCGNeutralWhiteLevelSliderLabel.isVisible = false;
-                            _advancedCGNeutralWhiteLevelSliderNumeral.isVisible = false;
-                            _advancedCGNeutralWhiteLevelSlider.isVisible = false;
-                            _advancedCGNeutralWhiteClipSliderLabel.isVisible = false;
-                            _advancedCGNeutralWhiteClipSliderNumeral.isVisible = false;
-                            _advancedCGNeutralWhiteClipSlider.isVisible = false;
+                            if (value == 2)
+                            {
+                                _advancedCGNeutralBlackInSliderLabel.isVisible = true;
+                                _advancedCGNeutralBlackInSliderNumeral.isVisible = true;
+                                _advancedCGNeutralBlackInSlider.isVisible = true;
+                                _advancedCGNeutralWhiteInSliderLabel.isVisible = true;
+                                _advancedCGNeutralWhiteInSliderNumeral.isVisible = true;
+                                _advancedCGNeutralWhiteInSlider.isVisible = true;
+                                _advancedCGNeutralBlackOutSliderLabel.isVisible = true;
+                                _advancedCGNeutralBlackOutSliderNumeral.isVisible = true;
+                                _advancedCGNeutralBlackOutSlider.isVisible = true;
+                                _advancedCGNeutralWhiteOutSliderLabel.isVisible = true;
+                                _advancedCGNeutralWhiteOutSliderNumeral.isVisible = true;
+                                _advancedCGNeutralWhiteOutSlider.isVisible = true;
+                                _advancedCGNeutralWhiteLevelSliderLabel.isVisible = true;
+                                _advancedCGNeutralWhiteLevelSliderNumeral.isVisible = true;
+                                _advancedCGNeutralWhiteLevelSlider.isVisible = true;
+                                _advancedCGNeutralWhiteClipSliderLabel.isVisible = true;
+                                _advancedCGNeutralWhiteClipSliderNumeral.isVisible = true;
+                                _advancedCGNeutralWhiteClipSlider.isVisible = true;
+                            }
+                            else
+                            {
+                                _advancedCGNeutralBlackInSliderLabel.isVisible = false;
+                                _advancedCGNeutralBlackInSliderNumeral.isVisible = false;
+                                _advancedCGNeutralBlackInSlider.isVisible = false;
+                                _advancedCGNeutralWhiteInSliderLabel.isVisible = false;
+                                _advancedCGNeutralWhiteInSliderNumeral.isVisible = false;
+                                _advancedCGNeutralWhiteInSlider.isVisible = false;
+                                _advancedCGNeutralBlackOutSliderLabel.isVisible = false;
+                                _advancedCGNeutralBlackOutSliderNumeral.isVisible = false;
+                                _advancedCGNeutralBlackOutSlider.isVisible = false;
+                                _advancedCGNeutralWhiteOutSliderLabel.isVisible = false;
+                                _advancedCGNeutralWhiteOutSliderNumeral.isVisible = false;
+                                _advancedCGNeutralWhiteOutSlider.isVisible = false;
+                                _advancedCGNeutralWhiteLevelSliderLabel.isVisible = false;
+                                _advancedCGNeutralWhiteLevelSliderNumeral.isVisible = false;
+                                _advancedCGNeutralWhiteLevelSlider.isVisible = false;
+                                _advancedCGNeutralWhiteClipSliderLabel.isVisible = false;
+                                _advancedCGNeutralWhiteClipSliderNumeral.isVisible = false;
+                                _advancedCGNeutralWhiteClipSlider.isVisible = false;
+                            }
                         }
                     };
                     _advancedCGTonemapperDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.CGTonemapper;
 
                     _advancedCGChannelDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
-                        switch (value)
+                        if (value != -1)
                         {
-                            case 0:
-                                _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed.ToString();
-                                _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen.ToString();
-                                _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue.ToString();
-                                _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed;
-                                _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen;
-                                _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue;
-                                break;
-                            case 1:
-                                _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed.ToString();
-                                _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen.ToString();
-                                _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue.ToString();
-                                _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed;
-                                _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen;
-                                _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue;
-                                break;
-                            case 2:
-                                _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed.ToString();
-                                _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen.ToString();
-                                _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue.ToString();
-                                _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed;
-                                _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen;
-                                _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue;
-                                break;
+                            switch (value)
+                            {
+                                case 0:
+                                    _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed.ToString();
+                                    _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen.ToString();
+                                    _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue.ToString();
+                                    _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedRed;
+                                    _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedGreen;
+                                    _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerRedBlue;
+                                    break;
+                                case 1:
+                                    _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed.ToString();
+                                    _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen.ToString();
+                                    _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue.ToString();
+                                    _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenRed;
+                                    _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenGreen;
+                                    _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerGreenBlue;
+                                    break;
+                                case 2:
+                                    _advancedCGChannelRedSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed.ToString();
+                                    _advancedCGChannelGreenSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen.ToString();
+                                    _advancedCGChannelBlueSliderNumeral.text = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue.ToString();
+                                    _advancedCGChannelRedSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueRed;
+                                    _advancedCGChannelGreenSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueGreen;
+                                    _advancedCGChannelBlueSlider.value = ProfileManager.Instance.ActiveProfile.CGChannelMixerBlueBlue;
+                                    break;
+                            }
                         }
                     };
                     _advancedCGChannelDropDown.selectedIndex = 0;
@@ -1712,10 +1936,16 @@ namespace RenderIt.Panels
         {
             try
             {
+                _optionsDropDown.selectedIndex = -1;
+                _optionsDropDown.selectedIndex = 0;
+
                 _optionsSunIntensitySlider.value = profile.SunIntensity;
                 _optionsSunShadowStrengthSlider.value = profile.SunShadowStrength;
                 _optionsMoonIntensitySlider.value = profile.MoonIntensity;
                 _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
+
+                _optionsSharpnessAssetTypeDropDown.selectedIndex = -1;
+                _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
 
                 _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
                 _optionsAmbientOcclusionCheckBox.isChecked = profile.AmbientOcclusionEnabled;
@@ -1759,6 +1989,9 @@ namespace RenderIt.Panels
                 _advancedCGNeutralWhiteOutSlider.value = profile.CGNeutralWhiteOut;
                 _advancedCGNeutralWhiteLevelSlider.value = profile.CGNeutralWhiteLevel;
                 _advancedCGNeutralWhiteClipSlider.value = profile.CGNeutralWhiteClip;
+
+                _advancedCGChannelDropDown.selectedIndex = -1;
+                _advancedCGChannelDropDown.selectedIndex = 0;
             }
             catch (Exception e)
             {

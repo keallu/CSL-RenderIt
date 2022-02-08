@@ -2,6 +2,7 @@
 using ColossalFramework.UI;
 using RenderIt.Managers;
 using RenderIt.Panels;
+using RenderIt.Helpers;
 using System;
 using UnityEngine;
 using UnityEngine.PostProcessing;
@@ -95,6 +96,7 @@ namespace RenderIt
                 if (!_initialized || ModConfig.Instance.ConfigUpdated)
                 {
                     UpdateLighting();
+                    UpdateTextures();
                     UpdateAntialiasing();
                     UpdateAmbientOcclusion();
                     UpdateBloom();
@@ -271,6 +273,25 @@ namespace RenderIt
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ModManager:UpdateLighting -> Exception: " + e.Message);
+            }
+        }
+
+        private void UpdateTextures()
+        {
+            try
+            {
+                TextureHelper.UpdateTexture();
+                TextureHelper.UpdateTexture2D();
+                TextureHelper.UpdateBuildings();
+                TextureHelper.UpdateNetworks();
+                TextureHelper.UpdateProps();
+                TextureHelper.UpdateCitizens();
+                TextureHelper.UpdateVehicles();
+                TextureHelper.UpdateTrees();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateTextures -> Exception: " + e.Message);
             }
         }
 

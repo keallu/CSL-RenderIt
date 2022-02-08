@@ -60,6 +60,8 @@ namespace RenderIt.Managers
 
                 _activeProfile = value;
                 _activeProfile.Active = true;
+
+                Apply();
             }
         }
 
