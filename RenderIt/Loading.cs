@@ -9,7 +9,6 @@ namespace RenderIt
 
     public class Loading : LoadingExtensionBase
     {
-        private LoadMode _loadMode;
         private GameObject _modManagerGameObject;
         private GameObject _mainPanelGameObject;
 
@@ -17,13 +16,6 @@ namespace RenderIt
         {
             try
             {
-                _loadMode = mode;
-
-                if (_loadMode != LoadMode.NewGame && _loadMode != LoadMode.LoadGame && _loadMode != LoadMode.NewGameFromScenario)
-                {
-                    return;
-                }
-
                 _modManagerGameObject = new GameObject("RenderItModManager");
                 _modManagerGameObject.AddComponent<ModManager>();
 
@@ -45,11 +37,6 @@ namespace RenderIt
         {
             try
             {
-                if (_loadMode != LoadMode.NewGame && _loadMode != LoadMode.LoadGame && _loadMode != LoadMode.NewGameFromScenario)
-                {
-                    return;
-                }
-
                 if (_mainPanelGameObject != null)
                 {
                     UnityEngine.Object.Destroy(_mainPanelGameObject);

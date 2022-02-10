@@ -11,6 +11,7 @@ namespace RenderIt.Panels
     {
         private bool _initialized;
 
+        private UITextureAtlas _ingameAtlas;
         private UILabel _title;
         private UIButton _close;
         private UIDragHandle _dragHandle;
@@ -191,6 +192,8 @@ namespace RenderIt.Panels
                 {
                     ModProperties.Instance.ResetPanelPosition();
                 }
+
+                _ingameAtlas = ResourceLoader.GetAtlas("Ingame");
 
                 CreateUI();
             }
@@ -410,10 +413,10 @@ namespace RenderIt.Panels
                 width = 400f;
                 height = 800f;
 
-                _title = UIUtils.CreateMenuPanelTitle(this, "Render It!");
+                _title = UIUtils.CreateMenuPanelTitle(this, _ingameAtlas, "Render It!");
                 _title.relativePosition = new Vector3(width / 2f - _title.width / 2f, 15f);
 
-                _close = UIUtils.CreateMenuPanelCloseButton(this);
+                _close = UIUtils.CreateMenuPanelCloseButton(this, _ingameAtlas);
                 _close.relativePosition = new Vector3(width - 37f, 3f);
                 _close.eventClick += (component, eventParam) =>
                 {
@@ -438,16 +441,16 @@ namespace RenderIt.Panels
                     ModConfig.Instance.Save();
                 };
 
-                _tabstrip = UIUtils.CreateTabStrip(this);
+                _tabstrip = UIUtils.CreateTabStrip(this, _ingameAtlas);
                 _tabstrip.width = width - 40f;
                 _tabstrip.relativePosition = new Vector3(20f, 50f);
 
-                _tabContainer = UIUtils.CreateTabContainer(this);
+                _tabContainer = UIUtils.CreateTabContainer(this, _ingameAtlas);
                 _tabContainer.width = width - 40f;
                 _tabContainer.height = height - 120f;
                 _tabContainer.relativePosition = new Vector3(20f, 100f);
 
-                _templateButton = UIUtils.CreateTabButton(this);
+                _templateButton = UIUtils.CreateTabButton(this, _ingameAtlas);
 
                 _tabstrip.tabPages = _tabContainer;
 
@@ -468,7 +471,7 @@ namespace RenderIt.Panels
 
                     _profilesDropDownLabel = UIUtils.CreateLabel(panel, "ProfilesDropDownLabel", "Active");
 
-                    _profilesDropDown = UIUtils.CreateDropDown(panel, "ProfilesDropDown");
+                    _profilesDropDown = UIUtils.CreateDropDown(panel, "ProfilesDropDown", _ingameAtlas);
                     foreach (Profile profile in ProfileManager.Instance.AllProfiles)
                     {
                         _profilesDropDown.AddItem(profile.Name);
@@ -484,7 +487,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _profilesUITextField = UIUtils.CreateTextField(panel, "ProfilesTextField", "");
+                    _profilesUITextField = UIUtils.CreateTextField(panel, "ProfilesTextField", _ingameAtlas, "");
                     _profilesUITextField.isVisible = false;
                     _profilesUITextField.eventTextSubmitted += (component, value) =>
                     {
@@ -504,7 +507,7 @@ namespace RenderIt.Panels
                     _profilesButtonsPanel.width = panel.width - 10f;
                     _profilesButtonsPanel.height = 40f;
 
-                    _profilesAddButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesAddButton", "Add");
+                    _profilesAddButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesAddButton", _ingameAtlas, "Add");
                     _profilesAddButton.tooltip = "Click to add new active profile with default values";
                     _profilesAddButton.relativePosition = new Vector3(0f, 0f);
                     _profilesAddButton.eventClick += (component, eventParam) =>
@@ -537,7 +540,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _profilesRemoveButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesRemoveButton", "Remove");
+                    _profilesRemoveButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesRemoveButton", _ingameAtlas, "Remove");
                     _profilesRemoveButton.tooltip = "Click to remove current active profile";
                     _profilesRemoveButton.relativePosition = new Vector3(85f, 0f);
                     _profilesRemoveButton.eventClick += (component, eventParam) =>
@@ -557,7 +560,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _profilesRenameButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesRenameButton", "Rename");
+                    _profilesRenameButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesRenameButton", _ingameAtlas, "Rename");
                     _profilesRenameButton.tooltip = "Click to rename current active profile";
                     _profilesRenameButton.relativePosition = new Vector3(185f, 0f);
                     _profilesRenameButton.eventClick += (component, eventParam) =>
@@ -578,7 +581,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _profilesSaveButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesSaveButton", "Save");
+                    _profilesSaveButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesSaveButton", _ingameAtlas, "Save");
                     _profilesSaveButton.tooltip = "Click to save all profiles and their specific values";
                     _profilesSaveButton.relativePosition = new Vector3(270f, 0f);
                     _profilesSaveButton.eventClick += (component, eventParam) =>
@@ -608,7 +611,7 @@ namespace RenderIt.Panels
                     _optionsDropDownLabel = UIUtils.CreateLabel(panel, "OptionsDropDownLabel", "Options");
                     _optionsDropDownLabel.tooltip = "Select which type of options you want to change";
 
-                    _optionsDropDown = UIUtils.CreateDropDown(panel, "OptionsDropDown");
+                    _optionsDropDown = UIUtils.CreateDropDown(panel, "OptionsDropDown", _ingameAtlas);
                     _optionsDropDown.items = new string[] { "Lighting", "Textures", "Post-Processing" };
 
                     _optionsLightingPanel = UIUtils.CreatePanel(panel, "OptionsLightingPanel");
@@ -633,7 +636,7 @@ namespace RenderIt.Panels
                     _optionsSunIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _optionsSunIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSunIntensitySliderNumeral.width - 10f, 0f);
 
-                    _optionsSunIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunIntensitySlider", 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SunIntensity);
+                    _optionsSunIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunIntensitySlider", _ingameAtlas, 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SunIntensity);
                     _optionsSunIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _optionsSunIntensitySliderNumeral.text = value.ToString();
@@ -656,7 +659,7 @@ namespace RenderIt.Panels
                     _optionsSunShadowStrengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _optionsSunShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSunShadowStrengthSliderNumeral.width - 10f, 0f);
 
-                    _optionsSunShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunShadowStrengthSlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.SunShadowStrength);
+                    _optionsSunShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunShadowStrengthSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.SunShadowStrength);
                     _optionsSunShadowStrengthSlider.eventValueChanged += (component, value) =>
                     {
                         _optionsSunShadowStrengthSliderNumeral.text = value.ToString();
@@ -681,7 +684,7 @@ namespace RenderIt.Panels
                     _optionsMoonIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _optionsMoonIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsMoonIntensitySliderNumeral.width - 10f, 0f);
 
-                    _optionsMoonIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonIntensitySlider", 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.MoonIntensity);
+                    _optionsMoonIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonIntensitySlider", _ingameAtlas, 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.MoonIntensity);
                     _optionsMoonIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _optionsMoonIntensitySliderNumeral.text = value.ToString();
@@ -704,7 +707,7 @@ namespace RenderIt.Panels
                     _optionsMoonShadowStrengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _optionsMoonShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsMoonShadowStrengthSliderNumeral.width - 10f, 0f);
 
-                    _optionsMoonShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonShadowStrengthSlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.MoonShadowStrength);
+                    _optionsMoonShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonShadowStrengthSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.MoonShadowStrength);
                     _optionsMoonShadowStrengthSlider.eventValueChanged += (component, value) =>
                     {
                         _optionsMoonShadowStrengthSliderNumeral.text = value.ToString();
@@ -736,13 +739,13 @@ namespace RenderIt.Panels
                     _optionsSharpnessAssetTypeDropDownLabel = UIUtils.CreateLabel(_optionsTexturesPanel, "OptionsSharpnessAssetTypeDropDownLabel", "Type");
                     _optionsSharpnessAssetTypeDropDownLabel.tooltip = "Select the asset type for which to set sharpness of textures";
 
-                    _optionsSharpnessAssetTypeDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessAssetTypeDropDown");
+                    _optionsSharpnessAssetTypeDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessAssetTypeDropDown", _ingameAtlas);
                     _optionsSharpnessAssetTypeDropDown.items = ModInvariables.SharpnessAssetType;
 
                     _optionsSharpnessAnisoLevelDropDownLabel = UIUtils.CreateLabel(_optionsTexturesPanel, "OptionsSharpnessAnisoLevelDropDownLabel", "Anisotropic Filtering Level");
                     _optionsSharpnessAnisoLevelDropDownLabel.tooltip = "Set the anisotropic filtering level which makes texture look better when viewed at a shallow angle";
 
-                    _optionsSharpnessAnisoLevelDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessAnisoLevelDropDown");
+                    _optionsSharpnessAnisoLevelDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessAnisoLevelDropDown", _ingameAtlas);
                     _optionsSharpnessAnisoLevelDropDown.items = ModInvariables.AnisoLevels;
                     _optionsSharpnessAnisoLevelDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
@@ -780,7 +783,7 @@ namespace RenderIt.Panels
                     _optionsSharpnessMipMapBiasDropDownLabel = UIUtils.CreateLabel(_optionsTexturesPanel, "OptionsSharpnessMipMapBiasDropDownLabel", "Mip Map Bias");
                     _optionsSharpnessMipMapBiasDropDownLabel.tooltip = "Set the mip map bias which sharpens or blurs the texture";
 
-                    _optionsSharpnessMipMapBiasDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessMipMapBiasDropDown");
+                    _optionsSharpnessMipMapBiasDropDown = UIUtils.CreateDropDown(_optionsTexturesPanel, "OptionsSharpnessMipMapBiasDropDown", _ingameAtlas);
                     _optionsSharpnessMipMapBiasDropDown.items = ModInvariables.MipMapBias;
                     _optionsSharpnessMipMapBiasDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
@@ -815,7 +818,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsSharpnessLODCheckBox = UIUtils.CreateCheckBox(_optionsTexturesPanel, "OptionsSharpnessLODCheckBox", "Apply also to LOD textures", false);
+                    _optionsSharpnessLODCheckBox = UIUtils.CreateCheckBox(_optionsTexturesPanel, "OptionsSharpnessLODCheckBox", _ingameAtlas, "Apply also to LOD textures", false);
                     _optionsSharpnessLODCheckBox.tooltip = "Sharpness will also be applied to Level of Detail (LOD) textures";
                     _optionsSharpnessLODCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -910,7 +913,7 @@ namespace RenderIt.Panels
                     _optionsAntiAliasingDropDownLabel = UIUtils.CreateLabel(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDownLabel", "Technique");
                     _optionsAntiAliasingDropDownLabel.tooltip = "The Anti-aliasing techniques offers a set of algorithms designed to prevent aliasing and give a smoother appearance to graphics.\n\nFor anti-aliasing, the game uses the default Enhanced Subpixel Morphological Anti-Aliasing (SMAA) technique\nbut this can be improved with either Fast Approximate Anti-Aliasing (FXAA) or Temporal Anti-Aliasing (TAA) techniques.";
 
-                    _optionsAntiAliasingDropDown = UIUtils.CreateDropDown(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDown");
+                    _optionsAntiAliasingDropDown = UIUtils.CreateDropDown(_optionsPostProcessingPanel, "OptionsAntiAliasingDropDown", _ingameAtlas);
                     _optionsAntiAliasingDropDown.items = ModInvariables.AntialiasingTechnique;
                     _optionsAntiAliasingDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.AntialiasingTechnique;
                     _optionsAntiAliasingDropDown.eventSelectedIndexChanged += (component, value) =>
@@ -938,21 +941,21 @@ namespace RenderIt.Panels
 
                     _optionsEffectsTitle = UIUtils.CreateTitle(_optionsPostProcessingPanel, "OptionsEffectsTitle", "Effects");
 
-                    _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsAmbientOcclusionCheckBox", "Ambient Occlusion Enabled", ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled);
+                    _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsAmbientOcclusionCheckBox", _ingameAtlas, "Ambient Occlusion Enabled", ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled);
                     _optionsAmbientOcclusionCheckBox.tooltip = "Ambient Occlusion darkens creases, holes, intersections and surfaces that are close to each other";
                     _optionsAmbientOcclusionCheckBox.eventCheckChanged += (component, value) =>
                     {
                         ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled = value;
                         ProfileManager.Instance.Apply();
                     };
-                    _optionsBloomCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsBloomCheckBox", "Bloom Enabled", ProfileManager.Instance.ActiveProfile.BloomEnabled);
+                    _optionsBloomCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsBloomCheckBox", _ingameAtlas, "Bloom Enabled", ProfileManager.Instance.ActiveProfile.BloomEnabled);
                     _optionsBloomCheckBox.tooltip = "Bloom creates fringes of light extending from the borders of bright areas in an image,\ncontributing to the illusion of an extremely bright light overwhelming the camera";
                     _optionsBloomCheckBox.eventCheckChanged += (component, value) =>
                     {
                         ProfileManager.Instance.ActiveProfile.BloomEnabled = value;
                         ProfileManager.Instance.Apply();
                     };
-                    _optionsColorGradingCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsColorGradingCheckBox", "Color Grading Enabled", ProfileManager.Instance.ActiveProfile.ColorGradingEnabled);
+                    _optionsColorGradingCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsColorGradingCheckBox", _ingameAtlas, "Color Grading Enabled", ProfileManager.Instance.ActiveProfile.ColorGradingEnabled);
                     _optionsColorGradingCheckBox.tooltip = "Color Grading alters or corrects the color and luminance of the final image that is rendered";
                     _optionsColorGradingCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1044,7 +1047,7 @@ namespace RenderIt.Panels
                     _advancedFXAAQualityDropDownLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedFXAAQualityDropDownLabel", "Quality");
                     _advancedFXAAQualityDropDownLabel.tooltip = "Set the quality to be used which provides a trade-off between performance and edge quality";
 
-                    _advancedFXAAQualityDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedFXAAQualityDropDown");
+                    _advancedFXAAQualityDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedFXAAQualityDropDown", _ingameAtlas);
                     _advancedFXAAQualityDropDown.items = ModInvariables.FXAAQuality;
                     _advancedFXAAQualityDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.FXAAQuality;
                     _advancedFXAAQualityDropDown.eventSelectedIndexChanged += (component, value) =>
@@ -1056,7 +1059,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _advancedFXAADivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedFXAADivider");
+                    _advancedFXAADivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedFXAADivider", _ingameAtlas);
 
                     // --- TAA ---
                     _advancedTAATitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedTAATitle", "Temporal Anti-aliasing (TAA)");
@@ -1070,7 +1073,7 @@ namespace RenderIt.Panels
                     _advancedTAAJitterSpreadSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAAJitterSpreadSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAAJitterSpreadSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAAJitterSpreadSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAJitterSpreadSlider", 0.1f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAJitterSpread);
+                    _advancedTAAJitterSpreadSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAJitterSpreadSlider", _ingameAtlas, 0.1f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAJitterSpread);
                     _advancedTAAJitterSpreadSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAAJitterSpreadSliderNumeral.text = value.ToString();
@@ -1093,7 +1096,7 @@ namespace RenderIt.Panels
                     _advancedTAAStationaryBlendingSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAAStationaryBlendingSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAAStationaryBlendingSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAAStationaryBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAStationaryBlendingSlider", 0f, 0.99f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAStationaryBlending);
+                    _advancedTAAStationaryBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAStationaryBlendingSlider", _ingameAtlas, 0f, 0.99f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAStationaryBlending);
                     _advancedTAAStationaryBlendingSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAAStationaryBlendingSliderNumeral.text = value.ToString();
@@ -1116,7 +1119,7 @@ namespace RenderIt.Panels
                     _advancedTAAMotionBlendingSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAAMotionBlendingSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAAMotionBlendingSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAAMotionBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAMotionBlendingSlider", 0f, 0.99f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAMotionBlending);
+                    _advancedTAAMotionBlendingSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAAMotionBlendingSlider", _ingameAtlas, 0f, 0.99f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.TAAMotionBlending);
                     _advancedTAAMotionBlendingSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAAMotionBlendingSliderNumeral.text = value.ToString();
@@ -1139,7 +1142,7 @@ namespace RenderIt.Panels
                     _advancedTAASharpenSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedTAASharpenSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedTAASharpenSliderNumeral.width - 10f, 0f);
 
-                    _advancedTAASharpenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAASharpenSlider", 0f, 3f, 0.03f, 0.03f, ProfileManager.Instance.ActiveProfile.TAASharpen);
+                    _advancedTAASharpenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedTAASharpenSlider", _ingameAtlas, 0f, 3f, 0.03f, 0.03f, ProfileManager.Instance.ActiveProfile.TAASharpen);
                     _advancedTAASharpenSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedTAASharpenSliderNumeral.text = value.ToString();
@@ -1154,7 +1157,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _advancedTAADivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedTAADivider");
+                    _advancedTAADivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedTAADivider", _ingameAtlas);
 
                     // --- AO ---
                     _advancedAOTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedAOTitle", "Ambient Occlusion");
@@ -1168,7 +1171,7 @@ namespace RenderIt.Panels
                     _advancedAOIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedAOIntensitySliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedAOIntensitySliderNumeral.width - 10f, 0f);
 
-                    _advancedAOIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAOIntensitySlider", 0f, 4f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.AOIntensity);
+                    _advancedAOIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAOIntensitySlider", _ingameAtlas, 0f, 4f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.AOIntensity);
                     _advancedAOIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _advancedAOIntensitySliderNumeral.text = value.ToString();
@@ -1191,7 +1194,7 @@ namespace RenderIt.Panels
                     _advancedAORadiusSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedAORadiusSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedAORadiusSliderNumeral.width - 10f, 0f);
 
-                    _advancedAORadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAORadiusSlider", 0f, 4f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.AORadius);
+                    _advancedAORadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedAORadiusSlider", _ingameAtlas, 0f, 4f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.AORadius);
                     _advancedAORadiusSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedAORadiusSliderNumeral.text = value.ToString();
@@ -1209,7 +1212,7 @@ namespace RenderIt.Panels
                     _advancedAOSampleCountDropDownLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedAOSampleCountDropDownLabel", "Sample Count");
                     _advancedAOSampleCountDropDownLabel.tooltip = "Number of sample points, which affects quality and performance";
 
-                    _advancedAOSampleCountDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedAOSampleCountDropDown");
+                    _advancedAOSampleCountDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedAOSampleCountDropDown", _ingameAtlas);
                     _advancedAOSampleCountDropDown.items = ModInvariables.AOSampleCount;
                     _advancedAOSampleCountDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.AOSampleCount;
                     _advancedAOSampleCountDropDown.eventSelectedIndexChanged += (component, value) =>
@@ -1221,7 +1224,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _advancedAODownsamplingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAODownsamplingCheckBox", "Downsampling", ProfileManager.Instance.ActiveProfile.AODownsampling);
+                    _advancedAODownsamplingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAODownsamplingCheckBox", _ingameAtlas, "Downsampling", ProfileManager.Instance.ActiveProfile.AODownsampling);
                     _advancedAODownsamplingCheckBox.tooltip = "Halves the resolution of the effect to increase performance at the cost of visual quality";
                     _advancedAODownsamplingCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1229,7 +1232,7 @@ namespace RenderIt.Panels
                         ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAOForceForwardCompatibilityCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOForceForwardCompatibilityCheckBox", "Force Forward Compatibility", ProfileManager.Instance.ActiveProfile.AOForceForwardCompatibility);
+                    _advancedAOForceForwardCompatibilityCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOForceForwardCompatibilityCheckBox", _ingameAtlas, "Force Forward Compatibility", ProfileManager.Instance.ActiveProfile.AOForceForwardCompatibility);
                     _advancedAOForceForwardCompatibilityCheckBox.tooltip = "Forces compatibility with forward rendered objects when working with the deferred rendering path";
                     _advancedAOForceForwardCompatibilityCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1237,7 +1240,7 @@ namespace RenderIt.Panels
                         ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAOHighPrecisionCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOHighPrecisionCheckBox", "High Precision", ProfileManager.Instance.ActiveProfile.AOHighPrecision);
+                    _advancedAOHighPrecisionCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOHighPrecisionCheckBox", _ingameAtlas, "High Precision", ProfileManager.Instance.ActiveProfile.AOHighPrecision);
                     _advancedAOHighPrecisionCheckBox.tooltip = "Uses higher precision depth texture with the forward rendering path which may impact performances";
                     _advancedAOHighPrecisionCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1245,7 +1248,7 @@ namespace RenderIt.Panels
                         ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAOAmbientOnlyCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOAmbientOnlyCheckBox", "Ambient Only", ProfileManager.Instance.ActiveProfile.AOAmbientOnly);
+                    _advancedAOAmbientOnlyCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedAOAmbientOnlyCheckBox", _ingameAtlas, "Ambient Only", ProfileManager.Instance.ActiveProfile.AOAmbientOnly);
                     _advancedAOAmbientOnlyCheckBox.tooltip = "Enables the ambient-only mode in that ambient occlusion only affects ambient lighting";
                     _advancedAOAmbientOnlyCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1253,13 +1256,13 @@ namespace RenderIt.Panels
                         ProfileManager.Instance.Apply();
                     };
 
-                    _advancedAODivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedAODivider");
+                    _advancedAODivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedAODivider", _ingameAtlas);
 
                     // --- Bloom ---
                     _advancedBloomTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedBloomTitle", "Bloom");
                     _advancedBloomTitle.tooltip = "Bloom creates fringes of light extending from the borders of bright areas in an image,\ncontributing to the illusion of an extremely bright light overwhelming the camera";
 
-                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", "Vanilla Bloom", ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled);
+                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", _ingameAtlas, "Vanilla Bloom", ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled);
                     _advancedBloomVanillaBloomCheckBox.tooltip = "Keeps bloom produced by the game";
                     _advancedBloomVanillaBloomCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1275,7 +1278,7 @@ namespace RenderIt.Panels
                     _advancedBloomIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomIntensitySliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomIntensitySliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomIntensitySlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.BloomIntensity);
+                    _advancedBloomIntensitySlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomIntensitySlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.BloomIntensity);
                     _advancedBloomIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomIntensitySliderNumeral.text = value.ToString();
@@ -1298,7 +1301,7 @@ namespace RenderIt.Panels
                     _advancedBloomThresholdSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomThresholdSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomThresholdSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomThresholdSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomThresholdSlider", 0f, 10f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.BloomThreshold);
+                    _advancedBloomThresholdSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomThresholdSlider", _ingameAtlas, 0f, 10f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.BloomThreshold);
                     _advancedBloomThresholdSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomThresholdSliderNumeral.text = value.ToString();
@@ -1321,7 +1324,7 @@ namespace RenderIt.Panels
                     _advancedBloomSoftKneeSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomSoftKneeSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomSoftKneeSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomSoftKneeSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomSoftKneeSlider", 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.BloomSoftKnee);
+                    _advancedBloomSoftKneeSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomSoftKneeSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.BloomSoftKnee);
                     _advancedBloomSoftKneeSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomSoftKneeSliderNumeral.text = value.ToString();
@@ -1344,7 +1347,7 @@ namespace RenderIt.Panels
                     _advancedBloomRadiusSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedBloomRadiusSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedBloomRadiusSliderNumeral.width - 10f, 0f);
 
-                    _advancedBloomRadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomRadiusSlider", 1f, 7f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.BloomRadius);
+                    _advancedBloomRadiusSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedBloomRadiusSlider", _ingameAtlas, 1f, 7f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.BloomRadius);
                     _advancedBloomRadiusSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedBloomRadiusSliderNumeral.text = value.ToString();
@@ -1359,7 +1362,7 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _advancedBloomAntiFlickerCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomAntiFlickerCheckBox", "Anti Flicker", ProfileManager.Instance.ActiveProfile.BloomAntiFlicker);
+                    _advancedBloomAntiFlickerCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomAntiFlickerCheckBox", _ingameAtlas, "Anti Flicker", ProfileManager.Instance.ActiveProfile.BloomAntiFlicker);
                     _advancedBloomAntiFlickerCheckBox.tooltip = "Reduces flashing noise with an additional filter";
                     _advancedBloomAntiFlickerCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1367,13 +1370,13 @@ namespace RenderIt.Panels
                         ProfileManager.Instance.Apply();
                     };
 
-                    _advancedBloomDivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedBloomDivider");
+                    _advancedBloomDivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedBloomDivider", _ingameAtlas);
 
                     // --- Color Grading ---
                     _advancedCGTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedCGTitle", "Color Grading");
                     _advancedCGTitle.tooltip = "Color Grading alters or corrects the color and luminance of the final image that is rendered";
 
-                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", "Vanilla Tonemapping", ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
+                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", _ingameAtlas, "Vanilla Tonemapping", ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
                     _advancedCGVanillaTonemappingCheckBox.tooltip = "Keeps tonemapping produced by the game";
                     _advancedCGVanillaTonemappingCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1381,7 +1384,7 @@ namespace RenderIt.Panels
                         ProfileManager.Instance.Apply();
                     };
 
-                    _advancedCGVanillaColorCorrectionLUTCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaColorCorrectionLUTCheckBox", "Vanilla Color Correction LUT", ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled);
+                    _advancedCGVanillaColorCorrectionLUTCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaColorCorrectionLUTCheckBox", _ingameAtlas, "Vanilla Color Correction LUT", ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled);
                     _advancedCGVanillaColorCorrectionLUTCheckBox.tooltip = "Keeps color correction LUT produced by the game";
                     _advancedCGVanillaColorCorrectionLUTCheckBox.eventCheckChanged += (component, value) =>
                     {
@@ -1397,7 +1400,7 @@ namespace RenderIt.Panels
                     _advancedCGPostExposureSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGPostExposureSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGPostExposureSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGPostExposureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGPostExposureSlider", -2f, 2f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.CGPostExposure);
+                    _advancedCGPostExposureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGPostExposureSlider", _ingameAtlas, -2f, 2f, 0.05f, 0.05f, ProfileManager.Instance.ActiveProfile.CGPostExposure);
                     _advancedCGPostExposureSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGPostExposureSliderNumeral.text = value.ToString();
@@ -1420,7 +1423,7 @@ namespace RenderIt.Panels
                     _advancedCGTemperatureSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGTemperatureSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGTemperatureSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGTemperatureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTemperatureSlider", -100f, 100f, 2f, 2f, ProfileManager.Instance.ActiveProfile.CGTemperature);
+                    _advancedCGTemperatureSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTemperatureSlider", _ingameAtlas, -100f, 100f, 2f, 2f, ProfileManager.Instance.ActiveProfile.CGTemperature);
                     _advancedCGTemperatureSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGTemperatureSliderNumeral.text = value.ToString();
@@ -1443,7 +1446,7 @@ namespace RenderIt.Panels
                     _advancedCGTintSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGTintSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGTintSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGTintSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTintSlider", -100f, 100f, 2f, 2f, ProfileManager.Instance.ActiveProfile.CGTint);
+                    _advancedCGTintSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGTintSlider", _ingameAtlas, -100f, 100f, 2f, 2f, ProfileManager.Instance.ActiveProfile.CGTint);
                     _advancedCGTintSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGTintSliderNumeral.text = value.ToString();
@@ -1466,7 +1469,7 @@ namespace RenderIt.Panels
                     _advancedCGHueShiftSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGHueShiftSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGHueShiftSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGHueShiftSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGHueShiftSlider", -180f, 180f, 3f, 3f, ProfileManager.Instance.ActiveProfile.CGHueShift);
+                    _advancedCGHueShiftSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGHueShiftSlider", _ingameAtlas, -180f, 180f, 3f, 3f, ProfileManager.Instance.ActiveProfile.CGHueShift);
                     _advancedCGHueShiftSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGHueShiftSliderNumeral.text = value.ToString();
@@ -1489,7 +1492,7 @@ namespace RenderIt.Panels
                     _advancedCGSaturationSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGSaturationSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGSaturationSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGSaturationSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGSaturationSlider", 0f, 2f, 0.02f, 0.02f, ProfileManager.Instance.ActiveProfile.CGSaturation);
+                    _advancedCGSaturationSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGSaturationSlider", _ingameAtlas, 0f, 2f, 0.02f, 0.02f, ProfileManager.Instance.ActiveProfile.CGSaturation);
                     _advancedCGSaturationSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGSaturationSliderNumeral.text = value.ToString();
@@ -1512,7 +1515,7 @@ namespace RenderIt.Panels
                     _advancedCGContrastSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGContrastSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGContrastSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGContrastSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGContrastSlider", 0f, 2f, 0.02f, 0.02f, ProfileManager.Instance.ActiveProfile.CGContrast);
+                    _advancedCGContrastSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGContrastSlider", _ingameAtlas, 0f, 2f, 0.02f, 0.02f, ProfileManager.Instance.ActiveProfile.CGContrast);
                     _advancedCGContrastSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGContrastSliderNumeral.text = value.ToString();
@@ -1530,7 +1533,7 @@ namespace RenderIt.Panels
                     _advancedCGTonemapperDropDownLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGTonemapperDropDownLabel", "Tonemapper");
                     _advancedCGTonemapperDropDownLabel.tooltip = "Tonemapping is the process of remapping HDR values of an image into a range suitable to be displayed on screen.\n\nThe Neutral tonemapper only does range-remapping with minimal impact on color hue & saturation.\nThe Filmic (ACES) tonemapper uses a close approximation of the reference ACES tonemapper for a more filmic look";
 
-                    _advancedCGTonemapperDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGTonemapperDropDown");
+                    _advancedCGTonemapperDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGTonemapperDropDown", _ingameAtlas);
                     _advancedCGTonemapperDropDown.items = ModInvariables.CGTonemapper;
 
 
@@ -1542,7 +1545,7 @@ namespace RenderIt.Panels
                     _advancedCGNeutralBlackInSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralBlackInSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralBlackInSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralBlackInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackInSlider", -0.1f, 0.1f, 0.002f, 0.002f, ProfileManager.Instance.ActiveProfile.CGNeutralBlackIn);
+                    _advancedCGNeutralBlackInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackInSlider", _ingameAtlas, -0.1f, 0.1f, 0.002f, 0.002f, ProfileManager.Instance.ActiveProfile.CGNeutralBlackIn);
                     _advancedCGNeutralBlackInSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralBlackInSliderNumeral.text = value.ToString();
@@ -1565,7 +1568,7 @@ namespace RenderIt.Panels
                     _advancedCGNeutralWhiteInSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteInSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteInSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteInSlider", 1f, 20f, 0.2f, 0.2f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteIn);
+                    _advancedCGNeutralWhiteInSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteInSlider", _ingameAtlas, 1f, 20f, 0.2f, 0.2f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteIn);
                     _advancedCGNeutralWhiteInSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteInSliderNumeral.text = value.ToString();
@@ -1588,7 +1591,7 @@ namespace RenderIt.Panels
                     _advancedCGNeutralBlackOutSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralBlackOutSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralBlackOutSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralBlackOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackOutSlider", -0.09f, 0.1f, 0.002f, 0.002f, ProfileManager.Instance.ActiveProfile.CGNeutralBlackOut);
+                    _advancedCGNeutralBlackOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralBlackOutSlider", _ingameAtlas, -0.09f, 0.1f, 0.002f, 0.002f, ProfileManager.Instance.ActiveProfile.CGNeutralBlackOut);
                     _advancedCGNeutralBlackOutSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralBlackOutSliderNumeral.text = value.ToString();
@@ -1611,7 +1614,7 @@ namespace RenderIt.Panels
                     _advancedCGNeutralWhiteOutSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteOutSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteOutSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteOutSlider", 1f, 19f, 0.2f, 0.2f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteOut);
+                    _advancedCGNeutralWhiteOutSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteOutSlider", _ingameAtlas, 1f, 19f, 0.2f, 0.2f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteOut);
                     _advancedCGNeutralWhiteOutSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteOutSliderNumeral.text = value.ToString();
@@ -1634,7 +1637,7 @@ namespace RenderIt.Panels
                     _advancedCGNeutralWhiteLevelSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteLevelSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteLevelSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteLevelSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteLevelSlider", 0.1f, 20f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteLevel);
+                    _advancedCGNeutralWhiteLevelSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteLevelSlider", _ingameAtlas, 0.1f, 20f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteLevel);
                     _advancedCGNeutralWhiteLevelSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteLevelSliderNumeral.text = value.ToString();
@@ -1657,7 +1660,7 @@ namespace RenderIt.Panels
                     _advancedCGNeutralWhiteClipSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGNeutralWhiteClipSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGNeutralWhiteClipSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGNeutralWhiteClipSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteClipSlider", 1f, 10f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteClip);
+                    _advancedCGNeutralWhiteClipSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGNeutralWhiteClipSlider", _ingameAtlas, 1f, 10f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.CGNeutralWhiteClip);
                     _advancedCGNeutralWhiteClipSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGNeutralWhiteClipSliderNumeral.text = value.ToString();
@@ -1675,7 +1678,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelDropDownLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGChannelDropDownLabel", "Channel");
                     _advancedCGChannelDropDownLabel.tooltip = "The Channel Mixer is used to modify the influence of each input color channel (RGB) on the overall mix of the output channel";
 
-                    _advancedCGChannelDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGChannelDropDown");
+                    _advancedCGChannelDropDown = UIUtils.CreateDropDown(_advancedScrollablePanel, "AdvancedCGChannelDropDown", _ingameAtlas);
                     _advancedCGChannelDropDown.items = ModInvariables.CGChannel;
 
                     _advancedCGChannelRedSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGChannelRedSliderLabel", "Red");
@@ -1685,7 +1688,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelRedSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGChannelRedSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelRedSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGChannelRedSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelRedSlider", 0f, 1f, 0.01f, 0.01f, 0f);
+                    _advancedCGChannelRedSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelRedSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, 0f);
                     _advancedCGChannelRedSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGChannelRedSliderNumeral.text = value.ToString();
@@ -1733,7 +1736,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelGreenSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGChannelGreenSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelGreenSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGChannelGreenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelGreenSlider", 0f, 1f, 0.01f, 0.01f, 0f);
+                    _advancedCGChannelGreenSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelGreenSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, 0f);
                     _advancedCGChannelGreenSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGChannelGreenSliderNumeral.text = value.ToString();
@@ -1781,7 +1784,7 @@ namespace RenderIt.Panels
                     _advancedCGChannelBlueSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                     _advancedCGChannelBlueSliderNumeral.relativePosition = new Vector3(_advancedScrollablePanel.width - _advancedCGChannelBlueSliderNumeral.width - 10f, 0f);
 
-                    _advancedCGChannelBlueSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelBlueSlider", 0f, 1f, 0.01f, 0.01f, 0f);
+                    _advancedCGChannelBlueSlider = UIUtils.CreateSlider(_advancedScrollablePanel, "AdvancedCGChannelBlueSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, 0f);
                     _advancedCGChannelBlueSlider.eventValueChanged += (component, value) =>
                     {
                         _advancedCGChannelBlueSliderNumeral.text = value.ToString();
@@ -1910,7 +1913,7 @@ namespace RenderIt.Panels
                     };
                     _advancedCGChannelDropDown.selectedIndex = 0;
 
-                    _advancedCGDivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedCGDivider");
+                    _advancedCGDivider = UIUtils.CreateDivider(_advancedScrollablePanel, "AdvancedCGDivider", _ingameAtlas);
                 }
             }
             catch (Exception e)

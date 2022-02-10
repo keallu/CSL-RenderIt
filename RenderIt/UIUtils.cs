@@ -89,10 +89,11 @@ namespace RenderIt
             return label;
         }
 
-        public static UISprite CreateDivider(UIComponent parent, string name)
+        public static UISprite CreateDivider(UIComponent parent, string name, UITextureAtlas atlas)
         {
             UISprite sprite = parent.AddUIComponent<UISprite>();
             sprite.name = name;
+            sprite.atlas = atlas;
             sprite.spriteName = "ContentManagerItemBackground";
             sprite.height = 15f;
             sprite.width = parent.width;
@@ -101,10 +102,11 @@ namespace RenderIt
             return sprite;
         }
 
-        public static UITextField CreateTextField(UIComponent parent, string name, string text)
+        public static UITextField CreateTextField(UIComponent parent, string name, UITextureAtlas atlas, string text)
         {
             UITextField textField = parent.AddUIComponent<UITextField>();
             textField.name = name;
+            textField.atlas = atlas;
             textField.font = GetUIFont("OpenSans-Regular");
             textField.textScale = 0.875f;
             textField.height = 32f;
@@ -129,10 +131,11 @@ namespace RenderIt
             return textField;
         }
 
-        public static UIDropDown CreateDropDown(UIComponent parent, string name)
+        public static UIDropDown CreateDropDown(UIComponent parent, string name, UITextureAtlas atlas)
         {
             UIDropDown dropDown = parent.AddUIComponent<UIDropDown>();
             dropDown.name = name;
+            dropDown.atlas = atlas;
             dropDown.font = GetUIFont("OpenSans-Regular");
             dropDown.textScale = 0.875f;
             dropDown.height = 32f;
@@ -178,7 +181,7 @@ namespace RenderIt
             return dropDown;
         }
 
-        public static UICheckBox CreateCheckBox(UIComponent parent, string name, string text, bool state)
+        public static UICheckBox CreateCheckBox(UIComponent parent, string name, UITextureAtlas atlas, string text, bool state)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
             checkBox.name = name;
@@ -186,11 +189,13 @@ namespace RenderIt
             checkBox.width = parent.width - 10f;
 
             UISprite uncheckedSprite = checkBox.AddUIComponent<UISprite>();
+            uncheckedSprite.atlas = atlas;
             uncheckedSprite.spriteName = "check-unchecked";
             uncheckedSprite.size = new Vector2(16f, 16f);
             uncheckedSprite.relativePosition = Vector3.zero;
 
             UISprite checkedSprite = checkBox.AddUIComponent<UISprite>();
+            checkedSprite.atlas = atlas;
             checkedSprite.spriteName = "check-checked";
             checkedSprite.size = new Vector2(16f, 16f);
             checkedSprite.relativePosition = Vector3.zero;
@@ -209,21 +214,24 @@ namespace RenderIt
             return checkBox;
         }
 
-        public static UISlider CreateSlider(UIComponent parent, string name, float min, float max, float step, float scrollWheel, float defaultValue)
+        public static UISlider CreateSlider(UIComponent parent, string name, UITextureAtlas atlas, float min, float max, float step, float scrollWheel, float defaultValue)
         {
             UISlider slider = parent.AddUIComponent<UISlider>();
             slider.name = name;
+            slider.atlas = atlas;
             slider.height = 10f;
             slider.width = parent.width - 10f;
             slider.relativePosition = new Vector3(0f, 0f);
 
             UISlicedSprite slicedSprite = slider.AddUIComponent<UISlicedSprite>();
+            slicedSprite.atlas = atlas;
             slicedSprite.spriteName = "ScrollbarTrack";
             slicedSprite.height = slider.height;
             slicedSprite.width = slider.width;
             slicedSprite.relativePosition = new Vector3(0f, 0f);
 
             UISprite thumbSprite = slider.AddUIComponent<UISprite>();
+            thumbSprite.atlas = atlas;
             thumbSprite.spriteName = "ScrollbarThumb";
             thumbSprite.height = 20f;
             thumbSprite.width = 10f;
@@ -244,10 +252,11 @@ namespace RenderIt
             return slider;
         }
 
-        public static UIButton CreatePanelButton(UIComponent parent, string name, string text)
+        public static UIButton CreatePanelButton(UIComponent parent, string name, UITextureAtlas atlas, string text)
         {
             UIButton button = parent.AddUIComponent<UIButton>();
             button.name = name;
+            button.atlas = atlas;
 
             button.text = text;
             button.textScale = 0.875f;
@@ -281,10 +290,11 @@ namespace RenderIt
             return button;
         }
 
-        public static UILabel CreateMenuPanelTitle(UIComponent parent, string title)
+        public static UILabel CreateMenuPanelTitle(UIComponent parent, UITextureAtlas atlas, string title)
         {
             UILabel label = parent.AddUIComponent<UILabel>();
             label.name = "Title";
+            label.atlas = atlas;
             label.zOrder = 1;
             label.text = title;
             label.textAlignment = UIHorizontalAlignment.Center;
@@ -292,10 +302,11 @@ namespace RenderIt
             return label;
         }
 
-        public static UIButton CreateMenuPanelLocationButton(UIComponent parent)
+        public static UIButton CreateMenuPanelLocationButton(UIComponent parent, UITextureAtlas atlas)
         {
             UIButton button = parent.AddUIComponent<UIButton>();
             button.name = "LocationButton";
+            button.atlas = atlas;
             button.zOrder = 1;
 
             button.normalBgSprite = "LocationMarkerActiveNormal";
@@ -305,10 +316,11 @@ namespace RenderIt
             return button;
         }
 
-        public static UIButton CreateMenuPanelCloseButton(UIComponent parent)
+        public static UIButton CreateMenuPanelCloseButton(UIComponent parent, UITextureAtlas atlas)
         {
             UIButton button = parent.AddUIComponent<UIButton>();
             button.name = "CloseButton";
+            button.atlas = atlas;
             button.zOrder = 1;
 
             button.normalBgSprite = "buttonclose";
@@ -329,27 +341,30 @@ namespace RenderIt
             return dragHandle;
         }
 
-        public static UITabstrip CreateTabStrip(UIComponent parent)
+        public static UITabstrip CreateTabStrip(UIComponent parent, UITextureAtlas atlas)
         {
             UITabstrip tabstrip = parent.AddUIComponent<UITabstrip>();
             tabstrip.name = "TabStrip";
+            tabstrip.atlas = atlas;
             tabstrip.clipChildren = true;
 
             return tabstrip;
         }
 
-        public static UITabContainer CreateTabContainer(UIComponent parent)
+        public static UITabContainer CreateTabContainer(UIComponent parent, UITextureAtlas atlas)
         {
             UITabContainer tabContainer = parent.AddUIComponent<UITabContainer>();
             tabContainer.name = "TabContainer";
+            tabContainer.atlas = atlas;
 
             return tabContainer;
         }
 
-        public static UIButton CreateTabButton(UIComponent parent)
+        public static UIButton CreateTabButton(UIComponent parent, UITextureAtlas atlas)
         {
             UIButton button = parent.AddUIComponent<UIButton>();
             button.name = "TabButton";
+            button.atlas = atlas;
 
             button.height = 26f;
             button.width = 120f;
