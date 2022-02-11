@@ -1,15 +1,24 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 namespace RenderIt.Managers
 {
     public class ProfileManager
     {
+        public bool IsActiveProfileUpdated { get; set; }
+
+        private List<Profile> _allProfiles;
+
         public List<Profile> AllProfiles
         {
             get
             {
-                return ModConfig.Instance.Profiles;
+                if (_allProfiles == null)
+                {
+                    _allProfiles = ModConfig.Instance.Profiles.Select(x => x.Clone()).ToList();
+                }
+
+                return _allProfiles;
             }
         }
 
@@ -21,27 +30,27 @@ namespace RenderIt.Managers
             {
                 if (_activeProfile == null)
                 {
-                    if (ModConfig.Instance.Profiles.Count == 0)
+                    if (AllProfiles.Count == 0)
                     {
                         _activeProfile = new Profile
                         {
                             Name = "Default",
                             Active = true
                         };
-                        ModConfig.Instance.Profiles.Add(_activeProfile);
+                        AllProfiles.Add(_activeProfile);
                     }
-                    else if (ModConfig.Instance.Profiles.Count == 1)
+                    else if (AllProfiles.Count == 1)
                     {
-                        _activeProfile = ModConfig.Instance.Profiles[0];
+                        _activeProfile = AllProfiles[0];
                         _activeProfile.Active = true;
                     }
                     else
                     {
-                        _activeProfile = ModConfig.Instance.Profiles.Find(x => x.Active == true);
+                        _activeProfile = AllProfiles.Find(x => x.Active == true);
 
                         if (_activeProfile == null)
                         {
-                            _activeProfile = ModConfig.Instance.Profiles[0];
+                            _activeProfile = AllProfiles[0];
                             _activeProfile.Active = true;
                         }
                     }
@@ -53,7 +62,7 @@ namespace RenderIt.Managers
             }
             set
             {
-                foreach (Profile profile in ModConfig.Instance.Profiles)
+                foreach (Profile profile in AllProfiles)
                 {
                     profile.Active = false;
                 }
@@ -77,11 +86,22 @@ namespace RenderIt.Managers
 
         public void Apply()
         {
-            ModConfig.Instance.Apply();
+            IsActiveProfileUpdated = true;
+        }
+
+        public void Reset()
+        {
+            _allProfiles = ModConfig.Instance.Profiles.Select(x => x.Clone()).ToList();
+
+            _activeProfile = null;
+
+            IsActiveProfileUpdated = true;
         }
 
         public void Save()
-        { 
+        {
+            ModConfig.Instance.Profiles = _allProfiles.Select(x => x.Clone()).ToList();
+
             ModConfig.Instance.Save();
         }
 

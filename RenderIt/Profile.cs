@@ -80,5 +80,12 @@
         {
 
         }
+
+        public Profile Clone()
+        {   
+            Profile other = (Profile)MemberwiseClone();
+            other.Name = string.Copy(Name);
+            return other;
+        }
     }
 }

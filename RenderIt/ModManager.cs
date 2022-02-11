@@ -1,8 +1,8 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
+using RenderIt.Helpers;
 using RenderIt.Managers;
 using RenderIt.Panels;
-using RenderIt.Helpers;
 using System;
 using UnityEngine;
 using UnityEngine.PostProcessing;
@@ -95,6 +95,15 @@ namespace RenderIt
             {
                 if (!_initialized || ModConfig.Instance.ConfigUpdated)
                 {
+                    UpdateUI();
+                    _mainPanel.ForceUpdateUI();
+
+                    _initialized = true;
+                    ModConfig.Instance.ConfigUpdated = false;
+                }
+
+                if (ProfileManager.Instance.IsActiveProfileUpdated)
+                {
                     UpdateLighting();
                     UpdateTextures();
                     UpdateAntialiasing();
@@ -102,11 +111,7 @@ namespace RenderIt
                     UpdateBloom();
                     UpdateColorGrading();
 
-                    UpdateUI();
-                    _mainPanel.ForceUpdateUI();
-
-                    _initialized = true;
-                    ModConfig.Instance.ConfigUpdated = false;
+                    ProfileManager.Instance.IsActiveProfileUpdated = false;
                 }
             }
             catch (Exception e)

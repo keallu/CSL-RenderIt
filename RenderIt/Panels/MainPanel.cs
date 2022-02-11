@@ -24,8 +24,10 @@ namespace RenderIt.Panels
         private UIPanel _profilesButtonsPanel;
         private UIButton _profilesAddButton;
         private UIButton _profilesRemoveButton;
+        private UIButton _profilesCopyButton;
         private UIButton _profilesRenameButton;
         private UIButton _profilesSaveButton;
+        private UIButton _profilesResetButton;
 
         private UILabel _optionsDropDownLabel;
         private UIDropDown _optionsDropDown;
@@ -240,8 +242,10 @@ namespace RenderIt.Panels
                 DestroyGameObject(_profilesButtonsPanel);
                 DestroyGameObject(_profilesAddButton);
                 DestroyGameObject(_profilesRemoveButton);
+                DestroyGameObject(_profilesCopyButton);
                 DestroyGameObject(_profilesRenameButton);
                 DestroyGameObject(_profilesSaveButton);
+                DestroyGameObject(_profilesResetButton);
                 DestroyGameObject(_optionsDropDownLabel);
                 DestroyGameObject(_optionsDropDown);
                 DestroyGameObject(_optionsLightingPanel);
@@ -472,10 +476,7 @@ namespace RenderIt.Panels
                     _profilesDropDownLabel = UIUtils.CreateLabel(panel, "ProfilesDropDownLabel", "Active");
 
                     _profilesDropDown = UIUtils.CreateDropDown(panel, "ProfilesDropDown", _ingameAtlas);
-                    foreach (Profile profile in ProfileManager.Instance.AllProfiles)
-                    {
-                        _profilesDropDown.AddItem(profile.Name);
-                    }
+                    _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
                     _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
                     _profilesDropDown.eventSelectedIndexChanged += (component, value) =>
                     {
@@ -560,6 +561,26 @@ namespace RenderIt.Panels
                         }
                     };
 
+                    _profilesCopyButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesCopyButton", _ingameAtlas, "Copy");
+                    _profilesCopyButton.tooltip = "Click to make a copy of current active profile";
+                    _profilesCopyButton.relativePosition = new Vector3(0f, 40f);
+                    _profilesCopyButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            Profile profile = ProfileManager.Instance.ActiveProfile.Clone();
+                            profile.Name = "Copy of " + profile.Name;
+
+                            ProfileManager.Instance.AllProfiles.Add(profile);
+                            ProfileManager.Instance.ActiveProfile = profile;
+
+                            _profilesDropDown.AddItem(profile.Name);
+                            _profilesDropDown.selectedValue = profile.Name;
+
+                            eventParam.Use();
+                        }
+                    };
+
                     _profilesRenameButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesRenameButton", _ingameAtlas, "Rename");
                     _profilesRenameButton.tooltip = "Click to rename current active profile";
                     _profilesRenameButton.relativePosition = new Vector3(185f, 0f);
@@ -589,6 +610,24 @@ namespace RenderIt.Panels
                         if (!eventParam.used)
                         {
                             ProfileManager.Instance.Save();
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _profilesResetButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesResetButton", _ingameAtlas, "Reset");
+                    _profilesResetButton.tooltip = "Click to reset all profiles to latest save";
+                    _profilesResetButton.relativePosition = new Vector3(270f, 40f);
+                    _profilesResetButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            ProfileManager.Instance.Reset();
+
+                            _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
+                            _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
+
+                            ApplyProfile(ProfileManager.Instance.ActiveProfile);
 
                             eventParam.Use();
                         }
@@ -1939,62 +1978,62 @@ namespace RenderIt.Panels
         {
             try
             {
-                _optionsDropDown.selectedIndex = -1;
-                _optionsDropDown.selectedIndex = 0;
+                if (profile != null)
+                {
+                    _optionsSunIntensitySlider.value = profile.SunIntensity;
+                    _optionsSunShadowStrengthSlider.value = profile.SunShadowStrength;
+                    _optionsMoonIntensitySlider.value = profile.MoonIntensity;
+                    _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
 
-                _optionsSunIntensitySlider.value = profile.SunIntensity;
-                _optionsSunShadowStrengthSlider.value = profile.SunShadowStrength;
-                _optionsMoonIntensitySlider.value = profile.MoonIntensity;
-                _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
+                    _optionsSharpnessAssetTypeDropDown.selectedIndex = -1;
+                    _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
 
-                _optionsSharpnessAssetTypeDropDown.selectedIndex = -1;
-                _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
+                    _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
+                    _optionsAmbientOcclusionCheckBox.isChecked = profile.AmbientOcclusionEnabled;
+                    _optionsBloomCheckBox.isChecked = profile.BloomEnabled;
+                    _optionsColorGradingCheckBox.isChecked = profile.ColorGradingEnabled;
 
-                _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
-                _optionsAmbientOcclusionCheckBox.isChecked = profile.AmbientOcclusionEnabled;
-                _optionsBloomCheckBox.isChecked = profile.BloomEnabled;
-                _optionsColorGradingCheckBox.isChecked = profile.ColorGradingEnabled;
+                    _advancedFXAAQualityDropDown.selectedIndex = profile.FXAAQuality;
 
-                _advancedFXAAQualityDropDown.selectedIndex = profile.FXAAQuality;
+                    _advancedTAAJitterSpreadSlider.value = profile.TAAJitterSpread;
+                    _advancedTAAStationaryBlendingSlider.value = profile.TAAStationaryBlending;
+                    _advancedTAAMotionBlendingSlider.value = profile.TAAMotionBlending;
+                    _advancedTAASharpenSlider.value = profile.TAASharpen;
 
-                _advancedTAAJitterSpreadSlider.value = profile.TAAJitterSpread;
-                _advancedTAAStationaryBlendingSlider.value = profile.TAAStationaryBlending;
-                _advancedTAAMotionBlendingSlider.value = profile.TAAMotionBlending;
-                _advancedTAASharpenSlider.value = profile.TAASharpen;
+                    _advancedAOIntensitySlider.value = profile.AOIntensity;
+                    _advancedAORadiusSlider.value = profile.AORadius;
+                    _advancedAOSampleCountDropDown.selectedIndex = profile.AOSampleCount;
+                    _advancedAODownsamplingCheckBox.isChecked = profile.AODownsampling;
+                    _advancedAOForceForwardCompatibilityCheckBox.isChecked = profile.AOForceForwardCompatibility;
+                    _advancedAOAmbientOnlyCheckBox.isChecked = profile.AOAmbientOnly;
+                    _advancedAOHighPrecisionCheckBox.isChecked = profile.AOHighPrecision;
 
-                _advancedAOIntensitySlider.value = profile.AOIntensity;
-                _advancedAORadiusSlider.value = profile.AORadius;
-                _advancedAOSampleCountDropDown.selectedIndex = profile.AOSampleCount;
-                _advancedAODownsamplingCheckBox.isChecked = profile.AODownsampling;
-                _advancedAOForceForwardCompatibilityCheckBox.isChecked = profile.AOForceForwardCompatibility;
-                _advancedAOAmbientOnlyCheckBox.isChecked = profile.AOAmbientOnly;
-                _advancedAOHighPrecisionCheckBox.isChecked = profile.AOHighPrecision;
+                    _advancedBloomVanillaBloomCheckBox.isChecked = profile.BloomVanillaBloomEnabled;
+                    _advancedBloomIntensitySlider.value = profile.BloomIntensity;
+                    _advancedBloomThresholdSlider.value = profile.BloomThreshold;
+                    _advancedBloomSoftKneeSlider.value = profile.BloomSoftKnee;
+                    _advancedBloomRadiusSlider.value = profile.BloomRadius;
+                    _advancedBloomAntiFlickerCheckBox.isChecked = profile.BloomAntiFlicker;
 
-                _advancedBloomVanillaBloomCheckBox.isChecked = profile.BloomVanillaBloomEnabled;
-                _advancedBloomIntensitySlider.value = profile.BloomIntensity;
-                _advancedBloomThresholdSlider.value = profile.BloomThreshold;
-                _advancedBloomSoftKneeSlider.value = profile.BloomSoftKnee;
-                _advancedBloomRadiusSlider.value = profile.BloomRadius;
-                _advancedBloomAntiFlickerCheckBox.isChecked = profile.BloomAntiFlicker;
+                    _advancedCGVanillaTonemappingCheckBox.isChecked = profile.CGVanillaTonemappingEnabled;
+                    _advancedCGVanillaColorCorrectionLUTCheckBox.isChecked = profile.CGVanillaColorCorrectionLUTEnabled;
+                    _advancedCGPostExposureSlider.value = profile.CGPostExposure;
+                    _advancedCGTemperatureSlider.value = profile.CGTemperature;
+                    _advancedCGTintSlider.value = profile.CGTint;
+                    _advancedCGHueShiftSlider.value = profile.CGHueShift;
+                    _advancedCGSaturationSlider.value = profile.CGSaturation;
+                    _advancedCGContrastSlider.value = profile.CGContrast;
+                    _advancedCGTonemapperDropDown.selectedIndex = profile.CGTonemapper;
+                    _advancedCGNeutralBlackInSlider.value = profile.CGNeutralBlackIn;
+                    _advancedCGNeutralWhiteInSlider.value = profile.CGNeutralWhiteIn;
+                    _advancedCGNeutralBlackOutSlider.value = profile.CGNeutralBlackOut;
+                    _advancedCGNeutralWhiteOutSlider.value = profile.CGNeutralWhiteOut;
+                    _advancedCGNeutralWhiteLevelSlider.value = profile.CGNeutralWhiteLevel;
+                    _advancedCGNeutralWhiteClipSlider.value = profile.CGNeutralWhiteClip;
 
-                _advancedCGVanillaTonemappingCheckBox.isChecked = profile.CGVanillaTonemappingEnabled;
-                _advancedCGVanillaColorCorrectionLUTCheckBox.isChecked = profile.CGVanillaColorCorrectionLUTEnabled;
-                _advancedCGPostExposureSlider.value = profile.CGPostExposure;
-                _advancedCGTemperatureSlider.value = profile.CGTemperature;
-                _advancedCGTintSlider.value = profile.CGTint;
-                _advancedCGHueShiftSlider.value = profile.CGHueShift;
-                _advancedCGSaturationSlider.value = profile.CGSaturation;
-                _advancedCGContrastSlider.value = profile.CGContrast;
-                _advancedCGTonemapperDropDown.selectedIndex = profile.CGTonemapper;
-                _advancedCGNeutralBlackInSlider.value = profile.CGNeutralBlackIn;
-                _advancedCGNeutralWhiteInSlider.value = profile.CGNeutralWhiteIn;
-                _advancedCGNeutralBlackOutSlider.value = profile.CGNeutralBlackOut;
-                _advancedCGNeutralWhiteOutSlider.value = profile.CGNeutralWhiteOut;
-                _advancedCGNeutralWhiteLevelSlider.value = profile.CGNeutralWhiteLevel;
-                _advancedCGNeutralWhiteClipSlider.value = profile.CGNeutralWhiteClip;
-
-                _advancedCGChannelDropDown.selectedIndex = -1;
-                _advancedCGChannelDropDown.selectedIndex = 0;
+                    _advancedCGChannelDropDown.selectedIndex = -1;
+                    _advancedCGChannelDropDown.selectedIndex = 0;
+                }
             }
             catch (Exception e)
             {

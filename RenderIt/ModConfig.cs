@@ -29,11 +29,6 @@ namespace RenderIt
             }
         }
 
-        public void Apply()
-        {
-            ConfigUpdated = true;
-        }
-
         public void Save()
         {            
             Configuration<ModConfig>.Save();
