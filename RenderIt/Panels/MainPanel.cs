@@ -27,7 +27,7 @@ namespace RenderIt.Panels
         private UIButton _profilesCopyButton;
         private UIButton _profilesRenameButton;
         private UIButton _profilesSaveButton;
-        private UIButton _profilesResetButton;
+        private UIButton _profilesRevertButton;
 
         private UILabel _optionsDropDownLabel;
         private UIDropDown _optionsDropDown;
@@ -245,7 +245,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_profilesCopyButton);
                 DestroyGameObject(_profilesRenameButton);
                 DestroyGameObject(_profilesSaveButton);
-                DestroyGameObject(_profilesResetButton);
+                DestroyGameObject(_profilesRevertButton);
                 DestroyGameObject(_optionsDropDownLabel);
                 DestroyGameObject(_optionsDropDown);
                 DestroyGameObject(_optionsLightingPanel);
@@ -615,10 +615,10 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _profilesResetButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesResetButton", _ingameAtlas, "Reset");
-                    _profilesResetButton.tooltip = "Click to reset all profiles to latest save";
-                    _profilesResetButton.relativePosition = new Vector3(270f, 40f);
-                    _profilesResetButton.eventClick += (component, eventParam) =>
+                    _profilesRevertButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesRevertButton", _ingameAtlas, "Revert");
+                    _profilesRevertButton.tooltip = "Click to revert all profiles back to latest save";
+                    _profilesRevertButton.relativePosition = new Vector3(270f, 40f);
+                    _profilesRevertButton.eventClick += (component, eventParam) =>
                     {
                         if (!eventParam.used)
                         {

@@ -6,6 +6,8 @@ namespace RenderIt.Helpers
 {
     public static class TextureHelper
     {
+        private static readonly string[] _textureNames = { "_MainTex", "_XYSMap", "_ACIMap", "_APRMap", "_XYCAMap" };
+
         public static void UpdateTexture()
         {
             try
@@ -52,46 +54,29 @@ namespace RenderIt.Helpers
                     {
                         continue;
                     }
+
                     if (buildingInfo.m_material != null)
                     {
-                        Texture texture = buildingInfo.m_material.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
-                        }
-                        texture = buildingInfo.m_material.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
-                        }
-                        texture = buildingInfo.m_material.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            Texture texture = buildingInfo.m_material.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                     if (ProfileManager.Instance.ActiveProfile.GeneralLODIncluded && buildingInfo.m_lodMaterial != null)
                     {
-                        Texture texture = buildingInfo.m_lodMaterial.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
-                        }
-                        texture = buildingInfo.m_lodMaterial.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
-                        }
-                        texture = buildingInfo.m_lodMaterial.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            Texture texture = buildingInfo.m_lodMaterial.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                 }
@@ -121,44 +106,26 @@ namespace RenderIt.Helpers
                     {
                         if (segment.m_material != null)
                         {
-                            Texture texture = segment.m_material.GetTexture("_MainTex");
-                            if (texture != null)
+                            foreach (string textureName in _textureNames)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = segment.m_material.GetTexture("_XYSMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = segment.m_material.GetTexture("_ACIMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
+                                Texture texture = segment.m_material.GetTexture(textureName);
+                                if (texture != null)
+                                {
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                }
                             }
                         }
                         if (ProfileManager.Instance.ActiveProfile.NetworksLODIncluded && segment.m_lodMaterial != null)
                         {
-                            Texture texture = segment.m_lodMaterial.GetTexture("_MainTex");
-                            if (texture != null)
+                            foreach (string textureName in _textureNames)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = segment.m_lodMaterial.GetTexture("_XYSMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = segment.m_lodMaterial.GetTexture("_ACIMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
+                                Texture texture = segment.m_lodMaterial.GetTexture(textureName);
+                                if (texture != null)
+                                {
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                }
                             }
                         }
                     }
@@ -169,44 +136,26 @@ namespace RenderIt.Helpers
                     {
                         if (node.m_material != null)
                         {
-                            Texture texture = node.m_material.GetTexture("_MainTex");
-                            if (texture != null)
+                            foreach (string textureName in _textureNames)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = node.m_material.GetTexture("_XYSMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = node.m_material.GetTexture("_ACIMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
+                                Texture texture = node.m_material.GetTexture(textureName);
+                                if (texture != null)
+                                {
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                }
                             }
                         }
                         if (ProfileManager.Instance.ActiveProfile.NetworksLODIncluded && node.m_lodMaterial != null)
                         {
-                            Texture texture = node.m_lodMaterial.GetTexture("_MainTex");
-                            if (texture != null)
+                            foreach (string textureName in _textureNames)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = node.m_lodMaterial.GetTexture("_XYSMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
-                            }
-                            texture = node.m_lodMaterial.GetTexture("_ACIMap");
-                            if (texture != null)
-                            {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
+                                Texture texture = node.m_lodMaterial.GetTexture(textureName);
+                                if (texture != null)
+                                {
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                }
                             }
                         }
                     }
@@ -232,44 +181,26 @@ namespace RenderIt.Helpers
                     }
                     if (propInfo.m_material != null)
                     {
-                        Texture texture = propInfo.m_material.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = propInfo.m_material.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = propInfo.m_material.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = propInfo.m_material.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                     if (ProfileManager.Instance.ActiveProfile.PropsLODIncluded && propInfo.m_lodMaterial != null)
                     {
-                        Texture texture = propInfo.m_lodMaterial.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = propInfo.m_lodMaterial.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = propInfo.m_lodMaterial.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = propInfo.m_lodMaterial.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                 }
@@ -294,23 +225,14 @@ namespace RenderIt.Helpers
                     }
                     if (ProfileManager.Instance.ActiveProfile.CitizensLODIncluded && citizenInfo.m_lodMaterial != null)
                     {
-                        Texture texture = citizenInfo.m_lodMaterial.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = citizenInfo.m_lodMaterial.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = citizenInfo.m_lodMaterial.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = citizenInfo.m_lodMaterial.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                 }
@@ -335,44 +257,26 @@ namespace RenderIt.Helpers
                     }
                     if (vehicleInfo.m_material != null)
                     {
-                        Texture texture = vehicleInfo.m_material.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = vehicleInfo.m_material.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = vehicleInfo.m_material.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = vehicleInfo.m_material.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                     if (ProfileManager.Instance.ActiveProfile.VehiclesLODIncluded && vehicleInfo.m_lodMaterial != null)
                     {
-                        Texture texture = vehicleInfo.m_lodMaterial.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = vehicleInfo.m_lodMaterial.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = vehicleInfo.m_lodMaterial.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = vehicleInfo.m_lodMaterial.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                 }
@@ -397,44 +301,26 @@ namespace RenderIt.Helpers
                     }
                     if (treeInfo.m_material != null)
                     {
-                        Texture texture = treeInfo.m_material.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = treeInfo.m_material.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = treeInfo.m_material.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = treeInfo.m_material.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                     if (ProfileManager.Instance.ActiveProfile.TreesLODIncluded && treeInfo.m_lodMaterial != null)
                     {
-                        Texture texture = treeInfo.m_lodMaterial.GetTexture("_MainTex");
-                        if (texture != null)
+                        foreach (string textureName in _textureNames)
                         {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = treeInfo.m_lodMaterial.GetTexture("_XYSMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
-                        }
-                        texture = treeInfo.m_lodMaterial.GetTexture("_ACIMap");
-                        if (texture != null)
-                        {
-                            texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
-                            texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
+                            Texture texture = treeInfo.m_lodMaterial.GetTexture(textureName);
+                            if (texture != null)
+                            {
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                            }
                         }
                     }
                 }
