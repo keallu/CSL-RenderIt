@@ -57,8 +57,6 @@ namespace RenderIt
                     ModProperties.Instance.ResetButtonPosition();
                 }
 
-                DefaultManager.Instance.Initialize();
-
                 AssetManager.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
 
                 _postProcessingBehaviour = _camera.gameObject?.GetComponent<PostProcessingBehaviour>();

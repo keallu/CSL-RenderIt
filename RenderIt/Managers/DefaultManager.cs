@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace RenderIt.Managers
 {
     public class DefaultManager
     {
-        private Dictionary<string, object> _defaults { get; set; } = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _defaults = new Dictionary<string, object>();
 
         private static DefaultManager instance;
 
@@ -18,26 +20,45 @@ namespace RenderIt.Managers
 
         public void Initialize()
         {
-            _defaults.Clear();
+            try
+            {
+                _defaults.Clear();
 
-            _defaults.Add("SunIntensity", DayNightProperties.instance.m_SunIntensity);
-            _defaults.Add("SunShadowStrength", DayNightProperties.instance.sunLightSource.shadowStrength);
-            _defaults.Add("MoonIntensity", DayNightProperties.instance.m_MoonIntensity);
-            _defaults.Add("MoonShadowStrength", DayNightProperties.instance.moonLightSource.shadowStrength);
+                _defaults.Add("SunIntensity", DayNightProperties.instance.m_SunIntensity);
+                _defaults.Add("SunShadowStrength", DayNightProperties.instance.sunLightSource.shadowStrength);
+                _defaults.Add("MoonIntensity", DayNightProperties.instance.m_MoonIntensity);
+                _defaults.Add("MoonShadowStrength", DayNightProperties.instance.moonLightSource.shadowStrength);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] DefaultManager:Initialize -> Exception: " + e.Message);
+            }
         }
 
         public object Get(string name)
         {
-            _defaults.TryGetValue(name, out object value);
+            object obj = null;
 
-            if (value != null)
+            try
             {
-                return value;
+                if (_defaults == null || _defaults.Count < 1)
+                {
+                    Initialize();
+                }
+
+                _defaults.TryGetValue(name, out object value);
+
+                if (value != null)
+                {
+                    obj = value;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return null;
+                Debug.Log("[Render It!] DefaultManager:Get -> Exception: " + e.Message);
             }
+
+            return obj;
         }
     }
 }

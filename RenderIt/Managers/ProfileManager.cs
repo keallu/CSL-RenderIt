@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace RenderIt.Managers
 {
@@ -91,40 +93,61 @@ namespace RenderIt.Managers
 
         public void Reset()
         {
-            _allProfiles = ModConfig.Instance.Profiles.Select(x => x.Clone()).ToList();
+            try
+            {
+                _allProfiles = ModConfig.Instance.Profiles.Select(x => x.Clone()).ToList();
 
-            _activeProfile = null;
+                _activeProfile = null;
 
-            IsActiveProfileUpdated = true;
+                IsActiveProfileUpdated = true;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ProfileManager:Reset -> Exception: " + e.Message);
+            }
         }
 
         public void Save()
         {
-            ModConfig.Instance.Profiles = _allProfiles.Select(x => x.Clone()).ToList();
+            try
+            {
+                ModConfig.Instance.Profiles = _allProfiles.Select(x => x.Clone()).ToList();
 
-            ModConfig.Instance.Save();
+                ModConfig.Instance.Save();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ProfileManager:Save -> Exception: " + e.Message);
+            }
         }
 
         private void ReplaceUnspecifiedValues()
         {
-            if (float.IsNaN(_activeProfile.SunIntensity))
+            try
             {
-                _activeProfile.SunIntensity = (float)DefaultManager.Instance.Get("SunIntensity");
-            }
+                if (float.IsNaN(_activeProfile.SunIntensity))
+                {
+                    _activeProfile.SunIntensity = (float)DefaultManager.Instance.Get("SunIntensity");
+                }
 
-            if (float.IsNaN(_activeProfile.SunShadowStrength))
-            {
-                _activeProfile.SunShadowStrength = (float)DefaultManager.Instance.Get("SunShadowStrength");
-            }
+                if (float.IsNaN(_activeProfile.SunShadowStrength))
+                {
+                    _activeProfile.SunShadowStrength = (float)DefaultManager.Instance.Get("SunShadowStrength");
+                }
 
-            if (float.IsNaN(_activeProfile.MoonIntensity))
-            {
-                _activeProfile.MoonIntensity = (float)DefaultManager.Instance.Get("MoonIntensity");
-            }
+                if (float.IsNaN(_activeProfile.MoonIntensity))
+                {
+                    _activeProfile.MoonIntensity = (float)DefaultManager.Instance.Get("MoonIntensity");
+                }
 
-            if (float.IsNaN(_activeProfile.MoonShadowStrength))
+                if (float.IsNaN(_activeProfile.MoonShadowStrength))
+                {
+                    _activeProfile.MoonShadowStrength = (float)DefaultManager.Instance.Get("MoonShadowStrength");
+                }
+            }
+            catch (Exception e)
             {
-                _activeProfile.MoonShadowStrength = (float)DefaultManager.Instance.Get("MoonShadowStrength");
+                Debug.Log("[Render It!] ProfileManager:ReplaceUnspecifiedValues -> Exception: " + e.Message);
             }
         }
     }

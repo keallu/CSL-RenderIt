@@ -79,7 +79,7 @@ namespace RenderIt
             UILabel label = parent.AddUIComponent<UILabel>();
             label.name = name;
             label.font = GetUIFont("OpenSans-Regular");
-            label.textScale = 0.8125f;
+            label.textScale = 0.875f;
             label.text = text;
             label.autoSize = false;
             label.height = 20f;
@@ -300,20 +300,6 @@ namespace RenderIt
             label.textAlignment = UIHorizontalAlignment.Center;
 
             return label;
-        }
-
-        public static UIButton CreateMenuPanelLocationButton(UIComponent parent, UITextureAtlas atlas)
-        {
-            UIButton button = parent.AddUIComponent<UIButton>();
-            button.name = "LocationButton";
-            button.atlas = atlas;
-            button.zOrder = 1;
-
-            button.normalBgSprite = "LocationMarkerActiveNormal";
-            button.hoveredBgSprite = "LocationMarkerActiveHovered";
-            button.pressedBgSprite = "LocationMarkerActivePressed";
-
-            return button;
         }
 
         public static UIButton CreateMenuPanelCloseButton(UIComponent parent, UITextureAtlas atlas)

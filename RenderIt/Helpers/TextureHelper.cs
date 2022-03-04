@@ -111,8 +111,8 @@ namespace RenderIt.Helpers
                                 Texture texture = segment.m_material.GetTexture(textureName);
                                 if (texture != null)
                                 {
-                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
                                 }
                             }
                         }
@@ -123,8 +123,8 @@ namespace RenderIt.Helpers
                                 Texture texture = segment.m_lodMaterial.GetTexture(textureName);
                                 if (texture != null)
                                 {
-                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
                                 }
                             }
                         }
@@ -141,8 +141,8 @@ namespace RenderIt.Helpers
                                 Texture texture = node.m_material.GetTexture(textureName);
                                 if (texture != null)
                                 {
-                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
                                 }
                             }
                         }
@@ -153,8 +153,8 @@ namespace RenderIt.Helpers
                                 Texture texture = node.m_lodMaterial.GetTexture(textureName);
                                 if (texture != null)
                                 {
-                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                    texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.NetworksAnisoLevel];
+                                    texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.NetworksMipMapBias];
                                 }
                             }
                         }
@@ -186,8 +186,8 @@ namespace RenderIt.Helpers
                             Texture texture = propInfo.m_material.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
                             }
                         }
                     }
@@ -198,8 +198,8 @@ namespace RenderIt.Helpers
                             Texture texture = propInfo.m_lodMaterial.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.PropsAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.PropsMipMapBias];
                             }
                         }
                     }
@@ -230,8 +230,8 @@ namespace RenderIt.Helpers
                             Texture texture = citizenInfo.m_lodMaterial.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.CitizensAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.CitizensMipMapBias];
                             }
                         }
                     }
@@ -262,8 +262,8 @@ namespace RenderIt.Helpers
                             Texture texture = vehicleInfo.m_material.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.VehiclesAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.VehiclesMipMapBias];
                             }
                         }
                     }
@@ -274,8 +274,8 @@ namespace RenderIt.Helpers
                             Texture texture = vehicleInfo.m_lodMaterial.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.VehiclesAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.VehiclesMipMapBias];
                             }
                         }
                     }
@@ -306,8 +306,8 @@ namespace RenderIt.Helpers
                             Texture texture = treeInfo.m_material.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.TreesAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.TreesMipMapBias];
                             }
                         }
                     }
@@ -318,8 +318,8 @@ namespace RenderIt.Helpers
                             Texture texture = treeInfo.m_lodMaterial.GetTexture(textureName);
                             if (texture != null)
                             {
-                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.BuildingsAnisoLevel];
-                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.BuildingsMipMapBias];
+                                texture.anisoLevel = ModInvariables.AnisoLevelsValues[ProfileManager.Instance.ActiveProfile.TreesAnisoLevel];
+                                texture.mipMapBias = ModInvariables.MipMapBiasValues[ProfileManager.Instance.ActiveProfile.TreesMipMapBias];
                             }
                         }
                     }
