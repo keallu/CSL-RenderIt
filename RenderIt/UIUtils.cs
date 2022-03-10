@@ -131,6 +131,37 @@ namespace RenderIt
             return textField;
         }
 
+        public static UITextField CreateMultilineTextField(UIComponent parent, string name, UITextureAtlas atlas, string text)
+        {
+            UITextField textField = parent.AddUIComponent<UITextField>();
+            textField.name = name;
+            textField.atlas = atlas;
+            textField.font = GetUIFont("OpenSans-Regular");
+            textField.textScale = 0.875f;
+            textField.height = 100f;
+            textField.width = parent.width - 10f;
+            textField.relativePosition = new Vector3(0f, 0f);
+
+            textField.normalBgSprite = "OptionsDropboxListbox";
+            textField.hoveredBgSprite = "OptionsDropboxListboxHovered";
+            textField.focusedBgSprite = "OptionsDropboxListboxFocused";
+            textField.disabledBgSprite = "OptionsDropboxListboxDisabled";
+            textField.selectionSprite = "EmptySprite";
+
+            textField.foregroundSpriteMode = UIForegroundSpriteMode.Stretch;
+            textField.horizontalAlignment = UIHorizontalAlignment.Left;
+            textField.verticalAlignment = UIVerticalAlignment.Top;
+
+            textField.padding = new RectOffset(10, 5, 10, 5);
+
+            textField.multiline = true;
+            textField.selectOnFocus = true;
+            textField.builtinKeyNavigation = true;
+            textField.text = text;
+
+            return textField;
+        }
+
         public static UIDropDown CreateDropDown(UIComponent parent, string name, UITextureAtlas atlas)
         {
             UIDropDown dropDown = parent.AddUIComponent<UIDropDown>();

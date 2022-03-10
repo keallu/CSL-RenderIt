@@ -23,7 +23,14 @@
             "6",
             "7",
             "8",
-            "9 (full filtering)"
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16 (full filtering)"
         };
 
         public static readonly int[] AnisoLevelsValues =
@@ -36,7 +43,14 @@
             6,
             7,
             8,
-            9
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
         };
 
         public static readonly string[] MipMapBias =

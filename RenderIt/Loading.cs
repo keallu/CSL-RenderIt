@@ -11,6 +11,7 @@ namespace RenderIt
     {
         private GameObject _modManagerGameObject;
         private GameObject _mainPanelGameObject;
+        private GameObject _importExportPanelGameObject;
 
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -25,6 +26,10 @@ namespace RenderIt
                     _mainPanelGameObject = new GameObject("RenderItMainPanel");
                     _mainPanelGameObject.transform.parent = uiView.transform;
                     _mainPanelGameObject.AddComponent<MainPanel>();
+
+                    _importExportPanelGameObject = new GameObject("RenderItImportExportPanel");
+                    _importExportPanelGameObject.transform.parent = uiView.transform;
+                    _importExportPanelGameObject.AddComponent<ImportExportPanel>();
                 }
             }
             catch (Exception e)

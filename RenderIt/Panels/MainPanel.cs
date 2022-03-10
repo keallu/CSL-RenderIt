@@ -11,6 +11,8 @@ namespace RenderIt.Panels
     {
         private bool _initialized;
 
+        private ImportExportPanel _importExportPanel;
+
         private UITextureAtlas _ingameAtlas;
         private UILabel _title;
         private UIButton _close;
@@ -20,11 +22,13 @@ namespace RenderIt.Panels
         private UIButton _templateButton;
         private UILabel _profilesDropDownLabel;
         private UIDropDown _profilesDropDown;
-        private UITextField _profilesUITextField;
+        private UITextField _profilesTextField;
         private UIPanel _profilesButtonsPanel;
         private UIButton _profilesAddButton;
         private UIButton _profilesRemoveButton;
         private UIButton _profilesCopyButton;
+        private UIButton _profilesImportButton;
+        private UIButton _profilesExportButton;
         private UIButton _profilesRenameButton;
         private UIButton _profilesSaveButton;
         private UIButton _profilesRevertButton;
@@ -190,6 +194,11 @@ namespace RenderIt.Panels
 
             try
             {
+                if (_importExportPanel == null)
+                {
+                    _importExportPanel = GameObject.Find("RenderItImportExportPanel")?.GetComponent<ImportExportPanel>();
+                }
+
                 if (ModConfig.Instance.PanelPositionX == 0f && ModConfig.Instance.PanelPositionY == 0f)
                 {
                     ModProperties.Instance.ResetPanelPosition();
@@ -238,11 +247,13 @@ namespace RenderIt.Panels
                 DestroyGameObject(_templateButton);
                 DestroyGameObject(_profilesDropDownLabel);
                 DestroyGameObject(_profilesDropDown);
-                DestroyGameObject(_profilesUITextField);
+                DestroyGameObject(_profilesTextField);
                 DestroyGameObject(_profilesButtonsPanel);
                 DestroyGameObject(_profilesAddButton);
                 DestroyGameObject(_profilesRemoveButton);
                 DestroyGameObject(_profilesCopyButton);
+                DestroyGameObject(_profilesImportButton);
+                DestroyGameObject(_profilesExportButton);
                 DestroyGameObject(_profilesRenameButton);
                 DestroyGameObject(_profilesSaveButton);
                 DestroyGameObject(_profilesRevertButton);
@@ -406,6 +417,12 @@ namespace RenderIt.Panels
             UpdateUI();
         }
 
+        public void ForceProfile(Profile profile)
+        {
+            _profilesDropDown.AddItem(profile.Name);
+            _profilesDropDown.selectedIndex = _profilesDropDown.items.Length - 1;
+        }
+
         private void CreateUI()
         {
             try
@@ -488,13 +505,13 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _profilesUITextField = UIUtils.CreateTextField(panel, "ProfilesTextField", _ingameAtlas, "");
-                    _profilesUITextField.isVisible = false;
-                    _profilesUITextField.eventTextSubmitted += (component, value) =>
+                    _profilesTextField = UIUtils.CreateTextField(panel, "ProfilesTextField", _ingameAtlas, "");
+                    _profilesTextField.isVisible = false;
+                    _profilesTextField.eventTextSubmitted += (component, value) =>
                     {
                         if (ProfileManager.Instance.AllProfiles.Count > 1)
                         {
-                            _profilesUITextField.isVisible = false;
+                            _profilesTextField.isVisible = false;
 
                             ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name = value;
 
@@ -506,7 +523,7 @@ namespace RenderIt.Panels
 
                     _profilesButtonsPanel = UIUtils.CreatePanel(panel, "ProfilesButtonsPanel");
                     _profilesButtonsPanel.width = panel.width - 10f;
-                    _profilesButtonsPanel.height = 40f;
+                    _profilesButtonsPanel.height = 100f;
 
                     _profilesAddButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesAddButton", _ingameAtlas, "Add");
                     _profilesAddButton.tooltip = "Click to add new active profile with default values";
@@ -535,7 +552,7 @@ namespace RenderIt.Panels
                             ProfileManager.Instance.ActiveProfile = profile;
 
                             _profilesDropDown.AddItem(profile.Name);
-                            _profilesDropDown.selectedValue = profile.Name;
+                            _profilesDropDown.selectedIndex = _profilesDropDown.items.Length - 1;
 
                             eventParam.Use();
                         }
@@ -554,7 +571,7 @@ namespace RenderIt.Panels
                                 ProfileManager.Instance.ActiveProfile = ProfileManager.Instance.AllProfiles[0];
 
                                 _profilesDropDown.items = _profilesDropDown.items.Where((w, i) => i != _profilesDropDown.selectedIndex).ToArray();
-                                _profilesDropDown.selectedValue = ProfileManager.Instance.AllProfiles[0].Name;
+                                _profilesDropDown.selectedIndex = 0;
                             }
 
                             eventParam.Use();
@@ -575,7 +592,52 @@ namespace RenderIt.Panels
                             ProfileManager.Instance.ActiveProfile = profile;
 
                             _profilesDropDown.AddItem(profile.Name);
-                            _profilesDropDown.selectedValue = profile.Name;
+                            _profilesDropDown.selectedIndex = _profilesDropDown.items.Length - 1;
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _profilesImportButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesImportButton", _ingameAtlas, "Import");
+                    _profilesImportButton.tooltip = "Click to open import of current active profile";
+                    _profilesImportButton.relativePosition = new Vector3(0f, 80f);
+                    _profilesImportButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            if (_importExportPanel != null)
+                            {
+                                if (_importExportPanel.isVisible)
+                                {
+                                    _importExportPanel.Hide();
+                                }
+                                else
+                                {
+                                    _importExportPanel.SetMode(true);
+                                    _importExportPanel.Show();
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _profilesExportButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesExportButton", _ingameAtlas, "Export");
+                    _profilesExportButton.tooltip = "Click to open export of current active profile";
+                    _profilesExportButton.relativePosition = new Vector3(85f, 80f);
+                    _profilesExportButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            if (_importExportPanel.isVisible)
+                            {
+                                _importExportPanel.Hide();
+                            }
+                            else
+                            {
+                                _importExportPanel.SetMode(false);
+                                _importExportPanel.Show();
+                            }
 
                             eventParam.Use();
                         }
@@ -592,10 +654,10 @@ namespace RenderIt.Panels
                             {
                                 _profilesDropDown.isVisible = false;
 
-                                _profilesUITextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
+                                _profilesTextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
 
-                                _profilesUITextField.isVisible = true;
-                                _profilesUITextField.Focus();
+                                _profilesTextField.isVisible = true;
+                                _profilesTextField.Focus();
                             }
 
                             eventParam.Use();
@@ -966,7 +1028,7 @@ namespace RenderIt.Panels
                             {
                                 if (ModUtils.GetDepthOfFieldInOptionsGraphicsPanel() != 0)
                                 {
-                                    ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", delegate (UIComponent comp, int ret)
+                                    ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", (comp, ret) =>
                                     {
                                         if (ret == 1)
                                         {
