@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RenderIt.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -143,6 +144,41 @@ namespace RenderIt.Managers
                 if (float.IsNaN(_activeProfile.MoonShadowStrength))
                 {
                     _activeProfile.MoonShadowStrength = (float)DefaultManager.Instance.Get("MoonShadowStrength");
+                }
+
+                if (float.IsNaN(_activeProfile.SkyRayleighScattering))
+                {
+                    _activeProfile.SkyRayleighScattering = (float)DefaultManager.Instance.Get("SkyRayleighScattering");
+                }
+
+                if (float.IsNaN(_activeProfile.SkyMieScattering))
+                {
+                    _activeProfile.SkyMieScattering = (float)DefaultManager.Instance.Get("SkyMieScattering");
+                }
+
+                if (float.IsNaN(_activeProfile.SkyExposure))
+                {
+                    _activeProfile.SkyExposure = (float)DefaultManager.Instance.Get("SkyExposure");
+                }
+
+                if (_activeProfile.LightColors.Count < 1)
+                {
+                    _activeProfile.LightColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("LightColors"));
+                }
+
+                if (_activeProfile.SkyColors.Count < 1)
+                {
+                    _activeProfile.SkyColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("SkyColors"));
+                }
+
+                if (_activeProfile.EquatorColors.Count < 1)
+                {
+                    _activeProfile.EquatorColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("EquatorColors"));
+                }
+
+                if (_activeProfile.GroundColors.Count < 1)
+                {
+                    _activeProfile.GroundColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("GroundColors"));
                 }
             }
             catch (Exception e)

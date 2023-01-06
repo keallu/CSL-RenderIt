@@ -28,6 +28,13 @@ namespace RenderIt.Managers
                 _defaults.Add("SunShadowStrength", DayNightProperties.instance.sunLightSource.shadowStrength);
                 _defaults.Add("MoonIntensity", DayNightProperties.instance.m_MoonIntensity);
                 _defaults.Add("MoonShadowStrength", DayNightProperties.instance.moonLightSource.shadowStrength);
+                _defaults.Add("SkyRayleighScattering", DayNightProperties.instance.m_RayleighScattering);
+                _defaults.Add("SkyMieScattering", DayNightProperties.instance.m_MieScattering);
+                _defaults.Add("SkyExposure", DayNightProperties.instance.m_Exposure);
+                _defaults.Add("LightColors", (GradientColorKey[])DayNightProperties.instance.m_LightColor.colorKeys.Clone());
+                _defaults.Add("SkyColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys.Clone());
+                _defaults.Add("EquatorColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys.Clone());
+                _defaults.Add("GroundColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys.Clone());
             }
             catch (Exception e)
             {

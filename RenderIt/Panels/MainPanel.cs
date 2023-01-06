@@ -1,5 +1,6 @@
 ﻿using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
+using RenderIt.Helpers;
 using RenderIt.Managers;
 using System;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace RenderIt.Panels
         private bool _initialized;
 
         private ImportExportPanel _importExportPanel;
+        private ColorsPanel _colorsPanel;
 
         private UITextureAtlas _ingameAtlas;
         private UILabel _title;
@@ -50,6 +52,34 @@ namespace RenderIt.Panels
         private UILabel _optionsMoonShadowStrengthSliderLabel;
         private UILabel _optionsMoonShadowStrengthSliderNumeral;
         private UISlider _optionsMoonShadowStrengthSlider;
+        private UILabel _optionsSkyTitle;
+        private UILabel _optionsSkyRayleighScatteringSliderLabel;
+        private UILabel _optionsSkyRayleighScatteringSliderNumeral;
+        private UISlider _optionsSkyRayleighScatteringSlider;
+        private UILabel _optionsSkyMieScatteringSliderLabel;
+        private UILabel _optionsSkyMieScatteringSliderNumeral;
+        private UISlider _optionsSkyMieScatteringSlider;
+        private UILabel _optionsSkyExposureSliderLabel;
+        private UILabel _optionsSkyExposureSliderNumeral;
+        private UISlider _optionsSkyExposureSlider;
+        private UIPanel _optionsColorsPanel;
+        private UILabel _optionsLightColorsTitle;
+        private UICheckBox _optionsLightColorsCheckBox;
+        private UIPanel _optionsLightColorsButtonPanel;
+        private UIButton _optionsLightColorsResetButton;
+        private UIButton _optionsLightColorsEditButton;
+        private UICheckBox _optionsSkyColorsCheckBox;
+        private UIPanel _optionsSkyColorsButtonPanel;
+        private UIButton _optionsSkyColorsResetButton;
+        private UIButton _optionsSkyColorsEditButton;
+        private UICheckBox _optionsEquatorColorsCheckBox;
+        private UIPanel _optionsEquatorColorsButtonPanel;
+        private UIButton _optionsEquatorColorsResetButton;
+        private UIButton _optionsEquatorColorsEditButton;
+        private UICheckBox _optionsGroundColorsCheckBox;
+        private UIPanel _optionsGroundColorsButtonPanel;
+        private UIButton _optionsGroundColorsResetButton;
+        private UIButton _optionsGroundColorsEditButton;
         private UIPanel _optionsTexturesPanel;
         private UILabel _optionsSharpnessTitle;
         private UILabel _optionsSharpnessAssetTypeDropDownLabel;
@@ -199,6 +229,11 @@ namespace RenderIt.Panels
                     _importExportPanel = GameObject.Find("RenderItImportExportPanel")?.GetComponent<ImportExportPanel>();
                 }
 
+                if (_colorsPanel == null)
+                {
+                    _colorsPanel = GameObject.Find("RenderItColorsPanel")?.GetComponent<ColorsPanel>();
+                }
+
                 if (ModConfig.Instance.PanelPositionX == 0f && ModConfig.Instance.PanelPositionY == 0f)
                 {
                     ModProperties.Instance.ResetPanelPosition();
@@ -274,7 +309,35 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsMoonShadowStrengthSliderLabel);
                 DestroyGameObject(_optionsMoonShadowStrengthSliderNumeral);
                 DestroyGameObject(_optionsMoonShadowStrengthSlider);
+                DestroyGameObject(_optionsSkyTitle);
+                DestroyGameObject(_optionsSkyRayleighScatteringSliderLabel);
+                DestroyGameObject(_optionsSkyRayleighScatteringSliderNumeral);
+                DestroyGameObject(_optionsSkyRayleighScatteringSlider);
+                DestroyGameObject(_optionsSkyMieScatteringSliderLabel);
+                DestroyGameObject(_optionsSkyMieScatteringSliderNumeral);
+                DestroyGameObject(_optionsSkyMieScatteringSlider);
+                DestroyGameObject(_optionsSkyExposureSliderLabel);
+                DestroyGameObject(_optionsSkyExposureSliderNumeral);
+                DestroyGameObject(_optionsSkyExposureSlider);
                 DestroyGameObject(_optionsTexturesPanel);
+                DestroyGameObject(_optionsColorsPanel);
+                DestroyGameObject(_optionsLightColorsTitle);
+                DestroyGameObject(_optionsLightColorsCheckBox);
+                DestroyGameObject(_optionsLightColorsButtonPanel);
+                DestroyGameObject(_optionsLightColorsResetButton);
+                DestroyGameObject(_optionsLightColorsEditButton);
+                DestroyGameObject(_optionsSkyColorsCheckBox);
+                DestroyGameObject(_optionsSkyColorsButtonPanel);
+                DestroyGameObject(_optionsSkyColorsResetButton);
+                DestroyGameObject(_optionsSkyColorsEditButton);
+                DestroyGameObject(_optionsEquatorColorsCheckBox);
+                DestroyGameObject(_optionsEquatorColorsButtonPanel);
+                DestroyGameObject(_optionsEquatorColorsResetButton);
+                DestroyGameObject(_optionsEquatorColorsEditButton);
+                DestroyGameObject(_optionsGroundColorsCheckBox);
+                DestroyGameObject(_optionsGroundColorsButtonPanel);
+                DestroyGameObject(_optionsGroundColorsResetButton);
+                DestroyGameObject(_optionsGroundColorsEditButton);
                 DestroyGameObject(_optionsSharpnessTitle);
                 DestroyGameObject(_optionsSharpnessAssetTypeDropDownLabel);
                 DestroyGameObject(_optionsSharpnessAssetTypeDropDown);
@@ -491,6 +554,7 @@ namespace RenderIt.Panels
                     panel.autoLayoutPadding.bottom = 10;
 
                     _profilesDropDownLabel = UIUtils.CreateLabel(panel, "ProfilesDropDownLabel", "Active");
+                    _profilesDropDownLabel.tooltip = "Select profile to be active";
 
                     _profilesDropDown = UIUtils.CreateDropDown(panel, "ProfilesDropDown", _ingameAtlas);
                     _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
@@ -713,7 +777,7 @@ namespace RenderIt.Panels
                     _optionsDropDownLabel.tooltip = "Select which type of options you want to change";
 
                     _optionsDropDown = UIUtils.CreateDropDown(panel, "OptionsDropDown", _ingameAtlas);
-                    _optionsDropDown.items = new string[] { "Lighting", "Textures", "Post-Processing" };
+                    _optionsDropDown.items = new string[] { "Lighting", "Colors", "Textures", "Post-Processing" };
 
                     _optionsLightingPanel = UIUtils.CreatePanel(panel, "OptionsLightingPanel");
                     _optionsLightingPanel.isVisible = false;
@@ -820,6 +884,314 @@ namespace RenderIt.Panels
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _optionsMoonShadowStrengthSlider.value = (float)DefaultManager.Instance.Get("MoonShadowStrength");
+                        }
+                    };
+
+                    if (!ModUtils.IsModEnabled("thememixer"))
+                    {
+                        _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSkyTitle", "Sky");
+
+                        _optionsSkyRayleighScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSkyRayleighScatteringSliderLabel", "Rayleigh Scattering");
+                        _optionsSkyRayleighScatteringSliderLabel.tooltip = "Set the strength of rayleigh scattering in the sky";
+
+                        _optionsSkyRayleighScatteringSliderNumeral = UIUtils.CreateLabel(_optionsSkyRayleighScatteringSliderLabel, "OptionsSkyRayleighScatteringSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyRayleighScattering.ToString());
+                        _optionsSkyRayleighScatteringSliderNumeral.width = 100f;
+                        _optionsSkyRayleighScatteringSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsSkyRayleighScatteringSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSkyRayleighScatteringSliderNumeral.width - 10f, 0f);
+
+                        _optionsSkyRayleighScatteringSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSkyRayleighScatteringSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyRayleighScattering);
+                        _optionsSkyRayleighScatteringSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsSkyRayleighScatteringSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.SkyRayleighScattering = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsSkyRayleighScatteringSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsSkyRayleighScatteringSlider.value = (float)DefaultManager.Instance.Get("SkyRayleighScattering");
+                            }
+                        };
+
+                        _optionsSkyMieScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMieScatteringSliderLabel", "Mie Scattering");
+                        _optionsSkyMieScatteringSliderLabel.tooltip = "Set the strength of mie scattering in the sky";
+
+                        _optionsSkyMieScatteringSliderNumeral = UIUtils.CreateLabel(_optionsSkyMieScatteringSliderLabel, "OptionsMieScatteringSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyMieScattering.ToString());
+                        _optionsSkyMieScatteringSliderNumeral.width = 100f;
+                        _optionsSkyMieScatteringSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsSkyMieScatteringSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSkyMieScatteringSliderNumeral.width - 10f, 0f);
+
+                        _optionsSkyMieScatteringSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMieScatteringSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyMieScattering);
+                        _optionsSkyMieScatteringSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsSkyMieScatteringSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.SkyMieScattering = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsSkyMieScatteringSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsSkyMieScatteringSlider.value = (float)DefaultManager.Instance.Get("SkyMieScattering");
+                            }
+                        };
+
+                        _optionsSkyExposureSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSkyExposureSliderLabel", "Exposure");
+                        _optionsSkyExposureSliderLabel.tooltip = "Set the strength of exposure through the sky";
+
+                        _optionsSkyExposureSliderNumeral = UIUtils.CreateLabel(_optionsSkyExposureSliderLabel, "OptionsSkyExposureSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyExposure.ToString());
+                        _optionsSkyExposureSliderNumeral.width = 100f;
+                        _optionsSkyExposureSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsSkyExposureSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSkyExposureSliderNumeral.width - 10f, 0f);
+
+                        _optionsSkyExposureSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSkyExposureSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyExposure);
+                        _optionsSkyExposureSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsSkyExposureSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.SkyExposure = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsSkyExposureSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsSkyExposureSlider.value = (float)DefaultManager.Instance.Get("SkyExposure");
+                            }
+                        };
+                    }
+
+                    _optionsColorsPanel = UIUtils.CreatePanel(panel, "OptionsColorsPanel");
+                    _optionsColorsPanel.isVisible = false;
+                    _optionsColorsPanel.width = _optionsLightingPanel.parent.width;
+                    _optionsColorsPanel.height = 500f;
+                    _optionsColorsPanel.autoLayout = true;
+                    _optionsColorsPanel.autoLayoutStart = LayoutStart.TopLeft;
+                    _optionsColorsPanel.autoLayoutDirection = LayoutDirection.Vertical;
+                    _optionsColorsPanel.autoLayoutPadding.left = 0;
+                    _optionsColorsPanel.autoLayoutPadding.right = 0;
+                    _optionsColorsPanel.autoLayoutPadding.top = 0;
+                    _optionsColorsPanel.autoLayoutPadding.bottom = 10;
+
+                    _optionsLightColorsTitle = UIUtils.CreateTitle(_optionsColorsPanel, "OptionsLightColorsTitle", "Directional and Ambient Light Colors");
+
+                    _optionsLightColorsCheckBox = UIUtils.CreateCheckBox(_optionsColorsPanel, "OptionsLightColorsCheckBox", _ingameAtlas, "Sun & Moon Colors Enabled", ProfileManager.Instance.ActiveProfile.LightColorsEnabled);
+                    _optionsLightColorsCheckBox.tooltip = "Adjust colors for directional light from sun & moon";
+                    _optionsLightColorsCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.LightColorsEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsLightColorsButtonPanel = UIUtils.CreatePanel(_optionsColorsPanel, "OptionsLightColorsButtonPanel");
+                    _optionsLightColorsButtonPanel.width = panel.width - 10f;
+                    _optionsLightColorsButtonPanel.height = 50f;
+
+                    _optionsLightColorsResetButton = UIUtils.CreatePanelButton(_optionsLightColorsButtonPanel, "OptionsLightColorsResetButton", _ingameAtlas, "Reset");
+                    _optionsLightColorsResetButton.tooltip = "Click to reset sun & moon directional light colors";
+                    _optionsLightColorsResetButton.relativePosition = new Vector3(185f, 0f);
+                    _optionsLightColorsResetButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            ProfileManager.Instance.ActiveProfile.LightColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("LightColors"));
+                            ProfileManager.Instance.Apply();
+
+                            if (_colorsPanel != null)
+                            {
+                                if (_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.SetColors(1);
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsLightColorsEditButton = UIUtils.CreatePanelButton(_optionsLightColorsButtonPanel, "OptionsLightColorsEditButton", _ingameAtlas, "Edit");
+                    _optionsLightColorsEditButton.tooltip = "Click to edit sun & moon directional light colors";
+                    _optionsLightColorsEditButton.relativePosition = new Vector3(270f, 0f);
+                    _optionsLightColorsEditButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            if (_colorsPanel != null)
+                            {
+                                _colorsPanel.SetColors(1);
+
+                                if (!_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.Show();
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsSkyColorsCheckBox = UIUtils.CreateCheckBox(_optionsColorsPanel, "OptionsSkyColorsCheckBox", _ingameAtlas, "Sky Colors Enabled", ProfileManager.Instance.ActiveProfile.SkyColorsEnabled);
+                    _optionsSkyColorsCheckBox.tooltip = "Adjust colors for ambient light from the top. This affects terrain and building roofs the most";
+                    _optionsSkyColorsCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.SkyColorsEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsSkyColorsButtonPanel = UIUtils.CreatePanel(_optionsColorsPanel, "OptionsSkyColorsButtonPanel");
+                    _optionsSkyColorsButtonPanel.width = panel.width - 10f;
+                    _optionsSkyColorsButtonPanel.height = 50f;
+
+                    _optionsSkyColorsResetButton = UIUtils.CreatePanelButton(_optionsSkyColorsButtonPanel, "OptionsSkyColorsResetButton", _ingameAtlas, "Reset");
+                    _optionsSkyColorsResetButton.tooltip = "Click to reset sky ambient light colors";
+                    _optionsSkyColorsResetButton.relativePosition = new Vector3(185f, 0f);
+                    _optionsSkyColorsResetButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            ProfileManager.Instance.ActiveProfile.SkyColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("SkyColors"));
+                            ProfileManager.Instance.Apply();
+
+                            if (_colorsPanel != null)
+                            {
+                                if (_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.SetColors(2);
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsSkyColorsEditButton = UIUtils.CreatePanelButton(_optionsSkyColorsButtonPanel, "OptionsSkyColorsEditButton", _ingameAtlas, "Edit");
+                    _optionsSkyColorsEditButton.tooltip = "Click to edit sky ambient light colors";
+                    _optionsSkyColorsEditButton.relativePosition = new Vector3(270f, 0f);
+                    _optionsSkyColorsEditButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            if (_colorsPanel != null)
+                            {
+                                _colorsPanel.SetColors(2);
+
+                                if (!_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.Show();
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsEquatorColorsCheckBox = UIUtils.CreateCheckBox(_optionsColorsPanel, "OptionsEquatorColorsCheckBox", _ingameAtlas, "Equator Colors Enabled", ProfileManager.Instance.ActiveProfile.EquatorColorsEnabled);
+                    _optionsEquatorColorsCheckBox.tooltip = "Adjust colors for ambient light from the sides. This affects sides of buildings the most";
+                    _optionsEquatorColorsCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.EquatorColorsEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsEquatorColorsButtonPanel = UIUtils.CreatePanel(_optionsColorsPanel, "OptionsEquatorColorsButtonPanel");
+                    _optionsEquatorColorsButtonPanel.width = panel.width - 10f;
+                    _optionsEquatorColorsButtonPanel.height = 50f;
+
+                    _optionsEquatorColorsResetButton = UIUtils.CreatePanelButton(_optionsEquatorColorsButtonPanel, "OptionsEquatorColorsResetButton", _ingameAtlas, "Reset");
+                    _optionsEquatorColorsResetButton.tooltip = "Click to reset equator ambient light colors";
+                    _optionsEquatorColorsResetButton.relativePosition = new Vector3(185f, 0f);
+                    _optionsEquatorColorsResetButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            ProfileManager.Instance.ActiveProfile.EquatorColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("EquatorColors"));
+                            ProfileManager.Instance.Apply();
+
+                            if (_colorsPanel != null)
+                            {
+                                if (_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.SetColors(3);
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsEquatorColorsEditButton = UIUtils.CreatePanelButton(_optionsEquatorColorsButtonPanel, "OptionsEquatorColorsEditButton", _ingameAtlas, "Edit");
+                    _optionsEquatorColorsEditButton.tooltip = "Click to edit equator ambient light colors";
+                    _optionsEquatorColorsEditButton.relativePosition = new Vector3(270f, 0f);
+                    _optionsEquatorColorsEditButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            if (_colorsPanel != null)
+                            {
+                                _colorsPanel.SetColors(3);
+
+                                if (!_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.Show();
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsGroundColorsCheckBox = UIUtils.CreateCheckBox(_optionsColorsPanel, "OptionsGroundColorsCheckBox", _ingameAtlas, "Ground Colors Enabled", ProfileManager.Instance.ActiveProfile.GroundColorsEnabled);
+                    _optionsGroundColorsCheckBox.tooltip = "Adjust colors for ambient light from below. This affects road undersides the most";
+                    _optionsGroundColorsCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.GroundColorsEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsGroundColorsButtonPanel = UIUtils.CreatePanel(_optionsColorsPanel, "OptionsGroundColorsButtonPanel");
+                    _optionsGroundColorsButtonPanel.width = panel.width - 10f;
+                    _optionsGroundColorsButtonPanel.height = 50f;
+
+                    _optionsGroundColorsResetButton = UIUtils.CreatePanelButton(_optionsGroundColorsButtonPanel, "OptionsGroundColorsResetButton", _ingameAtlas, "Reset");
+                    _optionsGroundColorsResetButton.tooltip = "Click to reset ground ambient light colors";
+                    _optionsGroundColorsResetButton.relativePosition = new Vector3(185f, 0f);
+                    _optionsGroundColorsResetButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            ProfileManager.Instance.ActiveProfile.GroundColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("GroundColors"));
+                            ProfileManager.Instance.Apply();
+
+                            if (_colorsPanel != null)
+                            {
+                                if (_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.SetColors(4);
+                                }
+                            }
+
+                            eventParam.Use();
+                        }
+                    };
+
+                    _optionsGroundColorsEditButton = UIUtils.CreatePanelButton(_optionsGroundColorsButtonPanel, "OptionsGroundColorsEditButton", _ingameAtlas, "Edit");
+                    _optionsGroundColorsEditButton.tooltip = "Click to edit ground ambient light colors";
+                    _optionsGroundColorsEditButton.relativePosition = new Vector3(270f, 0f);
+                    _optionsGroundColorsEditButton.eventClick += (component, eventParam) =>
+                    {
+                        if (!eventParam.used)
+                        {
+                            if (_colorsPanel != null)
+                            {
+                                _colorsPanel.SetColors(4);
+
+                                if (!_colorsPanel.isVisible)
+                                {
+                                    _colorsPanel.Show();
+                                }
+                            }
+
+                            eventParam.Use();
                         }
                     };
 
@@ -1026,13 +1398,13 @@ namespace RenderIt.Panels
 
                             if (value == 3)
                             {
-                                if (ModUtils.GetDepthOfFieldInOptionsGraphicsPanel() != 0)
+                                if (GameOptionsHelper.GetDepthOfFieldInOptionsGraphicsPanel() != 0)
                                 {
                                     ConfirmPanel.ShowModal("Depth of Field", "Depth of Field should be disabled when using TAA. Do you want to disable Depth of Field now?", (comp, ret) =>
                                     {
                                         if (ret == 1)
                                         {
-                                            ModUtils.SetDepthOfFieldInOptionsGraphicsPanel(false);
+                                            GameOptionsHelper.SetDepthOfFieldInOptionsGraphicsPanel(false);
                                         }
                                     });
                                 }
@@ -1072,21 +1444,31 @@ namespace RenderIt.Panels
                             {
                                 case 0:
                                     _optionsLightingPanel.isVisible = true;
+                                    _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;
                                 case 1:
                                     _optionsLightingPanel.isVisible = false;
-                                    _optionsTexturesPanel.isVisible = true;
+                                    _optionsColorsPanel.isVisible = true;
+                                    _optionsTexturesPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;
                                 case 2:
                                     _optionsLightingPanel.isVisible = false;
+                                    _optionsColorsPanel.isVisible = false;
+                                    _optionsTexturesPanel.isVisible = true;
+                                    _optionsPostProcessingPanel.isVisible = false;
+                                    break;
+                                case 3:
+                                    _optionsLightingPanel.isVisible = false;
+                                    _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = true;
                                     break;
                                 default:
                                     _optionsLightingPanel.isVisible = true;
+                                    _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;

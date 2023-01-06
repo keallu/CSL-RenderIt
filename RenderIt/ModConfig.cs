@@ -14,7 +14,7 @@ namespace RenderIt
         public float PanelPositionY { get; set; } = 0f;
         public List<Profile> Profiles { get; set; } = new List<Profile> { };
 
-    private static ModConfig instance;
+        private static ModConfig instance;
 
         public static ModConfig Instance
         {
@@ -30,7 +30,7 @@ namespace RenderIt
         }
 
         public void Save()
-        {            
+        {
             Configuration<ModConfig>.Save();
             ConfigUpdated = true;
         }

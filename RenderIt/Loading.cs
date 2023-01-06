@@ -12,6 +12,7 @@ namespace RenderIt
         private GameObject _modManagerGameObject;
         private GameObject _mainPanelGameObject;
         private GameObject _importExportPanelGameObject;
+        private GameObject _colorsPanelGameObject;
 
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -30,6 +31,10 @@ namespace RenderIt
                     _importExportPanelGameObject = new GameObject("RenderItImportExportPanel");
                     _importExportPanelGameObject.transform.parent = uiView.transform;
                     _importExportPanelGameObject.AddComponent<ImportExportPanel>();
+
+                    _colorsPanelGameObject = new GameObject("RenderItColorsPanel");
+                    _colorsPanelGameObject.transform.parent = uiView.transform;
+                    _colorsPanelGameObject.AddComponent<ColorsPanel>();
                 }
             }
             catch (Exception e)
@@ -42,6 +47,16 @@ namespace RenderIt
         {
             try
             {
+                if (_colorsPanelGameObject != null)
+                {
+                    UnityEngine.Object.Destroy(_colorsPanelGameObject);
+                }
+
+                if (_importExportPanelGameObject != null)
+                {
+                    UnityEngine.Object.Destroy(_importExportPanelGameObject);
+                }
+
                 if (_mainPanelGameObject != null)
                 {
                     UnityEngine.Object.Destroy(_mainPanelGameObject);

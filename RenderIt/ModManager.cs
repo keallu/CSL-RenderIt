@@ -103,6 +103,7 @@ namespace RenderIt
                 if (ProfileManager.Instance.IsActiveProfileUpdated)
                 {
                     UpdateLighting();
+                    UpdateColors();
                     UpdateTextures();
                     UpdateAntialiasing();
                     UpdateAmbientOcclusion();
@@ -272,10 +273,83 @@ namespace RenderIt
                 DayNightProperties.instance.sunLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.SunShadowStrength;
                 DayNightProperties.instance.m_MoonIntensity = ProfileManager.Instance.ActiveProfile.MoonIntensity;
                 DayNightProperties.instance.moonLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.MoonShadowStrength;
+
+                if (!ModUtils.IsModEnabled("thememixer"))
+                {
+                    DayNightProperties.instance.m_RayleighScattering = ProfileManager.Instance.ActiveProfile.SkyRayleighScattering;
+                    DayNightProperties.instance.m_MieScattering = ProfileManager.Instance.ActiveProfile.SkyMieScattering;
+                    DayNightProperties.instance.m_Exposure = ProfileManager.Instance.ActiveProfile.SkyExposure;
+                }
             }
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ModManager:UpdateLighting -> Exception: " + e.Message);
+            }
+        }
+
+        private void UpdateColors()
+        {
+            try
+            {
+                if (ProfileManager.Instance.ActiveProfile.LightColorsEnabled)
+                {
+                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.LightColors);
+
+                    if (gradientColorKeys != null)
+                    {
+                        DayNightProperties.instance.m_LightColor.colorKeys = gradientColorKeys;
+                    }
+                }
+                else
+                {
+                    DayNightProperties.instance.m_LightColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("LightColors");
+                }
+
+                if (ProfileManager.Instance.ActiveProfile.SkyColorsEnabled)
+                {
+                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.SkyColors);
+
+                    if (gradientColorKeys != null)
+                    {
+                        DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys = gradientColorKeys;
+                    }
+                }
+                else
+                {
+                    DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("SkyColors");
+                }
+
+                if (ProfileManager.Instance.ActiveProfile.EquatorColorsEnabled)
+                {
+                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.EquatorColors);
+
+                    if (gradientColorKeys != null)
+                    {
+                        DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys = gradientColorKeys;
+                    }
+                }
+                else
+                {
+                    DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("EquatorColors");
+                }
+
+                if (ProfileManager.Instance.ActiveProfile.GroundColorsEnabled)
+                {
+                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.GroundColors);
+
+                    if (gradientColorKeys != null)
+                    {
+                        DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys = gradientColorKeys;
+                    }
+                }
+                else
+                {
+                    DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("GroundColors");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateColors -> Exception: " + e.Message);
             }
         }
 
@@ -308,11 +382,11 @@ namespace RenderIt
                 {
                     case 0:
                         _antialiasingModel.enabled = false;
-                        ModUtils.SetAntialiasingInOptionsGraphicsPanel(false);
+                        GameOptionsHelper.SetAntialiasingInOptionsGraphicsPanel(false);
                         break;
                     case 1:
                         _antialiasingModel.enabled = false;
-                        ModUtils.SetAntialiasingInOptionsGraphicsPanel(true);
+                        GameOptionsHelper.SetAntialiasingInOptionsGraphicsPanel(true);
                         break;
                     case 2:
                         settings.method = AntialiasingModel.Method.Fxaa;
@@ -320,7 +394,7 @@ namespace RenderIt
                         settings.fxaaSettings.preset = preset;
                         _antialiasingModel.settings = settings;
                         _antialiasingModel.enabled = true;
-                        ModUtils.SetAntialiasingInOptionsGraphicsPanel(false);
+                        GameOptionsHelper.SetAntialiasingInOptionsGraphicsPanel(false);
                         break;
                     case 3:
                         settings.method = AntialiasingModel.Method.Taa;
@@ -330,11 +404,11 @@ namespace RenderIt
                         settings.taaSettings.motionBlending = ProfileManager.Instance.ActiveProfile.TAAMotionBlending;
                         _antialiasingModel.settings = settings;
                         _antialiasingModel.enabled = true;
-                        ModUtils.SetAntialiasingInOptionsGraphicsPanel(false);
+                        GameOptionsHelper.SetAntialiasingInOptionsGraphicsPanel(false);
                         break;
                     default:
                         _antialiasingModel.enabled = false;
-                        ModUtils.SetAntialiasingInOptionsGraphicsPanel(true);
+                        GameOptionsHelper.SetAntialiasingInOptionsGraphicsPanel(true);
                         break;
                 }
 

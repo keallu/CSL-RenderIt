@@ -1,4 +1,6 @@
-﻿namespace RenderIt
+﻿using System.Collections.Generic;
+
+namespace RenderIt
 {
     public class Profile
     {
@@ -8,6 +10,17 @@
         public float SunShadowStrength { get; set; } = float.NaN;
         public float MoonIntensity { get; set; } = float.NaN;
         public float MoonShadowStrength { get; set; } = float.NaN;
+        public float SkyRayleighScattering { get; set; } = float.NaN;
+        public float SkyMieScattering { get; set; } = float.NaN;
+        public float SkyExposure { get; set; } = float.NaN;
+        public bool LightColorsEnabled { get; set; } = false;
+        public List<TimedColor> LightColors { get; set; } = new List<TimedColor> { };
+        public bool SkyColorsEnabled { get; set; } = false;
+        public List<TimedColor> SkyColors { get; set; } = new List<TimedColor> { };
+        public bool EquatorColorsEnabled { get; set; } = false;
+        public List<TimedColor> EquatorColors { get; set; } = new List<TimedColor> { };
+        public bool GroundColorsEnabled { get; set; } = false;
+        public List<TimedColor> GroundColors { get; set; } = new List<TimedColor> { };
         public int GeneralAnisoLevel { get; set; } = 0;
         public int GeneralMipMapBias { get; set; } = 5;
         public bool GeneralLODIncluded { get; set; } = false;
@@ -82,10 +95,37 @@
         }
 
         public Profile Clone()
-        {   
+        {
             Profile other = (Profile)MemberwiseClone();
             other.Name = string.Copy(Name);
             return other;
+        }
+
+        public class TimedColor
+        {
+            public byte Red { get; set; }
+            public byte Green { get; set; }
+            public byte Blue { get; set; }
+            public byte Alpha { get; set; }
+            public float Time { get; set; }
+
+            public TimedColor()
+            {
+                Red = 0;
+                Green = 0;
+                Blue = 0;
+                Alpha = 0;
+                Time = 0f;
+            }
+
+            public TimedColor(byte red, byte green, byte blue, byte alpha, float time)
+            {
+                Red = red;
+                Green = green;
+                Blue = blue;
+                Alpha = alpha;
+                Time = time;
+            }
         }
     }
 }

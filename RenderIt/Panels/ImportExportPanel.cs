@@ -100,27 +100,6 @@ namespace RenderIt.Panels
             }
         }
 
-        public void SetMode(bool importing)
-        {
-            try
-            {
-                if (importing)
-                {
-                    _textField.text = "";
-                    _importButton.isVisible = true;
-                }
-                else
-                {
-                    _textField.text = GetYamlFromProfile(ProfileManager.Instance.ActiveProfile);
-                    _importButton.isVisible = false;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log("[Render It!] ImportExportPanel:SetMode -> Exception: " + e.Message);
-            }
-        }
-
         private void DestroyGameObject(UIComponent component)
         {
             if (component != null)
@@ -233,6 +212,31 @@ namespace RenderIt.Panels
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ImportExportPanel:UpdateUI -> Exception: " + e.Message);
+            }
+        }
+
+        public void SetMode(bool importing)
+        {
+            try
+            {
+                if (importing)
+                {
+                    _title.text = "Render It! - Import";
+                    _title.relativePosition = new Vector3(width / 2f - _title.width / 2f, 15f);
+                    _textField.text = "";
+                    _importButton.isVisible = true;
+                }
+                else
+                {
+                    _title.text = "Render It! - Import";
+                    _title.relativePosition = new Vector3(width / 2f - _title.width / 2f, 15f);
+                    _textField.text = GetYamlFromProfile(ProfileManager.Instance.ActiveProfile);
+                    _importButton.isVisible = false;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ImportExportPanel:SetMode -> Exception: " + e.Message);
             }
         }
 
