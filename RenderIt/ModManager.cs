@@ -274,7 +274,7 @@ namespace RenderIt
                 DayNightProperties.instance.m_MoonIntensity = ProfileManager.Instance.ActiveProfile.MoonIntensity;
                 DayNightProperties.instance.moonLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.MoonShadowStrength;
 
-                if (!ModUtils.IsModEnabled("thememixer"))
+                if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
                 {
                     DayNightProperties.instance.m_RayleighScattering = ProfileManager.Instance.ActiveProfile.SkyRayleighScattering;
                     DayNightProperties.instance.m_MieScattering = ProfileManager.Instance.ActiveProfile.SkyMieScattering;
@@ -291,60 +291,63 @@ namespace RenderIt
         {
             try
             {
-                if (ProfileManager.Instance.ActiveProfile.LightColorsEnabled)
+                if (!CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
                 {
-                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.LightColors);
-
-                    if (gradientColorKeys != null)
+                    if (ProfileManager.Instance.ActiveProfile.LightColorsEnabled)
                     {
-                        DayNightProperties.instance.m_LightColor.colorKeys = gradientColorKeys;
+                        GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.LightColors);
+
+                        if (gradientColorKeys != null)
+                        {
+                            DayNightProperties.instance.m_LightColor.colorKeys = gradientColorKeys;
+                        }
                     }
-                }
-                else
-                {
-                    DayNightProperties.instance.m_LightColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("LightColors");
-                }
-
-                if (ProfileManager.Instance.ActiveProfile.SkyColorsEnabled)
-                {
-                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.SkyColors);
-
-                    if (gradientColorKeys != null)
+                    else
                     {
-                        DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys = gradientColorKeys;
+                        DayNightProperties.instance.m_LightColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("LightColors");
                     }
-                }
-                else
-                {
-                    DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("SkyColors");
-                }
 
-                if (ProfileManager.Instance.ActiveProfile.EquatorColorsEnabled)
-                {
-                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.EquatorColors);
-
-                    if (gradientColorKeys != null)
+                    if (ProfileManager.Instance.ActiveProfile.SkyColorsEnabled)
                     {
-                        DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys = gradientColorKeys;
+                        GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.SkyColors);
+
+                        if (gradientColorKeys != null)
+                        {
+                            DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys = gradientColorKeys;
+                        }
                     }
-                }
-                else
-                {
-                    DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("EquatorColors");
-                }
-
-                if (ProfileManager.Instance.ActiveProfile.GroundColorsEnabled)
-                {
-                    GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.GroundColors);
-
-                    if (gradientColorKeys != null)
+                    else
                     {
-                        DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys = gradientColorKeys;
+                        DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("SkyColors");
                     }
-                }
-                else
-                {
-                    DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("GroundColors");
+
+                    if (ProfileManager.Instance.ActiveProfile.EquatorColorsEnabled)
+                    {
+                        GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.EquatorColors);
+
+                        if (gradientColorKeys != null)
+                        {
+                            DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys = gradientColorKeys;
+                        }
+                    }
+                    else
+                    {
+                        DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("EquatorColors");
+                    }
+
+                    if (ProfileManager.Instance.ActiveProfile.GroundColorsEnabled)
+                    {
+                        GradientColorKey[] gradientColorKeys = ColorsHelper.ConvertToGradientColorKeyArray(ProfileManager.Instance.ActiveProfile.GroundColors);
+
+                        if (gradientColorKeys != null)
+                        {
+                            DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys = gradientColorKeys;
+                        }
+                    }
+                    else
+                    {
+                        DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys = (GradientColorKey[])DefaultManager.Instance.Get("GroundColors");
+                    }
                 }
             }
             catch (Exception e)

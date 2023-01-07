@@ -167,10 +167,10 @@ namespace RenderIt.Panels
                 _panel.autoLayoutPadding.top = 0;
                 _panel.autoLayoutPadding.bottom = 10;
 
-                _dropDownLabel = UIUtils.CreateLabel(_panel, "TimeOfDayLabel", "Time of Day");
-                _dropDownLabel.tooltip = "Select the time of day threshold for adjusting the red, green and blue primary color of light";
+                _dropDownLabel = UIUtils.CreateLabel(_panel, "TimeLabel", "Time");
+                _dropDownLabel.tooltip = "Select the time for adjusting the red, green and blue primary color of light";
 
-                _dropDown = UIUtils.CreateDropDown(_panel, "TimeOfDayDropDown", _ingameAtlas);
+                _dropDown = UIUtils.CreateDropDown(_panel, "TimeDropDown", _ingameAtlas);
                 _dropDown.width = _panel.width / 2f;
                 _dropDown.eventSelectedIndexChanged += (component, value) =>
                 {
@@ -201,7 +201,7 @@ namespace RenderIt.Panels
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
-                        _redSlider.value = ((GradientColorKey[])DefaultManager.Instance.Get("LightColors"))[_dropDown.selectedIndex].color.r;
+                        
                     }
                 };
 
@@ -224,7 +224,7 @@ namespace RenderIt.Panels
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
-                        _greenSlider.value = ((GradientColorKey[])DefaultManager.Instance.Get("LightColors"))[_dropDown.selectedIndex].color.g;
+                        
                     }
                 };
 
@@ -247,7 +247,7 @@ namespace RenderIt.Panels
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
-                        _blueSlider.value = ((GradientColorKey[])DefaultManager.Instance.Get("LightColors"))[_dropDown.selectedIndex].color.b;
+                        
                     }
                 };
             }
@@ -313,7 +313,7 @@ namespace RenderIt.Panels
 
         private string TimeOfDay(float value)
         {
-            float timeOfDay = Mathf.Lerp(0, 24, value);
+            float timeOfDay = value * 24f;
 
             int hour = (int)Mathf.Floor(timeOfDay);
             int minute = (int)Mathf.Floor((timeOfDay - hour) * 60.0f);

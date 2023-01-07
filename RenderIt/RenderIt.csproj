@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Helpers\CompatibilityHelper.cs" />
     <Compile Include="Helpers\GameOptionsHelper.cs" />
     <Compile Include="Helpers\ColorsHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
