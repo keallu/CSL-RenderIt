@@ -895,10 +895,10 @@ namespace RenderIt.Panels
                         }
                     };
 
+                    _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSkyTitle", "Sky");
+
                     if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
                     {
-                        _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSkyTitle", "Sky");
-
                         _optionsSkyRayleighScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSkyRayleighScatteringSliderLabel", "Rayleigh Scattering");
                         _optionsSkyRayleighScatteringSliderLabel.tooltip = "Set the strength of rayleigh scattering in the sky";
 
@@ -2470,6 +2470,21 @@ namespace RenderIt.Panels
                     _optionsSunShadowStrengthSlider.value = profile.SunShadowStrength;
                     _optionsMoonIntensitySlider.value = profile.MoonIntensity;
                     _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
+
+                    if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
+                    {
+                        _optionsSkyRayleighScatteringSlider.value = profile.SkyRayleighScattering;
+                        _optionsSkyMieScatteringSlider.value = profile.SkyMieScattering;
+                        _optionsSkyExposureSlider.value = profile.SkyExposure;
+                    }
+
+                    if (!CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
+                    {
+                        _optionsLightColorsCheckBox.isChecked = profile.LightColorsEnabled;
+                        _optionsSkyColorsCheckBox.isChecked = profile.SkyColorsEnabled;
+                        _optionsEquatorColorsCheckBox.isChecked = profile.EquatorColorsEnabled;
+                        _optionsGroundColorsCheckBox.isChecked = profile.GroundColorsEnabled;
+                    }
 
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = -1;
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;

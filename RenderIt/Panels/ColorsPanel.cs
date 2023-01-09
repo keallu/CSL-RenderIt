@@ -201,7 +201,7 @@ namespace RenderIt.Panels
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
-                        
+
                     }
                 };
 
@@ -224,7 +224,7 @@ namespace RenderIt.Panels
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
-                        
+
                     }
                 };
 
@@ -247,7 +247,7 @@ namespace RenderIt.Panels
                 {
                     if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                     {
-                        
+
                     }
                 };
             }
@@ -313,6 +313,37 @@ namespace RenderIt.Panels
 
         private string TimeOfDay(float value)
         {
+            string name = string.Empty;
+
+            if (value < 0.25f)
+            {
+                name = "Night/Dawn";
+            }
+            else if (value >= 0.25f && value < 0.275f)
+            {
+                name = "Sunrise";
+            }
+            else if (value >= 0.275f && value < 0.325f)
+            {
+                name = "Morning";
+            }
+            else if (value >= 0.325f && value < 0.68f)
+            {
+                name = "Noon";
+            }
+            else if (value >= 0.68f && value < 0.73f)
+            {
+                name = "Evening";
+            }
+            else if (value >= 0.73f && value < 0.76f)
+            {
+                name = "Sunset";
+            }
+            else if (value >= 0.76f)
+            {
+                name = "Dusk/Night";
+            }
+
             float timeOfDay = value * 24f;
 
             int hour = (int)Mathf.Floor(timeOfDay);
@@ -320,7 +351,7 @@ namespace RenderIt.Panels
 
             DateTime dateTime = DateTime.Parse(string.Format("{0,2:00}:{1,2:00}", hour, minute));
 
-            return dateTime.ToString("HH:mm");
+            return name + " (~" + dateTime.ToString("HH:mm") + ")";
         }
     }
 }
