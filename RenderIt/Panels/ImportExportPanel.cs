@@ -1,7 +1,10 @@
 ﻿using ColossalFramework;
+using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
 using RenderIt.Managers;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -20,7 +23,12 @@ namespace RenderIt.Panels
         private UIDragHandle _dragHandle;
         private UITextField _textField;
         private UIButton _copyButton;
+        private UIDropDown _fileDropDown;
         private UIButton _importButton;
+        private UIButton _saveButton;
+
+        private List<string> _filePaths;
+        private List<string> _fileNames;
 
         public override void Awake()
         {
@@ -48,6 +56,9 @@ namespace RenderIt.Panels
                 }
 
                 _ingameAtlas = ResourceLoader.GetAtlas("Ingame");
+
+                _filePaths = new List<string>();
+                _fileNames = new List<string>();
 
                 CreateUI();
             }
@@ -92,7 +103,9 @@ namespace RenderIt.Panels
                 DestroyGameObject(_dragHandle);
                 DestroyGameObject(_textField);
                 DestroyGameObject(_copyButton);
+                DestroyGameObject(_fileDropDown);
                 DestroyGameObject(_importButton);
+                DestroyGameObject(_saveButton);
             }
             catch (Exception e)
             {
@@ -142,7 +155,7 @@ namespace RenderIt.Panels
 
                 _textField = UIUtils.CreateMultilineTextField(this, "TextField", _ingameAtlas, "");
 
-                _textField.maxLength = 5000;
+                _textField.maxLength = 10000;
                 _textField.width = width - 20f;
                 _textField.height = height - 120f;
                 _textField.relativePosition = new Vector3(10f, 60f);
@@ -167,9 +180,24 @@ namespace RenderIt.Panels
                     }
                 };
 
+                _fileDropDown = UIUtils.CreateDropDown(this, "FileDropDown", _ingameAtlas);
+                _fileDropDown.tooltip = "Select file on your disk drive";
+                _fileDropDown.width = width / 2f;
+                _fileDropDown.relativePosition = new Vector3(width / 2f - _fileDropDown.width / 2f, height - 50f);
+                _fileDropDown.eventSelectedIndexChanged += (component, value) =>
+                {
+                    if (value != -1)
+                    {
+                        if (File.Exists(_filePaths[value]))
+                        {
+                            _textField.text = File.ReadAllText(_filePaths[value]);
+                        }
+                    }
+                };
+
                 _importButton = UIUtils.CreatePanelButton(this, "ImportButton", _ingameAtlas, "Import");
                 _importButton.tooltip = "Click to import profile from YAML-format";
-                _importButton.relativePosition = new Vector3(width / 2f - _importButton.width / 2f, height - 50f);
+                _importButton.relativePosition = new Vector3(width - _importButton.width - 10f, height - 50f);
                 _importButton.eventClick += (component, eventParam) =>
                 {
                     if (!eventParam.used)
@@ -192,6 +220,26 @@ namespace RenderIt.Panels
                                 }
                             });
                         }
+
+                        eventParam.Use();
+                    }
+                };
+
+                _saveButton = UIUtils.CreatePanelButton(this, "SaveButton", _ingameAtlas, "Save");
+                _saveButton.tooltip = "Click to save profile to file on your disk drive";
+                _saveButton.relativePosition = new Vector3(width - _importButton.width - 10f, height - 50f);
+                _saveButton.eventClick += (component, eventParam) =>
+                {
+                    if (!eventParam.used)
+                    {
+                        if (!Directory.Exists("Profiles"))
+                        {
+                            Directory.CreateDirectory("Profiles");
+                        }
+
+                        string fileName = ProfileManager.Instance.ActiveProfile.Name.Trim(Path.GetInvalidFileNameChars());
+
+                        File.WriteAllText("Profiles\\" + fileName + ".renderit", _textField.text);
 
                         eventParam.Use();
                     }
@@ -224,14 +272,51 @@ namespace RenderIt.Panels
                     _title.text = "Render It! - Import";
                     _title.relativePosition = new Vector3(width / 2f - _title.width / 2f, 15f);
                     _textField.text = "";
+
+                    _filePaths.Clear();
+                    _fileNames.Clear();
+
+                    if (Directory.Exists("Profiles"))
+                    {
+                        foreach (string filePath in Directory.GetFiles("Profiles", "*.renderit", SearchOption.AllDirectories))
+                        {
+                            _filePaths.Add(filePath);
+                            _fileNames.Add(Path.GetFileName(filePath).Replace(".renderit", ""));
+                        }
+                    }
+
+                    string subscribedItemPath = string.Empty;
+
+                    foreach (PublishedFileId publishedFileId in PlatformService.workshop.GetSubscribedItems())
+                    {
+                        subscribedItemPath = PlatformService.workshop.GetSubscribedItemPath(publishedFileId);
+
+                        if (subscribedItemPath != null && Directory.Exists(subscribedItemPath))
+                        {
+                            foreach (string filePath in Directory.GetFiles(subscribedItemPath, "*.renderit", SearchOption.AllDirectories))
+                            {
+                                _filePaths.Add(filePath);
+                                _fileNames.Add(Path.GetFileName(filePath).Replace(".renderit", ""));
+                            }
+                        }
+                    }
+
+                    _fileDropDown.items = _fileNames.ToArray();
+                    _fileDropDown.selectedIndex = 0;
+
+                    _fileDropDown.isVisible = true;
                     _importButton.isVisible = true;
+                    _saveButton.isVisible = false;
                 }
                 else
                 {
-                    _title.text = "Render It! - Import";
+                    _title.text = "Render It! - Export";
                     _title.relativePosition = new Vector3(width / 2f - _title.width / 2f, 15f);
                     _textField.text = GetYamlFromProfile(ProfileManager.Instance.ActiveProfile);
+
+                    _fileDropDown.isVisible = false;
                     _importButton.isVisible = false;
+                    _saveButton.isVisible = true;
                 }
             }
             catch (Exception e)
