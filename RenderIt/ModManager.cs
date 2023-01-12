@@ -76,7 +76,7 @@ namespace RenderIt
 
                 if (Singleton<InfoManager>.exists)
                 {
-                    Singleton<InfoManager>.instance.EventInfoModeChanged += Instance_EventInfoModeChanged;
+                    Singleton<InfoManager>.instance.EventInfoModeChanged += InfoManagerEventInfoModeChanged;
                 }
 
                 CreateUI();
@@ -125,7 +125,7 @@ namespace RenderIt
             {
                 if (Singleton<InfoManager>.exists)
                 {
-                    Singleton<InfoManager>.instance.EventInfoModeChanged -= Instance_EventInfoModeChanged;
+                    Singleton<InfoManager>.instance.EventInfoModeChanged -= InfoManagerEventInfoModeChanged;
                 }
 
                 if (_postProcessingBehaviour != null)
@@ -153,7 +153,7 @@ namespace RenderIt
             }
         }
 
-        private void Instance_EventInfoModeChanged(InfoManager.InfoMode mode, InfoManager.SubInfoMode subMode)
+        private void InfoManagerEventInfoModeChanged(InfoManager.InfoMode mode, InfoManager.SubInfoMode subMode)
         {
             if (mode == InfoManager.InfoMode.None)
             {
@@ -462,14 +462,15 @@ namespace RenderIt
             {
                 UnityStandardAssets.ImageEffects.Bloom vanillaBloom = _camera.gameObject?.GetComponent<UnityStandardAssets.ImageEffects.Bloom>();
 
+                if (vanillaBloom != null)
+                {
+                    vanillaBloom.enabled = ProfileManager.Instance.ActiveProfile.VanillaBloomEnabled;
+                }
+
                 BloomModel.Settings settings = _bloomModel.settings;
 
                 if (ProfileManager.Instance.ActiveProfile.BloomEnabled)
                 {
-                    if (vanillaBloom != null)
-                    {
-                        vanillaBloom.enabled = ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled;
-                    }
                     settings.bloom.intensity = ProfileManager.Instance.ActiveProfile.BloomIntensity;
                     settings.bloom.threshold = ProfileManager.Instance.ActiveProfile.BloomThreshold;
                     settings.bloom.softKnee = ProfileManager.Instance.ActiveProfile.BloomSoftKnee;
@@ -480,10 +481,6 @@ namespace RenderIt
                 }
                 else
                 {
-                    if (vanillaBloom != null)
-                    {
-                        vanillaBloom.enabled = true;
-                    }
                     _bloomModel.enabled = false;
                 }
 
@@ -501,20 +498,25 @@ namespace RenderIt
             try
             {
                 ToneMapping vanillaToneMapping = _camera.gameObject?.GetComponent<ToneMapping>();
+
+                if (vanillaToneMapping != null)
+                {
+                    vanillaToneMapping.enabled = ProfileManager.Instance.ActiveProfile.VanillaTonemappingEnabled;
+                }
+
                 ColorCorrectionLut vanillaColorCorrectionLut = _camera.gameObject?.GetComponent<ColorCorrectionLut>();
+
+                if (vanillaColorCorrectionLut != null)
+                {
+                    vanillaColorCorrectionLut.enabled = ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutEnabled;
+
+                    GameOptionsHelper.SetColorCorrectionOverrideInOptionsGraphicsPanel(LutManager.Instance.IndexOf(ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName));
+                }
 
                 ColorGradingModel.Settings settings = _colorGradingModel.settings;
 
                 if (ProfileManager.Instance.ActiveProfile.ColorGradingEnabled)
                 {
-                    if (vanillaToneMapping != null)
-                    {
-                        vanillaToneMapping.enabled = ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled;
-                    }
-                    if (vanillaColorCorrectionLut != null)
-                    {
-                        vanillaColorCorrectionLut.enabled = ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled;
-                    }
                     settings.basic.postExposure = ProfileManager.Instance.ActiveProfile.CGPostExposure;
                     settings.basic.temperature = ProfileManager.Instance.ActiveProfile.CGTemperature;
                     settings.basic.tint = ProfileManager.Instance.ActiveProfile.CGTint;
@@ -536,14 +538,6 @@ namespace RenderIt
                 }
                 else
                 {
-                    if (vanillaToneMapping != null)
-                    {
-                        vanillaToneMapping.enabled = true;
-                    }
-                    if (vanillaColorCorrectionLut != null)
-                    {
-                        vanillaColorCorrectionLut.enabled = true;
-                    }
                     _colorGradingModel.enabled = false;
                 }
 

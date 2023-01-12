@@ -43,6 +43,10 @@ namespace RenderIt
         public int TreesMipMapBias { get; set; } = 5;
         public bool TreesLODIncluded { get; set; } = false;
         public int AntialiasingTechnique { get; set; } = 0;
+        public bool VanillaBloomEnabled { get; set; } = true;
+        public bool VanillaTonemappingEnabled { get; set; } = true;
+        public bool VanillaColorCorrectionLutEnabled { get; set; } = true;
+        public string VanillaColorCorrectionLutName { get; set; } = "None";
         public bool AmbientOcclusionEnabled { get; set; } = false;
         public bool BloomEnabled { get; set; } = false;
         public bool ColorGradingEnabled { get; set; } = false;
@@ -58,14 +62,11 @@ namespace RenderIt
         public bool AOForceForwardCompatibility { get; set; } = false;
         public bool AOHighPrecision { get; set; } = false;
         public bool AOAmbientOnly { get; set; } = false;
-        public bool BloomVanillaBloomEnabled { get; set; } = false;
         public float BloomIntensity { get; set; } = 0.5f;
         public float BloomThreshold { get; set; } = 1.1f;
         public float BloomSoftKnee { get; set; } = 0.5f;
         public float BloomRadius { get; set; } = 4f;
         public bool BloomAntiFlicker { get; set; } = false;
-        public bool CGVanillaTonemappingEnabled { get; set; } = false;
-        public bool CGVanillaColorCorrectionLUTEnabled { get; set; } = false;
         public float CGPostExposure { get; set; } = 0f;
         public float CGTemperature { get; set; } = 0f;
         public float CGTint { get; set; } = 0f;

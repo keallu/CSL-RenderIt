@@ -1,4 +1,5 @@
-﻿using ColossalFramework.PlatformServices;
+﻿using ColossalFramework;
+using ColossalFramework.PlatformServices;
 using ColossalFramework.UI;
 using RenderIt.Helpers;
 using RenderIt.Managers;
@@ -34,6 +35,8 @@ namespace RenderIt.Panels
         private UIButton _profilesRenameButton;
         private UIButton _profilesSaveButton;
         private UIButton _profilesRevertButton;
+        private UIPanel _profilesMessagePanel;
+        private UILabel _profilesMessageLabel;
 
         private UILabel _optionsDropDownLabel;
         private UIDropDown _optionsDropDown;
@@ -45,6 +48,7 @@ namespace RenderIt.Panels
         private UILabel _optionsSunShadowStrengthSliderLabel;
         private UILabel _optionsSunShadowStrengthSliderNumeral;
         private UISlider _optionsSunShadowStrengthSlider;
+        private UISprite _optionsSunDivider;
         private UILabel _optionsMoonTitle;
         private UILabel _optionsMoonIntensitySliderLabel;
         private UILabel _optionsMoonIntensitySliderNumeral;
@@ -52,6 +56,7 @@ namespace RenderIt.Panels
         private UILabel _optionsMoonShadowStrengthSliderLabel;
         private UILabel _optionsMoonShadowStrengthSliderNumeral;
         private UISlider _optionsMoonShadowStrengthSlider;
+        private UISprite _optionsMoonDivider;
         private UILabel _optionsSkyTitle;
         private UILabel _optionsSkyRayleighScatteringSliderLabel;
         private UILabel _optionsSkyRayleighScatteringSliderNumeral;
@@ -93,11 +98,18 @@ namespace RenderIt.Panels
         private UILabel _optionsSharpnessMipMapBiasDropDownLabel;
         private UIDropDown _optionsSharpnessMipMapBiasDropDown;
         private UICheckBox _optionsSharpnessLODCheckBox;
-        private UILabel _optionsAntiAliasingTitle;
         private UIPanel _optionsPostProcessingPanel;
+        private UILabel _optionsAntiAliasingTitle;
         private UILabel _optionsAntiAliasingDropDownLabel;
         private UIDropDown _optionsAntiAliasingDropDown;
-        private UILabel _optionsEffectsTitle;
+        private UISprite _optionsAntiAliasingDivider;
+        private UILabel _optionsVanillaEffectsTitle;
+        private UICheckBox _optionsVanillaBloomCheckBox;
+        private UICheckBox _optionsVanillaTonemappingCheckBox;
+        private UICheckBox _optionsVanillaColorCorrectionLutCheckBox;
+        private UIDropDown _optionsVanillaColorCorrectionLutDropDown;
+        private UISprite _optionsVanillaEffectsDivider;
+        private UILabel _optionsEnhancedEffectsTitle;
         private UICheckBox _optionsAmbientOcclusionCheckBox;
         private UICheckBox _optionsBloomCheckBox;
         private UICheckBox _optionsColorGradingCheckBox;
@@ -139,7 +151,6 @@ namespace RenderIt.Panels
         private UICheckBox _advancedAOHighPrecisionCheckBox;
         private UISprite _advancedAODivider;
         private UILabel _advancedBloomTitle;
-        private UICheckBox _advancedBloomVanillaBloomCheckBox;
         private UILabel _advancedBloomIntensitySliderLabel;
         private UILabel _advancedBloomIntensitySliderNumeral;
         private UISlider _advancedBloomIntensitySlider;
@@ -155,8 +166,6 @@ namespace RenderIt.Panels
         private UICheckBox _advancedBloomAntiFlickerCheckBox;
         private UISprite _advancedBloomDivider;
         private UILabel _advancedCGTitle;
-        private UICheckBox _advancedCGVanillaTonemappingCheckBox;
-        private UICheckBox _advancedCGVanillaColorCorrectionLUTCheckBox;
         private UILabel _advancedCGPostExposureSliderLabel;
         private UILabel _advancedCGPostExposureSliderNumeral;
         private UISlider _advancedCGPostExposureSlider;
@@ -296,6 +305,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_profilesRenameButton);
                 DestroyGameObject(_profilesSaveButton);
                 DestroyGameObject(_profilesRevertButton);
+
                 DestroyGameObject(_optionsDropDownLabel);
                 DestroyGameObject(_optionsDropDown);
                 DestroyGameObject(_optionsLightingPanel);
@@ -306,6 +316,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsSunShadowStrengthSliderLabel);
                 DestroyGameObject(_optionsSunShadowStrengthSliderNumeral);
                 DestroyGameObject(_optionsSunShadowStrengthSlider);
+                DestroyGameObject(_optionsSunDivider);
                 DestroyGameObject(_optionsMoonTitle);
                 DestroyGameObject(_optionsMoonIntensitySliderLabel);
                 DestroyGameObject(_optionsMoonIntensitySliderNumeral);
@@ -313,6 +324,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsMoonShadowStrengthSliderLabel);
                 DestroyGameObject(_optionsMoonShadowStrengthSliderNumeral);
                 DestroyGameObject(_optionsMoonShadowStrengthSlider);
+                DestroyGameObject(_optionsMoonDivider);
                 DestroyGameObject(_optionsSkyTitle);
                 DestroyGameObject(_optionsSkyRayleighScatteringSliderLabel);
                 DestroyGameObject(_optionsSkyRayleighScatteringSliderNumeral);
@@ -354,14 +366,22 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsSharpnessMipMapBiasDropDownLabel);
                 DestroyGameObject(_optionsSharpnessMipMapBiasDropDown);
                 DestroyGameObject(_optionsSharpnessLODCheckBox);
-                DestroyGameObject(_optionsAntiAliasingTitle);
                 DestroyGameObject(_optionsPostProcessingPanel);
+                DestroyGameObject(_optionsAntiAliasingTitle);
                 DestroyGameObject(_optionsAntiAliasingDropDownLabel);
                 DestroyGameObject(_optionsAntiAliasingDropDown);
-                DestroyGameObject(_optionsEffectsTitle);
+                DestroyGameObject(_optionsAntiAliasingDivider);
+                DestroyGameObject(_optionsVanillaEffectsTitle);
+                DestroyGameObject(_optionsVanillaBloomCheckBox);
+                DestroyGameObject(_optionsVanillaTonemappingCheckBox);
+                DestroyGameObject(_optionsVanillaColorCorrectionLutCheckBox);
+                DestroyGameObject(_optionsVanillaColorCorrectionLutDropDown);
+                DestroyGameObject(_optionsVanillaEffectsDivider);
+                DestroyGameObject(_optionsEnhancedEffectsTitle);
                 DestroyGameObject(_optionsAmbientOcclusionCheckBox);
                 DestroyGameObject(_optionsBloomCheckBox);
                 DestroyGameObject(_optionsColorGradingCheckBox);
+
                 DestroyGameObject(_advancedScrollablePanel);
                 DestroyGameObject(_advancedScrollbar);
                 DestroyGameObject(_advancedScrollbarTrack);
@@ -399,7 +419,6 @@ namespace RenderIt.Panels
                 DestroyGameObject(_advancedAOHighPrecisionCheckBox);
                 DestroyGameObject(_advancedAODivider);
                 DestroyGameObject(_advancedBloomTitle);
-                DestroyGameObject(_advancedBloomVanillaBloomCheckBox);
                 DestroyGameObject(_advancedBloomIntensitySliderLabel);
                 DestroyGameObject(_advancedBloomIntensitySliderNumeral);
                 DestroyGameObject(_advancedBloomIntensitySlider);
@@ -415,9 +434,6 @@ namespace RenderIt.Panels
                 DestroyGameObject(_advancedBloomAntiFlickerCheckBox);
                 DestroyGameObject(_advancedBloomDivider);
                 DestroyGameObject(_advancedCGTitle);
-                DestroyGameObject(_advancedCGVanillaTonemappingCheckBox);
-                DestroyGameObject(_advancedCGVanillaColorCorrectionLUTCheckBox);
-                DestroyGameObject(_advancedCGVanillaColorCorrectionLUTCheckBox);
                 DestroyGameObject(_advancedCGPostExposureSliderLabel);
                 DestroyGameObject(_advancedCGPostExposureSliderNumeral);
                 DestroyGameObject(_advancedCGPostExposureSlider);
@@ -595,7 +611,7 @@ namespace RenderIt.Panels
 
                     _profilesButtonsPanel = UIUtils.CreatePanel(panel, "ProfilesButtonsPanel");
                     _profilesButtonsPanel.width = panel.width - 10f;
-                    _profilesButtonsPanel.height = 100f;
+                    _profilesButtonsPanel.height = 120f;
 
                     _profilesAddButton = UIUtils.CreatePanelButton(_profilesButtonsPanel, "ProfilesAddButton", _ingameAtlas, "Add");
                     _profilesAddButton.tooltip = "Click to add new active profile with default values";
@@ -766,6 +782,19 @@ namespace RenderIt.Panels
                             eventParam.Use();
                         }
                     };
+
+                    _profilesMessagePanel = UIUtils.CreatePanel(panel, "ProfilesMessagePanel");
+                    _profilesMessagePanel.backgroundSprite = "GenericPanelLight";
+                    _profilesMessagePanel.color = new Color32(206, 206, 206, 255);
+                    _profilesMessagePanel.height = 80f;
+                    _profilesMessagePanel.width = _profilesMessagePanel.parent.width - 16f;
+                    _profilesMessagePanel.relativePosition = new Vector3(8f, 8f);
+
+                    _profilesMessageLabel = UIUtils.CreateLabel(_profilesMessagePanel, "ProfilesMessageLabel", "Color Correction Auto-Override is active. Render It! automatically applies Color Correction LUT from the active profile if enabled.");
+                    _profilesMessageLabel.autoHeight = true;
+                    _profilesMessageLabel.width = _profilesMessageLabel.parent.width - 16f;
+                    _profilesMessageLabel.relativePosition = new Vector3(8f, 8f);
+                    _profilesMessageLabel.wordWrap = true;
                 }
 
                 _tabstrip.AddTab("Options", _templateButton, true);
@@ -847,6 +876,8 @@ namespace RenderIt.Panels
                         }
                     };
 
+                    _optionsSunDivider = UIUtils.CreateDivider(_optionsLightingPanel, "OptionsSunDivider", _ingameAtlas);
+
                     _optionsMoonTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsMoonTitle", "Moon");
 
                     _optionsMoonIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonIntensitySliderLabel", "Intensity");
@@ -894,6 +925,8 @@ namespace RenderIt.Panels
                             _optionsMoonShadowStrengthSlider.value = (float)DefaultManager.Instance.Get("MoonShadowStrength");
                         }
                     };
+
+                    _optionsMoonDivider = UIUtils.CreateDivider(_optionsLightingPanel, "OptionsMoonDivider", _ingameAtlas);
 
                     _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSkyTitle", "Sky");
 
@@ -1454,7 +1487,49 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsEffectsTitle = UIUtils.CreateTitle(_optionsPostProcessingPanel, "OptionsEffectsTitle", "Effects");
+                    _optionsAntiAliasingDivider = UIUtils.CreateDivider(_optionsPostProcessingPanel, "OptionsAntiAliasingDivider", _ingameAtlas);
+
+                    _optionsVanillaEffectsTitle = UIUtils.CreateTitle(_optionsPostProcessingPanel, "OptionsVanillaEffectsTitle", "Vanilla Effects");
+
+                    _optionsVanillaBloomCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsVanillaBloomCheckBox", _ingameAtlas, "Bloom Enabled", ProfileManager.Instance.ActiveProfile.VanillaBloomEnabled);
+                    _optionsVanillaBloomCheckBox.tooltip = "Keep bloom from the vanilla game";
+                    _optionsVanillaBloomCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.VanillaBloomEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsVanillaTonemappingCheckBox", _ingameAtlas, "Tonemapping Enabled", ProfileManager.Instance.ActiveProfile.VanillaTonemappingEnabled);
+                    _optionsVanillaTonemappingCheckBox.tooltip = "Keep tonemapping from the vanilla game";
+                    _optionsVanillaTonemappingCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.VanillaTonemappingEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsVanillaColorCorrectionLutCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsVanillaColorCorrectionLutCheckBox", _ingameAtlas, "Color Correction LUT Enabled", ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutEnabled);
+                    _optionsVanillaColorCorrectionLutCheckBox.tooltip = "Keep color correction LUT from the vanilla game";
+                    _optionsVanillaColorCorrectionLutCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsVanillaColorCorrectionLutDropDown = UIUtils.CreateDropDown(_optionsPostProcessingPanel, "OptionsVanillaColorCorrectionLutDropDown", _ingameAtlas);
+                    _optionsVanillaColorCorrectionLutDropDown.items = LutManager.Instance.LocalizedNames;
+                    _optionsVanillaColorCorrectionLutDropDown.selectedIndex = LutManager.Instance.IndexOf(ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName);
+                    _optionsVanillaColorCorrectionLutDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName = LutManager.Instance.Names[value];
+                            ProfileManager.Instance.Apply();
+                        }
+                    };
+
+                    _optionsVanillaEffectsDivider = UIUtils.CreateDivider(_optionsPostProcessingPanel, "OptionsVanillaEffectsDivider", _ingameAtlas);
+
+                    _optionsEnhancedEffectsTitle = UIUtils.CreateTitle(_optionsPostProcessingPanel, "OptionsExtendedEffectsTitle", " Enhanced Effects");
 
                     _optionsAmbientOcclusionCheckBox = UIUtils.CreateCheckBox(_optionsPostProcessingPanel, "OptionsAmbientOcclusionCheckBox", _ingameAtlas, "Ambient Occlusion Enabled", ProfileManager.Instance.ActiveProfile.AmbientOcclusionEnabled);
                     _optionsAmbientOcclusionCheckBox.tooltip = "Ambient Occlusion darkens creases, holes, intersections and surfaces that are close to each other";
@@ -1787,14 +1862,6 @@ namespace RenderIt.Panels
                     _advancedBloomTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedBloomTitle", "Bloom");
                     _advancedBloomTitle.tooltip = "Bloom creates fringes of light extending from the borders of bright areas in an image,\ncontributing to the illusion of an extremely bright light overwhelming the camera";
 
-                    _advancedBloomVanillaBloomCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedBloomVanillaBloomCheckBox", _ingameAtlas, "Vanilla Bloom", ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled);
-                    _advancedBloomVanillaBloomCheckBox.tooltip = "Keeps bloom produced by the game";
-                    _advancedBloomVanillaBloomCheckBox.eventCheckChanged += (component, value) =>
-                    {
-                        ProfileManager.Instance.ActiveProfile.BloomVanillaBloomEnabled = value;
-                        ProfileManager.Instance.Apply();
-                    };
-
                     _advancedBloomIntensitySliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedBloomIntensitySliderLabel", "Intensity");
                     _advancedBloomIntensitySliderLabel.tooltip = "Degree of bloom produced";
 
@@ -1900,22 +1967,6 @@ namespace RenderIt.Panels
                     // --- Color Grading ---
                     _advancedCGTitle = UIUtils.CreateTitle(_advancedScrollablePanel, "AdvancedCGTitle", "Color Grading");
                     _advancedCGTitle.tooltip = "Color Grading alters or corrects the color and luminance of the final image that is rendered";
-
-                    _advancedCGVanillaTonemappingCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaTonemappingCheckBox", _ingameAtlas, "Vanilla Tonemapping", ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled);
-                    _advancedCGVanillaTonemappingCheckBox.tooltip = "Keeps tonemapping produced by the game";
-                    _advancedCGVanillaTonemappingCheckBox.eventCheckChanged += (component, value) =>
-                    {
-                        ProfileManager.Instance.ActiveProfile.CGVanillaTonemappingEnabled = value;
-                        ProfileManager.Instance.Apply();
-                    };
-
-                    _advancedCGVanillaColorCorrectionLUTCheckBox = UIUtils.CreateCheckBox(_advancedScrollablePanel, "AdvancedCGVanillaColorCorrectionLUTCheckBox", _ingameAtlas, "Vanilla Color Correction LUT", ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled);
-                    _advancedCGVanillaColorCorrectionLUTCheckBox.tooltip = "Keeps color correction LUT produced by the game";
-                    _advancedCGVanillaColorCorrectionLUTCheckBox.eventCheckChanged += (component, value) =>
-                    {
-                        ProfileManager.Instance.ActiveProfile.CGVanillaColorCorrectionLUTEnabled = value;
-                        ProfileManager.Instance.Apply();
-                    };
 
                     _advancedCGPostExposureSliderLabel = UIUtils.CreateLabel(_advancedScrollablePanel, "AdvancedCGPostExposureSliderLabel", "Post Exposure");
                     _advancedCGPostExposureSliderLabel.tooltip = "Adjusts the overall exposure of the scene";
@@ -2490,6 +2541,10 @@ namespace RenderIt.Panels
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
 
                     _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
+                    _optionsVanillaBloomCheckBox.isChecked = profile.VanillaBloomEnabled;
+                    _optionsVanillaTonemappingCheckBox.isChecked = profile.VanillaTonemappingEnabled;
+                    _optionsVanillaColorCorrectionLutCheckBox.isChecked = profile.VanillaColorCorrectionLutEnabled;
+                    _optionsVanillaColorCorrectionLutDropDown.selectedIndex = LutManager.Instance.IndexOf(profile.VanillaColorCorrectionLutName);
                     _optionsAmbientOcclusionCheckBox.isChecked = profile.AmbientOcclusionEnabled;
                     _optionsBloomCheckBox.isChecked = profile.BloomEnabled;
                     _optionsColorGradingCheckBox.isChecked = profile.ColorGradingEnabled;
@@ -2509,15 +2564,12 @@ namespace RenderIt.Panels
                     _advancedAOAmbientOnlyCheckBox.isChecked = profile.AOAmbientOnly;
                     _advancedAOHighPrecisionCheckBox.isChecked = profile.AOHighPrecision;
 
-                    _advancedBloomVanillaBloomCheckBox.isChecked = profile.BloomVanillaBloomEnabled;
                     _advancedBloomIntensitySlider.value = profile.BloomIntensity;
                     _advancedBloomThresholdSlider.value = profile.BloomThreshold;
                     _advancedBloomSoftKneeSlider.value = profile.BloomSoftKnee;
                     _advancedBloomRadiusSlider.value = profile.BloomRadius;
                     _advancedBloomAntiFlickerCheckBox.isChecked = profile.BloomAntiFlicker;
 
-                    _advancedCGVanillaTonemappingCheckBox.isChecked = profile.CGVanillaTonemappingEnabled;
-                    _advancedCGVanillaColorCorrectionLUTCheckBox.isChecked = profile.CGVanillaColorCorrectionLUTEnabled;
                     _advancedCGPostExposureSlider.value = profile.CGPostExposure;
                     _advancedCGTemperatureSlider.value = profile.CGTemperature;
                     _advancedCGTintSlider.value = profile.CGTint;

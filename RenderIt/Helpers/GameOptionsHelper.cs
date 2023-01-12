@@ -7,7 +7,7 @@ namespace RenderIt.Helpers
 {
     public static class GameOptionsHelper
     {
-        public static int GetAntialiasingInOptionsGraphicsPanel()
+        public static int GetColorCorrectionOverrideInOptionsGraphicsPanel()
         {
             try
             {
@@ -15,21 +15,21 @@ namespace RenderIt.Helpers
 
                 if (_optionsGraphicsPanel != null)
                 {
-                    UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
+                    UIDropDown colorCorrectionDropdown = _optionsGraphicsPanel.GetType().GetField("m_ColorCorrectionDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
 
-                    return antialiasingDropdown.selectedIndex;
+                    return colorCorrectionDropdown.selectedIndex;
                 }
 
                 return -1;
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] GameOptionsHelper:GetAntialiasingInOptionsGraphicsPanel -> Exception: " + e.Message);
+                Debug.Log("[Render It!] GameOptionsHelper:GetColorCorrectionOverrideInOptionsGraphicsPanel -> Exception: " + e.Message);
                 return -1;
             }
         }
 
-        public static void SetAntialiasingInOptionsGraphicsPanel(bool enabled)
+        public static void SetColorCorrectionOverrideInOptionsGraphicsPanel(int index)
         {
             try
             {
@@ -37,14 +37,14 @@ namespace RenderIt.Helpers
 
                 if (_optionsGraphicsPanel != null)
                 {
-                    UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
+                    UIDropDown colorCorrectionDropdown = _optionsGraphicsPanel.GetType().GetField("m_ColorCorrectionDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
 
-                    antialiasingDropdown.selectedIndex = enabled ? 1 : 0;
+                    colorCorrectionDropdown.selectedIndex = index;
                 }
             }
             catch (Exception e)
             {
-                Debug.Log("[Render It!] GameOptionsHelper:SetAntialiasingInOptionsGraphicsPanel -> Exception: " + e.Message);
+                Debug.Log("[Render It!] GameOptionsHelper:SetColorCorrectionOverrideInOptionsGraphicsPanel -> Exception: " + e.Message);
             }
         }
 
@@ -86,6 +86,47 @@ namespace RenderIt.Helpers
             catch (Exception e)
             {
                 Debug.Log("[Render It!] GameOptionsHelper:SetDepthOfFieldInOptionsGraphicsPanel -> Exception: " + e.Message);
+            }
+        }
+
+        public static int GetAntialiasingInOptionsGraphicsPanel()
+        {
+            try
+            {
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics")?.GetComponent<OptionsGraphicsPanel>();
+
+                if (_optionsGraphicsPanel != null)
+                {
+                    UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
+
+                    return antialiasingDropdown.selectedIndex;
+                }
+
+                return -1;
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] GameOptionsHelper:GetAntialiasingInOptionsGraphicsPanel -> Exception: " + e.Message);
+                return -1;
+            }
+        }
+
+        public static void SetAntialiasingInOptionsGraphicsPanel(bool enabled)
+        {
+            try
+            {
+                OptionsGraphicsPanel _optionsGraphicsPanel = GameObject.Find("Graphics")?.GetComponent<OptionsGraphicsPanel>();
+
+                if (_optionsGraphicsPanel != null)
+                {
+                    UIDropDown antialiasingDropdown = _optionsGraphicsPanel.GetType().GetField("m_AntialiasingDropdown", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(_optionsGraphicsPanel) as UIDropDown;
+
+                    antialiasingDropdown.selectedIndex = enabled ? 1 : 0;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] GameOptionsHelper:SetAntialiasingInOptionsGraphicsPanel -> Exception: " + e.Message);
             }
         }
     }
