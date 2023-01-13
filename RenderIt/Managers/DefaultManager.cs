@@ -35,6 +35,21 @@ namespace RenderIt.Managers
                 _defaults.Add("SkyColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys.Clone());
                 _defaults.Add("EquatorColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys.Clone());
                 _defaults.Add("GroundColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.groundColor.colorKeys.Clone());
+
+                FogProperties fogProperties = UnityEngine.Object.FindObjectOfType<FogProperties>();
+                if (fogProperties != null)
+                {
+                    _defaults.Add("FogHeight", fogProperties.m_FogHeight);
+                    _defaults.Add("FogHorizonHeight", fogProperties.m_HorizonHeight);
+                    _defaults.Add("FogDensity", fogProperties.m_FogDensity);
+                    _defaults.Add("FogStart", fogProperties.m_FogStart);
+                    _defaults.Add("FogDistance", fogProperties.m_FogDistance);
+                    _defaults.Add("FogEdgeDistance", fogProperties.m_EdgeFogDistance);
+                    _defaults.Add("FogNoiseContribution", fogProperties.m_NoiseContribution);
+                    _defaults.Add("FogPollutionAmount", fogProperties.m_PollutionAmount);
+                    _defaults.Add("FogColorDecay", fogProperties.m_ColorDecay);
+                    _defaults.Add("FogScattering", fogProperties.m_Scattering);
+                }
             }
             catch (Exception e)
             {

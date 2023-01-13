@@ -180,6 +180,56 @@ namespace RenderIt.Managers
                 {
                     _activeProfile.GroundColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("GroundColors"));
                 }
+
+                if (float.IsNaN(_activeProfile.FogHeight))
+                {
+                    _activeProfile.FogHeight = (float)DefaultManager.Instance.Get("FogHeight");
+                }
+
+                if (float.IsNaN(_activeProfile.FogHorizonHeight))
+                {
+                    _activeProfile.FogHorizonHeight = (float)DefaultManager.Instance.Get("FogHorizonHeight");
+                }
+
+                if (float.IsNaN(_activeProfile.FogDensity))
+                {
+                    _activeProfile.FogDensity = (float)DefaultManager.Instance.Get("FogDensity");
+                }
+
+                if (float.IsNaN(_activeProfile.FogStart))
+                {
+                    _activeProfile.FogStart = (float)DefaultManager.Instance.Get("FogStart");
+                }
+
+                if (float.IsNaN(_activeProfile.FogDistance))
+                {
+                    _activeProfile.FogDistance = (float)DefaultManager.Instance.Get("FogDistance");
+                }
+
+                if (float.IsNaN(_activeProfile.FogEdgeDistance))
+                {
+                    _activeProfile.FogEdgeDistance = (float)DefaultManager.Instance.Get("FogEdgeDistance");
+                }
+
+                if (float.IsNaN(_activeProfile.FogNoiseContribution))
+                {
+                    _activeProfile.FogNoiseContribution = (float)DefaultManager.Instance.Get("FogNoiseContribution");
+                }
+
+                if (float.IsNaN(_activeProfile.FogPollutionAmount))
+                {
+                    _activeProfile.FogPollutionAmount = (float)DefaultManager.Instance.Get("FogPollutionAmount");
+                }
+
+                if (float.IsNaN(_activeProfile.FogColorDecay))
+                {
+                    _activeProfile.FogColorDecay = (float)DefaultManager.Instance.Get("FogColorDecay");
+                }
+
+                if (float.IsNaN(_activeProfile.FogScattering))
+                {
+                    _activeProfile.FogScattering = (float)DefaultManager.Instance.Get("FogScattering");
+                }
             }
             catch (Exception e)
             {

@@ -23,6 +23,7 @@ namespace RenderIt.Panels
         private UITabstrip _tabstrip;
         private UITabContainer _tabContainer;
         private UIButton _templateButton;
+
         private UILabel _profilesDropDownLabel;
         private UIDropDown _profilesDropDown;
         private UITextField _profilesTextField;
@@ -40,6 +41,7 @@ namespace RenderIt.Panels
 
         private UILabel _optionsDropDownLabel;
         private UIDropDown _optionsDropDown;
+
         private UIPanel _optionsLightingPanel;
         private UILabel _optionsSunTitle;
         private UILabel _optionsSunIntensitySliderLabel;
@@ -69,6 +71,7 @@ namespace RenderIt.Panels
         private UISlider _optionsSkyExposureSlider;
         private UIPanel _optionsSkyMessagePanel;
         private UILabel _optionsSkyMessageLabel;
+
         private UIPanel _optionsColorsPanel;
         private UILabel _optionsLightColorsTitle;
         private UICheckBox _optionsLightColorsCheckBox;
@@ -89,6 +92,7 @@ namespace RenderIt.Panels
         private UIButton _optionsGroundColorsEditButton;
         private UIPanel _optionsLightColorsMessagePanel;
         private UILabel _optionsLightColorsMessageLabel;
+
         private UIPanel _optionsTexturesPanel;
         private UILabel _optionsSharpnessTitle;
         private UILabel _optionsSharpnessAssetTypeDropDownLabel;
@@ -98,6 +102,44 @@ namespace RenderIt.Panels
         private UILabel _optionsSharpnessMipMapBiasDropDownLabel;
         private UIDropDown _optionsSharpnessMipMapBiasDropDown;
         private UICheckBox _optionsSharpnessLODCheckBox;
+
+        private UIPanel _optionsEnvironmentPanel;
+        private UILabel _optionsFogTitle;
+        private UICheckBox _optionsFogCheckBox;
+        private UICheckBox _optionsFogDayNightCheckBox;
+        private UILabel _optionsFogHeightSliderLabel;
+        private UILabel _optionsFogHeightSliderNumeral;
+        private UISlider _optionsFogHeightSlider;
+        private UILabel _optionsFogHorizonHeightSliderLabel;
+        private UILabel _optionsFogHorizonHeightSliderNumeral;
+        private UISlider _optionsFogHorizonHeightSlider;
+        private UILabel _optionsFogDensitySliderLabel;
+        private UILabel _optionsFogDensitySliderNumeral;
+        private UISlider _optionsFogDensitySlider;
+        private UILabel _optionsFogStartSliderLabel;
+        private UILabel _optionsFogStartSliderNumeral;
+        private UISlider _optionsFogStartSlider;
+        private UILabel _optionsFogDistanceSliderLabel;
+        private UILabel _optionsFogDistanceSliderNumeral;
+        private UISlider _optionsFogDistanceSlider;
+        private UILabel _optionsFogEdgeDistanceSliderLabel;
+        private UILabel _optionsFogEdgeDistanceSliderNumeral;
+        private UISlider _optionsFogEdgeDistanceSlider;
+        private UILabel _optionsFogNoiseContributionSliderLabel;
+        private UILabel _optionsFogNoiseContributionSliderNumeral;
+        private UISlider _optionsFogNoiseContributionSlider;
+        private UILabel _optionsFogPollutionAmountSliderLabel;
+        private UILabel _optionsFogPollutionAmountSliderNumeral;
+        private UISlider _optionsFogPollutionAmountSlider;
+        private UILabel _optionsFogColorDecaySliderLabel;
+        private UILabel _optionsFogColorDecaySliderNumeral;
+        private UISlider _optionsFogColorDecaySlider;
+        private UILabel _optionsFogScatteringSliderLabel;
+        private UILabel _optionsFogScatteringSliderNumeral;
+        private UISlider _optionsFogScatteringSlider;
+        private UIPanel _optionsFogMessagePanel;
+        private UILabel _optionsFogMessageLabel;
+
         private UIPanel _optionsPostProcessingPanel;
         private UILabel _optionsAntiAliasingTitle;
         private UILabel _optionsAntiAliasingDropDownLabel;
@@ -293,6 +335,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_tabstrip);
                 DestroyGameObject(_tabContainer);
                 DestroyGameObject(_templateButton);
+
                 DestroyGameObject(_profilesDropDownLabel);
                 DestroyGameObject(_profilesDropDown);
                 DestroyGameObject(_profilesTextField);
@@ -308,6 +351,7 @@ namespace RenderIt.Panels
 
                 DestroyGameObject(_optionsDropDownLabel);
                 DestroyGameObject(_optionsDropDown);
+
                 DestroyGameObject(_optionsLightingPanel);
                 DestroyGameObject(_optionsSunTitle);
                 DestroyGameObject(_optionsSunIntensitySliderLabel);
@@ -337,6 +381,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsSkyExposureSlider);
                 DestroyGameObject(_optionsSkyMessagePanel);
                 DestroyGameObject(_optionsSkyMessageLabel);
+
                 DestroyGameObject(_optionsColorsPanel);
                 DestroyGameObject(_optionsLightColorsTitle);
                 DestroyGameObject(_optionsLightColorsCheckBox);
@@ -357,6 +402,7 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsGroundColorsEditButton);
                 DestroyGameObject(_optionsLightColorsMessagePanel);
                 DestroyGameObject(_optionsLightColorsMessageLabel);
+
                 DestroyGameObject(_optionsTexturesPanel);
                 DestroyGameObject(_optionsSharpnessTitle);
                 DestroyGameObject(_optionsSharpnessAssetTypeDropDownLabel);
@@ -366,6 +412,44 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsSharpnessMipMapBiasDropDownLabel);
                 DestroyGameObject(_optionsSharpnessMipMapBiasDropDown);
                 DestroyGameObject(_optionsSharpnessLODCheckBox);
+
+                DestroyGameObject(_optionsEnvironmentPanel);
+                DestroyGameObject(_optionsFogTitle);
+                DestroyGameObject(_optionsFogCheckBox);
+                DestroyGameObject(_optionsFogDayNightCheckBox);
+                DestroyGameObject(_optionsFogHeightSliderLabel);
+                DestroyGameObject(_optionsFogHeightSliderNumeral);
+                DestroyGameObject(_optionsFogHeightSlider);
+                DestroyGameObject(_optionsFogHorizonHeightSliderLabel);
+                DestroyGameObject(_optionsFogHorizonHeightSliderNumeral);
+                DestroyGameObject(_optionsFogHorizonHeightSlider);
+                DestroyGameObject(_optionsFogDensitySliderLabel);
+                DestroyGameObject(_optionsFogDensitySliderNumeral);
+                DestroyGameObject(_optionsFogDensitySlider);
+                DestroyGameObject(_optionsFogStartSliderLabel);
+                DestroyGameObject(_optionsFogStartSliderNumeral);
+                DestroyGameObject(_optionsFogStartSlider);
+                DestroyGameObject(_optionsFogDistanceSliderLabel);
+                DestroyGameObject(_optionsFogDistanceSliderNumeral);
+                DestroyGameObject(_optionsFogDistanceSlider);
+                DestroyGameObject(_optionsFogEdgeDistanceSliderLabel);
+                DestroyGameObject(_optionsFogEdgeDistanceSliderNumeral);
+                DestroyGameObject(_optionsFogEdgeDistanceSlider);
+                DestroyGameObject(_optionsFogNoiseContributionSliderLabel);
+                DestroyGameObject(_optionsFogNoiseContributionSliderNumeral);
+                DestroyGameObject(_optionsFogNoiseContributionSlider);
+                DestroyGameObject(_optionsFogPollutionAmountSliderLabel);
+                DestroyGameObject(_optionsFogPollutionAmountSliderNumeral);
+                DestroyGameObject(_optionsFogPollutionAmountSlider);
+                DestroyGameObject(_optionsFogColorDecaySliderLabel);
+                DestroyGameObject(_optionsFogColorDecaySliderNumeral);
+                DestroyGameObject(_optionsFogColorDecaySlider);
+                DestroyGameObject(_optionsFogScatteringSliderLabel);
+                DestroyGameObject(_optionsFogScatteringSliderNumeral);
+                DestroyGameObject(_optionsFogScatteringSlider);
+                DestroyGameObject(_optionsFogMessagePanel);
+                DestroyGameObject(_optionsFogMessageLabel);
+
                 DestroyGameObject(_optionsPostProcessingPanel);
                 DestroyGameObject(_optionsAntiAliasingTitle);
                 DestroyGameObject(_optionsAntiAliasingDropDownLabel);
@@ -814,7 +898,7 @@ namespace RenderIt.Panels
                     _optionsDropDownLabel.tooltip = "Select which type of options you want to change";
 
                     _optionsDropDown = UIUtils.CreateDropDown(panel, "OptionsDropDown", _ingameAtlas);
-                    _optionsDropDown.items = new string[] { "Lighting", "Colors", "Textures", "Post-Processing" };
+                    _optionsDropDown.items = new string[] { "Lighting", "Colors", "Textures", "Environment", "Post-Processing" };
 
                     _optionsLightingPanel = UIUtils.CreatePanel(panel, "OptionsLightingPanel");
                     _optionsLightingPanel.isVisible = false;
@@ -1444,6 +1528,284 @@ namespace RenderIt.Panels
                     };
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
 
+                    _optionsEnvironmentPanel = UIUtils.CreatePanel(panel, "OptionsEnvironmentPanel");
+                    _optionsEnvironmentPanel.isVisible = false;
+                    _optionsEnvironmentPanel.width = _optionsEnvironmentPanel.parent.width;
+                    _optionsEnvironmentPanel.height = 500f;
+                    _optionsEnvironmentPanel.autoLayout = true;
+                    _optionsEnvironmentPanel.autoLayoutStart = LayoutStart.TopLeft;
+                    _optionsEnvironmentPanel.autoLayoutDirection = LayoutDirection.Vertical;
+                    _optionsEnvironmentPanel.autoLayoutPadding.left = 0;
+                    _optionsEnvironmentPanel.autoLayoutPadding.right = 0;
+                    _optionsEnvironmentPanel.autoLayoutPadding.top = 0;
+                    _optionsEnvironmentPanel.autoLayoutPadding.bottom = 10;
+
+                    _optionsFogTitle = UIUtils.CreateTitle(_optionsEnvironmentPanel, "OptionsFogTitle", "Fog");
+
+                    if (!CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+                    {
+                        _optionsFogCheckBox = UIUtils.CreateCheckBox(_optionsEnvironmentPanel, "OptionsFogCheckBox", _ingameAtlas, "Static Fog Enabled", ProfileManager.Instance.ActiveProfile.FogEnabled);
+                        _optionsFogCheckBox.tooltip = "Enables static fog - also known as classic fog. Not all sliders below applies to static fog.";
+                        _optionsFogCheckBox.eventCheckChanged += (component, value) =>
+                        {
+                            ProfileManager.Instance.ActiveProfile.FogEnabled = value;
+                            ProfileManager.Instance.Apply();
+                        };
+
+                        _optionsFogDayNightCheckBox = UIUtils.CreateCheckBox(_optionsEnvironmentPanel, "OptionsFogDayNightCheckBox", _ingameAtlas, "Dynamic Fog Enabled", ProfileManager.Instance.ActiveProfile.FogDayNightEnabled);
+                        _optionsFogDayNightCheckBox.tooltip = "Enables dynamic fog - also known as day/night fog. All sliders below applies to dynamic fog.";
+                        _optionsFogDayNightCheckBox.eventCheckChanged += (component, value) =>
+                        {
+                            ProfileManager.Instance.ActiveProfile.FogDayNightEnabled = value;
+                            ProfileManager.Instance.Apply();
+                        };
+
+                        _optionsFogHeightSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogHeightSliderLabel", "Height");
+                        _optionsFogHeightSliderLabel.tooltip = "Set the height of fog";
+
+                        _optionsFogHeightSliderNumeral = UIUtils.CreateLabel(_optionsFogHeightSliderLabel, "OptionsFogHeightSliderNumeral", ProfileManager.Instance.ActiveProfile.FogHeight.ToString());
+                        _optionsFogHeightSliderNumeral.width = 100f;
+                        _optionsFogHeightSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogHeightSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogHeightSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogHeightSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogHeightSlider", _ingameAtlas, 0f, 5000f, 50f, 200f, ProfileManager.Instance.ActiveProfile.FogHeight);
+                        _optionsFogHeightSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogHeightSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogHeight = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogHeightSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogHeightSlider.value = (float)DefaultManager.Instance.Get("FogHeight");
+                            }
+                        };
+
+                        _optionsFogHorizonHeightSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogHorizonHeightSliderLabel", "Horizon Height");
+                        _optionsFogHorizonHeightSliderLabel.tooltip = "Set the horizon height of fog";
+
+                        _optionsFogHorizonHeightSliderNumeral = UIUtils.CreateLabel(_optionsFogHorizonHeightSliderLabel, "OptionsFogHorizonHeightSliderNumeral", ProfileManager.Instance.ActiveProfile.FogHorizonHeight.ToString());
+                        _optionsFogHorizonHeightSliderNumeral.width = 100f;
+                        _optionsFogHorizonHeightSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogHorizonHeightSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogHorizonHeightSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogHorizonHeightSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogHorizonHeightSlider", _ingameAtlas, 0f, 5000f, 50f, 200f, ProfileManager.Instance.ActiveProfile.FogHorizonHeight);
+                        _optionsFogHorizonHeightSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogHorizonHeightSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogHorizonHeight = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogHorizonHeightSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogHorizonHeightSlider.value = (float)DefaultManager.Instance.Get("FogHorizonHeight");
+                            }
+                        };
+
+                        _optionsFogDensitySliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogDensitySliderLabel", "Density");
+                        _optionsFogDensitySliderLabel.tooltip = "Set the density of fog";
+
+                        _optionsFogDensitySliderNumeral = UIUtils.CreateLabel(_optionsFogDensitySliderLabel, "OptionsFogDensitySliderNumeral", ProfileManager.Instance.ActiveProfile.FogDensity.ToString());
+                        _optionsFogDensitySliderNumeral.width = 100f;
+                        _optionsFogDensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogDensitySliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogDensitySliderNumeral.width - 10f, 0f);
+
+                        _optionsFogDensitySlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogDensitySlider", _ingameAtlas, 0f, 0.001f, 0.00001f, 0.00005f, ProfileManager.Instance.ActiveProfile.FogDensity);
+                        _optionsFogDensitySlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogDensitySliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogDensity = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogDensitySlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogDensitySlider.value = (float)DefaultManager.Instance.Get("FogDensity");
+                            }
+                        };
+
+                        _optionsFogStartSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogStartSliderLabel", "Start");
+                        _optionsFogStartSliderLabel.tooltip = "Set the start of fog";
+
+                        _optionsFogStartSliderNumeral = UIUtils.CreateLabel(_optionsFogStartSliderLabel, "OptionsFogStartSliderNumeral", ProfileManager.Instance.ActiveProfile.FogStart.ToString());
+                        _optionsFogStartSliderNumeral.width = 100f;
+                        _optionsFogStartSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogStartSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogStartSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogStartSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogStartSlider", _ingameAtlas, 0f, 4800f, 50f, 200f, ProfileManager.Instance.ActiveProfile.FogStart);
+                        _optionsFogStartSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogStartSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogStart = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogStartSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogStartSlider.value = (float)DefaultManager.Instance.Get("FogStart");
+                            }
+                        };
+
+                        _optionsFogDistanceSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogDistanceSliderLabel", "Distance");
+                        _optionsFogDistanceSliderLabel.tooltip = "Set the distance of fog";
+
+                        _optionsFogDistanceSliderNumeral = UIUtils.CreateLabel(_optionsFogDistanceSliderLabel, "OptionsFogDistanceSliderNumeral", ProfileManager.Instance.ActiveProfile.FogDistance.ToString());
+                        _optionsFogDistanceSliderNumeral.width = 100f;
+                        _optionsFogDistanceSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogDistanceSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogDistanceSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogDistanceSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogDistanceSlider", _ingameAtlas, 0f, 20000f, 10f, 200f, ProfileManager.Instance.ActiveProfile.FogDistance);
+                        _optionsFogDistanceSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogDistanceSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogDistance = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogDistanceSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogDistanceSlider.value = (float)DefaultManager.Instance.Get("FogDistance");
+                            }
+                        };
+
+                        _optionsFogEdgeDistanceSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogEdgeDistanceSliderLabel", "Edge Distance");
+                        _optionsFogEdgeDistanceSliderLabel.tooltip = "Set the edge distance of fog";
+
+                        _optionsFogEdgeDistanceSliderNumeral = UIUtils.CreateLabel(_optionsFogEdgeDistanceSliderLabel, "OptionsFogEdgeDistanceSliderNumeral", ProfileManager.Instance.ActiveProfile.FogEdgeDistance.ToString());
+                        _optionsFogEdgeDistanceSliderNumeral.width = 100f;
+                        _optionsFogEdgeDistanceSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogEdgeDistanceSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogEdgeDistanceSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogEdgeDistanceSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogEdgeDistanceSlider", _ingameAtlas, 0f, 3800f, 50f, 200f, ProfileManager.Instance.ActiveProfile.FogEdgeDistance);
+                        _optionsFogEdgeDistanceSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogEdgeDistanceSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogEdgeDistance = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogEdgeDistanceSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogEdgeDistanceSlider.value = (float)DefaultManager.Instance.Get("FogEdgeDistance");
+                            }
+                        };
+
+                        _optionsFogNoiseContributionSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogNoiseContributionSliderLabel", "Noise Contribution");
+                        _optionsFogNoiseContributionSliderLabel.tooltip = "Set the noise contribution of fog";
+
+                        _optionsFogNoiseContributionSliderNumeral = UIUtils.CreateLabel(_optionsFogNoiseContributionSliderLabel, "OptionsFogNoiseContributionSliderNumeral", ProfileManager.Instance.ActiveProfile.FogNoiseContribution.ToString());
+                        _optionsFogNoiseContributionSliderNumeral.width = 100f;
+                        _optionsFogNoiseContributionSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogNoiseContributionSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogNoiseContributionSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogNoiseContributionSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogNoiseContributionSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.1f, ProfileManager.Instance.ActiveProfile.FogNoiseContribution);
+                        _optionsFogNoiseContributionSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogNoiseContributionSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogNoiseContribution = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogNoiseContributionSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogNoiseContributionSlider.value = (float)DefaultManager.Instance.Get("FogNoiseContribution");
+                            }
+                        };
+
+                        _optionsFogPollutionAmountSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogPollutionAmountSliderLabel", "Pollution Amount");
+                        _optionsFogPollutionAmountSliderLabel.tooltip = "Set the pollution amount of fog";
+
+                        _optionsFogPollutionAmountSliderNumeral = UIUtils.CreateLabel(_optionsFogPollutionAmountSliderLabel, "OptionsFogPollutionAmountSliderNumeral", ProfileManager.Instance.ActiveProfile.FogPollutionAmount.ToString());
+                        _optionsFogPollutionAmountSliderNumeral.width = 100f;
+                        _optionsFogPollutionAmountSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogPollutionAmountSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogPollutionAmountSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogPollutionAmountSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogPollutionAmountSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.1f, ProfileManager.Instance.ActiveProfile.FogPollutionAmount);
+                        _optionsFogPollutionAmountSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogPollutionAmountSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogPollutionAmount = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogPollutionAmountSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogPollutionAmountSlider.value = (float)DefaultManager.Instance.Get("FogPollutionAmount");
+                            }
+                        };
+
+                        _optionsFogColorDecaySliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogColorDecaySliderLabel", "Color Decay");
+                        _optionsFogColorDecaySliderLabel.tooltip = "Set the color decay of fog";
+
+                        _optionsFogColorDecaySliderNumeral = UIUtils.CreateLabel(_optionsFogColorDecaySliderLabel, "OptionsFogColorDecaySliderNumeral", ProfileManager.Instance.ActiveProfile.FogColorDecay.ToString());
+                        _optionsFogColorDecaySliderNumeral.width = 100f;
+                        _optionsFogColorDecaySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogColorDecaySliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogColorDecaySliderNumeral.width - 10f, 0f);
+
+                        _optionsFogColorDecaySlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogColorDecaySlider", _ingameAtlas, 0.06f, 0.4f, 0.005f, 0.01f, ProfileManager.Instance.ActiveProfile.FogColorDecay);
+                        _optionsFogColorDecaySlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogColorDecaySliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogColorDecay = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogColorDecaySlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogColorDecaySlider.value = (float)DefaultManager.Instance.Get("FogColorDecay");
+                            }
+                        };
+
+                        _optionsFogScatteringSliderLabel = UIUtils.CreateLabel(_optionsEnvironmentPanel, "OptionsFogScatteringSliderLabel", "Scattering");
+                        _optionsFogScatteringSliderLabel.tooltip = "Set the scattering of fog";
+
+                        _optionsFogScatteringSliderNumeral = UIUtils.CreateLabel(_optionsFogScatteringSliderLabel, "OptionsFogScatteringSliderNumeral", ProfileManager.Instance.ActiveProfile.FogScattering.ToString());
+                        _optionsFogScatteringSliderNumeral.width = 100f;
+                        _optionsFogScatteringSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                        _optionsFogScatteringSliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogScatteringSliderNumeral.width - 10f, 0f);
+
+                        _optionsFogScatteringSlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogScatteringSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.1f, ProfileManager.Instance.ActiveProfile.FogScattering);
+                        _optionsFogScatteringSlider.eventValueChanged += (component, value) =>
+                        {
+                            _optionsFogScatteringSliderNumeral.text = value.ToString();
+                            ProfileManager.Instance.ActiveProfile.FogScattering = value;
+                            ProfileManager.Instance.Apply();
+                        };
+                        _optionsFogScatteringSlider.eventMouseUp += (component, eventParam) =>
+                        {
+                            if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                            {
+                                _optionsFogScatteringSlider.value = (float)DefaultManager.Instance.Get("FogScattering");
+                            }
+                        };
+                    }
+                    else
+                    {
+                        _optionsFogMessagePanel = UIUtils.CreatePanel(_optionsEnvironmentPanel, "OptionsFogMessagePanel");
+                        _optionsFogMessagePanel.backgroundSprite = "GenericPanelLight";
+                        _optionsFogMessagePanel.color = new Color32(206, 206, 206, 255);
+                        _optionsFogMessagePanel.height = 80f;
+                        _optionsFogMessagePanel.width = _optionsFogMessagePanel.parent.width - 16f;
+                        _optionsFogMessagePanel.relativePosition = new Vector3(8f, 8f);
+
+                        _optionsFogMessageLabel = UIUtils.CreateLabel(_optionsFogMessagePanel, "OptionsFogMessageLabel", "Adjustment of fog in Render It! has been disabled because you have either Fog Controller, Clouds & Fog Toggler or Daylight Classic enabled.");
+                        _optionsFogMessageLabel.autoHeight = true;
+                        _optionsFogMessageLabel.width = _optionsFogMessageLabel.parent.width - 16f;
+                        _optionsFogMessageLabel.relativePosition = new Vector3(8f, 8f);
+                        _optionsFogMessageLabel.wordWrap = true;
+                    }
+
                     _optionsPostProcessingPanel = UIUtils.CreatePanel(panel, "OptionsPostProcessingPanel");
                     _optionsPostProcessingPanel.isVisible = false;
                     _optionsPostProcessingPanel.width = _optionsPostProcessingPanel.parent.width;
@@ -1563,30 +1925,42 @@ namespace RenderIt.Panels
                                     _optionsLightingPanel.isVisible = true;
                                     _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = false;
+                                    _optionsEnvironmentPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;
                                 case 1:
                                     _optionsLightingPanel.isVisible = false;
                                     _optionsColorsPanel.isVisible = true;
                                     _optionsTexturesPanel.isVisible = false;
+                                    _optionsEnvironmentPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;
                                 case 2:
                                     _optionsLightingPanel.isVisible = false;
                                     _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = true;
+                                    _optionsEnvironmentPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;
                                 case 3:
                                     _optionsLightingPanel.isVisible = false;
                                     _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = false;
+                                    _optionsEnvironmentPanel.isVisible = true;
+                                    _optionsPostProcessingPanel.isVisible = false;
+                                    break;
+                                case 4:
+                                    _optionsLightingPanel.isVisible = false;
+                                    _optionsColorsPanel.isVisible = false;
+                                    _optionsTexturesPanel.isVisible = false;
+                                    _optionsEnvironmentPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = true;
                                     break;
                                 default:
                                     _optionsLightingPanel.isVisible = true;
                                     _optionsColorsPanel.isVisible = false;
                                     _optionsTexturesPanel.isVisible = false;
+                                    _optionsEnvironmentPanel.isVisible = false;
                                     _optionsPostProcessingPanel.isVisible = false;
                                     break;
                             }
@@ -2539,6 +2913,22 @@ namespace RenderIt.Panels
 
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = -1;
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
+
+                    if (!CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+                    {
+                        _optionsFogCheckBox.isChecked = profile.FogEnabled;
+                        _optionsFogDayNightCheckBox.isChecked = profile.FogDayNightEnabled;
+                        _optionsFogHeightSlider.value = profile.FogHeight;
+                        _optionsFogHorizonHeightSlider.value = profile.FogHorizonHeight;
+                        _optionsFogDensitySlider.value = profile.FogDensity;
+                        _optionsFogStartSlider.value = profile.FogStart;
+                        _optionsFogDistanceSlider.value = profile.FogDistance;
+                        _optionsFogEdgeDistanceSlider.value = profile.FogEdgeDistance;
+                        _optionsFogNoiseContributionSlider.value = profile.FogNoiseContribution;
+                        _optionsFogPollutionAmountSlider.value = profile.FogPollutionAmount;
+                        _optionsFogColorDecaySlider.value = profile.FogColorDecay;
+                        _optionsFogScatteringSlider.value = profile.FogScattering;
+                    }
 
                     _optionsAntiAliasingDropDown.selectedIndex = profile.AntialiasingTechnique;
                     _optionsVanillaBloomCheckBox.isChecked = profile.VanillaBloomEnabled;

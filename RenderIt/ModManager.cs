@@ -20,6 +20,11 @@ namespace RenderIt
 
         private MainPanel _mainPanel;
 
+        private FogEffect _fogEffect;
+        private DayNightFogEffect _dayNightFogEffect;
+        private FogProperties _fogProperties;
+        private RenderProperties _renderProperties;
+
         private PostProcessingBehaviour _postProcessingBehaviour;
         private AntialiasingModel _antialiasingModel;
         private AmbientOcclusionModel _ambientOcclusionModel;
@@ -58,6 +63,11 @@ namespace RenderIt
                 }
 
                 AssetManager.Instance.AssetBundle = AssetBundleUtils.LoadAssetBundle("renderit");
+
+                _fogEffect = FindObjectOfType<FogEffect>();
+                _dayNightFogEffect = FindObjectOfType<DayNightFogEffect>();
+                _fogProperties = FindObjectOfType<FogProperties>();
+                _renderProperties = FindObjectOfType<RenderProperties>();
 
                 _postProcessingBehaviour = _camera.gameObject?.GetComponent<PostProcessingBehaviour>();
                 if (_postProcessingBehaviour == null)
@@ -105,6 +115,7 @@ namespace RenderIt
                     UpdateLighting();
                     UpdateColors();
                     UpdateTextures();
+                    UpdateEnvironment();
                     UpdateAntialiasing();
                     UpdateAmbientOcclusion();
                     UpdateBloom();
@@ -372,6 +383,63 @@ namespace RenderIt
             catch (Exception e)
             {
                 Debug.Log("[Render It!] ModManager:UpdateTextures -> Exception: " + e.Message);
+            }
+        }
+        private void UpdateEnvironment()
+        {
+            try
+            {
+                if (!CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+                {
+                    if (_fogEffect != null)
+                    {
+                        _fogEffect.enabled = ProfileManager.Instance.ActiveProfile.FogEnabled;
+                        _fogEffect.m_edgeFog = ProfileManager.Instance.ActiveProfile.FogEdgeDistance < 3800f;
+                        _fogEffect.m_UseVolumeFog = ProfileManager.Instance.ActiveProfile.FogDistance > 0f;
+                        _fogEffect.m_FogHeight = ProfileManager.Instance.ActiveProfile.FogHeight;
+                        _fogEffect.m_3DFogStart = ProfileManager.Instance.ActiveProfile.FogStart;
+                        _fogEffect.m_3DFogDistance = ProfileManager.Instance.ActiveProfile.FogDistance;
+                        _fogEffect.m_edgeFogDistance = ProfileManager.Instance.ActiveProfile.FogEdgeDistance;
+                    }
+
+                    if (_dayNightFogEffect != null)
+                    {
+                        _dayNightFogEffect.enabled = ProfileManager.Instance.ActiveProfile.FogDayNightEnabled;
+                    }
+
+                    if (_fogProperties != null)
+                    {
+                        _fogProperties.m_edgeFog = ProfileManager.Instance.ActiveProfile.FogEdgeDistance < 3800f;
+                        _fogProperties.m_FogHeight = ProfileManager.Instance.ActiveProfile.FogHeight;
+                        _fogProperties.m_HorizonHeight = ProfileManager.Instance.ActiveProfile.FogHorizonHeight;
+                        _fogProperties.m_FogDensity = ProfileManager.Instance.ActiveProfile.FogDensity;
+                        _fogProperties.m_FoggyFogDensity = ProfileManager.Instance.ActiveProfile.FogDensity;
+                        _fogProperties.m_FogStart = ProfileManager.Instance.ActiveProfile.FogStart;
+                        _fogProperties.m_FoggyFogStart = ProfileManager.Instance.ActiveProfile.FogStart;
+                        _fogProperties.m_FogDistance = ProfileManager.Instance.ActiveProfile.FogDistance;
+                        _fogProperties.m_EdgeFogDistance = ProfileManager.Instance.ActiveProfile.FogEdgeDistance;
+                        _fogProperties.m_NoiseContribution = ProfileManager.Instance.ActiveProfile.FogNoiseContribution;
+                        _fogProperties.m_FoggyNoiseContribution = ProfileManager.Instance.ActiveProfile.FogNoiseContribution;
+                        _fogProperties.m_PollutionAmount = ProfileManager.Instance.ActiveProfile.FogPollutionAmount;
+                        _fogProperties.m_ColorDecay = ProfileManager.Instance.ActiveProfile.FogColorDecay;
+                        _fogProperties.m_Scattering = ProfileManager.Instance.ActiveProfile.FogScattering;
+                    }
+
+                    if (_renderProperties != null)
+                    {
+                        _renderProperties.m_useVolumeFog = ProfileManager.Instance.ActiveProfile.FogDistance > 0f;
+                        _renderProperties.m_fogHeight = ProfileManager.Instance.ActiveProfile.FogHeight;
+                        _renderProperties.m_volumeFogDensity = ProfileManager.Instance.ActiveProfile.FogDensity;
+                        _renderProperties.m_volumeFogStart = ProfileManager.Instance.ActiveProfile.FogStart;
+                        _renderProperties.m_volumeFogDistance = ProfileManager.Instance.ActiveProfile.FogDistance / 4.2f;
+                        _renderProperties.m_edgeFogDistance = ProfileManager.Instance.ActiveProfile.FogEdgeDistance;
+                        _renderProperties.m_pollutionFogIntensity = ProfileManager.Instance.ActiveProfile.FogPollutionAmount * 8f;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateEnvironment -> Exception: " + e.Message);
             }
         }
 
