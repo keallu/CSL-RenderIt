@@ -1614,7 +1614,7 @@ namespace RenderIt.Panels
                         _optionsFogDensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                         _optionsFogDensitySliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogDensitySliderNumeral.width - 10f, 0f);
 
-                        _optionsFogDensitySlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogDensitySlider", _ingameAtlas, 0f, 0.001f, 0.00001f, 0.00005f, ProfileManager.Instance.ActiveProfile.FogDensity);
+                        _optionsFogDensitySlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogDensitySlider", _ingameAtlas, 0f, 0.003f, 0.00001f, 0.00005f, ProfileManager.Instance.ActiveProfile.FogDensity);
                         _optionsFogDensitySlider.eventValueChanged += (component, value) =>
                         {
                             _optionsFogDensitySliderNumeral.text = value.ToString();
