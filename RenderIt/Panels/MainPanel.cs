@@ -1752,7 +1752,7 @@ namespace RenderIt.Panels
                         _optionsFogColorDecaySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
                         _optionsFogColorDecaySliderNumeral.relativePosition = new Vector3(_optionsEnvironmentPanel.width - _optionsFogColorDecaySliderNumeral.width - 10f, 0f);
 
-                        _optionsFogColorDecaySlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogColorDecaySlider", _ingameAtlas, 0.06f, 0.4f, 0.005f, 0.01f, ProfileManager.Instance.ActiveProfile.FogColorDecay);
+                        _optionsFogColorDecaySlider = UIUtils.CreateSlider(_optionsEnvironmentPanel, "OptionsFogColorDecaySlider", _ingameAtlas, 0f, 1f, 0.005f, 0.01f, ProfileManager.Instance.ActiveProfile.FogColorDecay);
                         _optionsFogColorDecaySlider.eventValueChanged += (component, value) =>
                         {
                             _optionsFogColorDecaySliderNumeral.text = value.ToString();
