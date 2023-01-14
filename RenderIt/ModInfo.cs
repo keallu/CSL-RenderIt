@@ -51,6 +51,15 @@ namespace RenderIt
             {
                 ModProperties.Instance.ResetButtonPosition();
             });
+
+            group = helper.AddGroup("Features");
+
+            selected = ModConfig.Instance.AutomaticColorCorrectionOverride;
+            group.AddCheckbox("Automatic Color Correction Override", selected, sel =>
+            {
+                ModConfig.Instance.AutomaticColorCorrectionOverride = sel;
+                ModConfig.Instance.Save();
+            });
         }
     }
 }

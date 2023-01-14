@@ -868,13 +868,14 @@ namespace RenderIt.Panels
                     };
 
                     _profilesMessagePanel = UIUtils.CreatePanel(panel, "ProfilesMessagePanel");
+                    _profilesMessagePanel.isVisible = false;
                     _profilesMessagePanel.backgroundSprite = "GenericPanelLight";
                     _profilesMessagePanel.color = new Color32(206, 206, 206, 255);
                     _profilesMessagePanel.height = 80f;
                     _profilesMessagePanel.width = _profilesMessagePanel.parent.width - 16f;
                     _profilesMessagePanel.relativePosition = new Vector3(8f, 8f);
 
-                    _profilesMessageLabel = UIUtils.CreateLabel(_profilesMessagePanel, "ProfilesMessageLabel", "Color Correction Auto-Override is active. Render It! automatically applies Color Correction LUT from the active profile if enabled.");
+                    _profilesMessageLabel = UIUtils.CreateLabel(_profilesMessagePanel, "ProfilesMessageLabel", "Automatic Color Correction Override is active. Render It! automatically applies Color Correction LUT from the active profile if enabled.");
                     _profilesMessageLabel.autoHeight = true;
                     _profilesMessageLabel.width = _profilesMessageLabel.parent.width - 16f;
                     _profilesMessageLabel.relativePosition = new Vector3(8f, 8f);
@@ -2878,6 +2879,7 @@ namespace RenderIt.Panels
             {
                 isVisible = ModConfig.Instance.ShowPanel;
                 absolutePosition = new Vector3(ModConfig.Instance.PanelPositionX, ModConfig.Instance.PanelPositionY);
+                _profilesMessagePanel.isVisible = ModConfig.Instance.AutomaticColorCorrectionOverride;
             }
             catch (Exception e)
             {

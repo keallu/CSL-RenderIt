@@ -12,6 +12,7 @@ namespace RenderIt
         public bool ShowPanel { get; set; } = true;
         public float PanelPositionX { get; set; } = 0f;
         public float PanelPositionY { get; set; } = 0f;
+        public bool AutomaticColorCorrectionOverride { get; set; } = true;
         public List<Profile> Profiles { get; set; } = new List<Profile> { };
 
         private static ModConfig instance;

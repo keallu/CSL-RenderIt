@@ -47,6 +47,8 @@ namespace RenderIt
         {
             try
             {
+                DefaultManager.Instance.Initialize();
+
                 if (_camera == null)
                 {
                     _camera = Camera.main;
@@ -117,6 +119,9 @@ namespace RenderIt
                     UpdateTextures();
                     UpdateEnvironment();
                     UpdateAntialiasing();
+                    UpdateVanillaBloom();
+                    UpdateVanillaToneMapping();
+                    UpdateVanillaColorCorrectionLut();
                     UpdateAmbientOcclusion();
                     UpdateBloom();
                     UpdateColorGrading();
@@ -492,6 +497,62 @@ namespace RenderIt
             }
         }
 
+        private void UpdateVanillaBloom()
+        {
+            try
+            {
+                UnityStandardAssets.ImageEffects.Bloom vanillaBloom = _camera.gameObject?.GetComponent<UnityStandardAssets.ImageEffects.Bloom>();
+
+                if (vanillaBloom != null)
+                {
+                    vanillaBloom.enabled = ProfileManager.Instance.ActiveProfile.VanillaBloomEnabled;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateVanillaBloom -> Exception: " + e.Message);
+            }
+        }
+
+        private void UpdateVanillaToneMapping()
+        {
+            try
+            {
+                ToneMapping vanillaToneMapping = _camera.gameObject?.GetComponent<ToneMapping>();
+
+                if (vanillaToneMapping != null)
+                {
+                    vanillaToneMapping.enabled = ProfileManager.Instance.ActiveProfile.VanillaTonemappingEnabled;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateVanillaToneMapping -> Exception: " + e.Message);
+            }
+        }
+
+        private void UpdateVanillaColorCorrectionLut()
+        {
+            try
+            {
+                ColorCorrectionLut vanillaColorCorrectionLut = _camera.gameObject?.GetComponent<ColorCorrectionLut>();
+
+                if (vanillaColorCorrectionLut != null)
+                {
+                    vanillaColorCorrectionLut.enabled = ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutEnabled;
+
+                    if (ModConfig.Instance.AutomaticColorCorrectionOverride)
+                    {
+                        GameOptionsHelper.SetColorCorrectionOverrideInOptionsGraphicsPanel(LutManager.Instance.IndexOf(ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] ModManager:UpdateVanillaColorCorrectionLut -> Exception: " + e.Message);
+            }
+        }
+
         private void UpdateAmbientOcclusion()
         {
             try
@@ -528,13 +589,6 @@ namespace RenderIt
         {
             try
             {
-                UnityStandardAssets.ImageEffects.Bloom vanillaBloom = _camera.gameObject?.GetComponent<UnityStandardAssets.ImageEffects.Bloom>();
-
-                if (vanillaBloom != null)
-                {
-                    vanillaBloom.enabled = ProfileManager.Instance.ActiveProfile.VanillaBloomEnabled;
-                }
-
                 BloomModel.Settings settings = _bloomModel.settings;
 
                 if (ProfileManager.Instance.ActiveProfile.BloomEnabled)
@@ -565,22 +619,6 @@ namespace RenderIt
         {
             try
             {
-                ToneMapping vanillaToneMapping = _camera.gameObject?.GetComponent<ToneMapping>();
-
-                if (vanillaToneMapping != null)
-                {
-                    vanillaToneMapping.enabled = ProfileManager.Instance.ActiveProfile.VanillaTonemappingEnabled;
-                }
-
-                ColorCorrectionLut vanillaColorCorrectionLut = _camera.gameObject?.GetComponent<ColorCorrectionLut>();
-
-                if (vanillaColorCorrectionLut != null)
-                {
-                    vanillaColorCorrectionLut.enabled = ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutEnabled;
-
-                    GameOptionsHelper.SetColorCorrectionOverrideInOptionsGraphicsPanel(LutManager.Instance.IndexOf(ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName));
-                }
-
                 ColorGradingModel.Settings settings = _colorGradingModel.settings;
 
                 if (ProfileManager.Instance.ActiveProfile.ColorGradingEnabled)
