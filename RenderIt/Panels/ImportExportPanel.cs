@@ -237,7 +237,7 @@ namespace RenderIt.Panels
                             Directory.CreateDirectory("Profiles");
                         }
 
-                        string fileName = ProfileManager.Instance.ActiveProfile.Name.Trim(Path.GetInvalidFileNameChars());
+                        string fileName = string.Join("", ProfileManager.Instance.ActiveProfile.Name.Split(Path.GetInvalidFileNameChars()));
 
                         File.WriteAllText("Profiles\\" + fileName + ".renderit", _textField.text);
 

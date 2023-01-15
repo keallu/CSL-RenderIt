@@ -173,6 +173,9 @@ namespace RenderIt
         {
             if (mode == InfoManager.InfoMode.None)
             {
+                UpdateVanillaBloom();
+                UpdateVanillaToneMapping();
+                UpdateVanillaColorCorrectionLut();
                 UpdateAmbientOcclusion();
                 UpdateBloom();
                 UpdateColorGrading();
@@ -543,7 +546,12 @@ namespace RenderIt
 
                     if (ModConfig.Instance.AutomaticColorCorrectionOverride)
                     {
-                        GameOptionsHelper.SetColorCorrectionOverrideInOptionsGraphicsPanel(LutManager.Instance.IndexOf(ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName));
+                        int indexOfSelectedColorCorrectionLut = LutManager.Instance.IndexOf(ProfileManager.Instance.ActiveProfile.VanillaColorCorrectionLutName);
+
+                        if (GameOptionsHelper.GetColorCorrectionOverrideInOptionsGraphicsPanel() != indexOfSelectedColorCorrectionLut)
+                        {
+                            GameOptionsHelper.SetColorCorrectionOverrideInOptionsGraphicsPanel(indexOfSelectedColorCorrectionLut);
+                        }
                     }
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace RenderIt
 {
@@ -111,6 +112,11 @@ namespace RenderIt
         {
             Profile other = (Profile)MemberwiseClone();
             other.Name = string.Copy(Name);
+            other.LightColors = LightColors.Select(x => x.Clone()).ToList();
+            other.SkyColors = SkyColors.Select(x => x.Clone()).ToList();
+            other.EquatorColors = EquatorColors.Select(x => x.Clone()).ToList();
+            other.GroundColors = GroundColors.Select(x => x.Clone()).ToList();
+            other.VanillaColorCorrectionLutName = string.Copy(VanillaColorCorrectionLutName);
             return other;
         }
 
@@ -138,6 +144,12 @@ namespace RenderIt
                 Blue = blue;
                 Alpha = alpha;
                 Time = time;
+            }
+
+            public TimedColor Clone()
+            {
+                TimedColor other = (TimedColor)MemberwiseClone();
+                return other;
             }
         }
     }

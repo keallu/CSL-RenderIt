@@ -681,16 +681,13 @@ namespace RenderIt.Panels
                     _profilesTextField.isVisible = false;
                     _profilesTextField.eventTextSubmitted += (component, value) =>
                     {
-                        if (ProfileManager.Instance.AllProfiles.Count > 1)
-                        {
-                            _profilesTextField.isVisible = false;
+                        _profilesTextField.isVisible = false;
 
-                            ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name = value;
+                        ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name = value;
 
-                            _profilesDropDown.items.SetValue(value, _profilesDropDown.selectedIndex);
+                        _profilesDropDown.items.SetValue(value, _profilesDropDown.selectedIndex);
 
-                            _profilesDropDown.isVisible = true;
-                        }
+                        _profilesDropDown.isVisible = true;
                     };
 
                     _profilesButtonsPanel = UIUtils.CreatePanel(panel, "ProfilesButtonsPanel");
@@ -822,15 +819,12 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            if (ProfileManager.Instance.AllProfiles.Count > 1)
-                            {
-                                _profilesDropDown.isVisible = false;
+                            _profilesDropDown.isVisible = false;
 
-                                _profilesTextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
+                            _profilesTextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
 
-                                _profilesTextField.isVisible = true;
-                                _profilesTextField.Focus();
-                            }
+                            _profilesTextField.isVisible = true;
+                            _profilesTextField.Focus();
 
                             eventParam.Use();
                         }
