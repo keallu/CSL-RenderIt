@@ -590,8 +590,8 @@ namespace RenderIt.Panels
 
         public void ForceProfile(Profile profile)
         {
-            _profilesDropDown.AddItem(profile.Name);
-            _profilesDropDown.selectedIndex = _profilesDropDown.items.Length - 1;
+            _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
+            _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
         }
 
         private void CreateUI()
@@ -683,9 +683,13 @@ namespace RenderIt.Panels
                     {
                         _profilesTextField.isVisible = false;
 
-                        ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name = value;
+                        if (_profilesDropDown.items.Length > 0)
+                        {
+                            ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name = value;
 
-                        _profilesDropDown.items.SetValue(value, _profilesDropDown.selectedIndex);
+                            _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
+                            _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
+                        }
 
                         _profilesDropDown.isVisible = true;
                     };
@@ -720,8 +724,8 @@ namespace RenderIt.Panels
                             ProfileManager.Instance.AllProfiles.Add(profile);
                             ProfileManager.Instance.ActiveProfile = profile;
 
-                            _profilesDropDown.AddItem(profile.Name);
-                            _profilesDropDown.selectedIndex = _profilesDropDown.items.Length - 1;
+                            _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
+                            _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
 
                             eventParam.Use();
                         }
@@ -734,13 +738,22 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            if (ProfileManager.Instance.AllProfiles.Count > 1)
+                            if (_profilesDropDown.items.Length > 0)
                             {
                                 ProfileManager.Instance.AllProfiles.Remove(ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex]);
-                                ProfileManager.Instance.ActiveProfile = ProfileManager.Instance.AllProfiles[0];
 
-                                _profilesDropDown.items = _profilesDropDown.items.Where((w, i) => i != _profilesDropDown.selectedIndex).ToArray();
-                                _profilesDropDown.selectedIndex = 0;
+                                if (ProfileManager.Instance.AllProfiles.Count > 0)
+                                {
+                                    ProfileManager.Instance.ActiveProfile = ProfileManager.Instance.AllProfiles[0];
+                                    _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
+                                    _profilesDropDown.selectedIndex = 0;
+                                }
+                                else
+                                {
+                                    ProfileManager.Instance.ActiveProfile = null;
+                                    _profilesDropDown.items = new string[] { };
+                                    _profilesDropDown.selectedIndex = 0;
+                                }
                             }
 
                             eventParam.Use();
@@ -754,14 +767,17 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            Profile profile = ProfileManager.Instance.ActiveProfile.Clone();
-                            profile.Name = "Copy of " + profile.Name;
+                            if (_profilesDropDown.items.Length > 0)
+                            {
+                                Profile profile = ProfileManager.Instance.ActiveProfile.Clone();
+                                profile.Name = "Copy of " + profile.Name;
 
-                            ProfileManager.Instance.AllProfiles.Add(profile);
-                            ProfileManager.Instance.ActiveProfile = profile;
+                                ProfileManager.Instance.AllProfiles.Add(profile);
+                                ProfileManager.Instance.ActiveProfile = profile;
 
-                            _profilesDropDown.AddItem(profile.Name);
-                            _profilesDropDown.selectedIndex = _profilesDropDown.items.Length - 1;
+                                _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
+                                _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
+                            }
 
                             eventParam.Use();
                         }
@@ -819,12 +835,15 @@ namespace RenderIt.Panels
                     {
                         if (!eventParam.used)
                         {
-                            _profilesDropDown.isVisible = false;
+                            if (_profilesDropDown.items.Length > 0)
+                            {
+                                _profilesDropDown.isVisible = false;
 
-                            _profilesTextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
+                                _profilesTextField.text = ProfileManager.Instance.AllProfiles[_profilesDropDown.selectedIndex].Name;
 
-                            _profilesTextField.isVisible = true;
-                            _profilesTextField.Focus();
+                                _profilesTextField.isVisible = true;
+                                _profilesTextField.Focus();
+                            }
 
                             eventParam.Use();
                         }
@@ -854,8 +873,6 @@ namespace RenderIt.Panels
 
                             _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
                             _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
-
-                            ApplyProfile(ProfileManager.Instance.ActiveProfile);
 
                             eventParam.Use();
                         }

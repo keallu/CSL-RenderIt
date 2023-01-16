@@ -21,6 +21,8 @@ namespace RenderIt.Managers
                     _allProfiles = ModConfig.Instance.Profiles.Select(x => x.Clone()).ToList();
                 }
 
+                _allProfiles.Sort();
+
                 return _allProfiles;
             }
         }
@@ -65,15 +67,22 @@ namespace RenderIt.Managers
             }
             set
             {
-                foreach (Profile profile in AllProfiles)
+                if (value != null)
                 {
-                    profile.Active = false;
+                    foreach (Profile profile in AllProfiles)
+                    {
+                        profile.Active = false;
+                    }
+
+                    _activeProfile = value;
+                    _activeProfile.Active = true;
+
+                    Apply();
                 }
-
-                _activeProfile = value;
-                _activeProfile.Active = true;
-
-                Apply();
+                else
+                {
+                    _activeProfile = value;
+                }
             }
         }
 

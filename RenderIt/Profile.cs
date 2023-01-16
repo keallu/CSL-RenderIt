@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RenderIt
 {
-    public class Profile
+    public class Profile : IComparable<Profile>
     {
         public string Name { get; set; } = "Unnamed";
         public bool Active { get; set; } = false;
@@ -118,6 +119,11 @@ namespace RenderIt
             other.GroundColors = GroundColors.Select(x => x.Clone()).ToList();
             other.VanillaColorCorrectionLutName = string.Copy(VanillaColorCorrectionLutName);
             return other;
+        }
+
+        public int CompareTo(Profile other)
+        {
+            return other == null ? 1 : Name.CompareTo(other.Name);
         }
 
         public class TimedColor

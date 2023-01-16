@@ -352,6 +352,7 @@ namespace RenderIt.Panels
             try
             {
                 IDeserializer deserializer = new DeserializerBuilder()
+                    .IgnoreUnmatchedProperties()
                     .WithNamingConvention(CamelCaseNamingConvention.Instance)
                     .Build();
 
