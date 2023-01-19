@@ -671,6 +671,11 @@ namespace RenderIt.Panels
                     {
                         if (value != -1)
                         {
+                            if (_colorsPanel != null && _colorsPanel.isVisible)
+                            {
+                                _colorsPanel.Hide();
+                            }
+
                             ProfileManager.Instance.ActiveProfile = ProfileManager.Instance.AllProfiles[value];
 
                             ApplyProfile(ProfileManager.Instance.ActiveProfile);

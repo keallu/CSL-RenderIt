@@ -191,10 +191,12 @@ namespace RenderIt
 
             dropDown.itemPadding = new RectOffset(5, 5, 5, 5);
             dropDown.listPadding = new RectOffset(5, 5, 5, 5);
-            dropDown.textFieldPadding = new RectOffset(10, 5, 10, 5);
+            dropDown.textFieldPadding = new RectOffset(10, 5, 10, 5);            
 
             dropDown.popupColor = new Color32(255, 255, 255, 255);
             dropDown.popupTextColor = new Color32(170, 170, 170, 255);
+
+            dropDown.builtinKeyNavigation = true;
 
             UIButton button = dropDown.AddUIComponent<UIButton>();
             button.height = dropDown.height;
@@ -218,6 +220,8 @@ namespace RenderIt
             checkBox.name = name;
             checkBox.height = 16f;
             checkBox.width = parent.width - 10f;
+
+            checkBox.builtinKeyNavigation = true;
 
             UISprite uncheckedSprite = checkBox.AddUIComponent<UISprite>();
             uncheckedSprite.atlas = atlas;
@@ -253,6 +257,8 @@ namespace RenderIt
             slider.height = 10f;
             slider.width = parent.width - 10f;
             slider.relativePosition = new Vector3(0f, 0f);
+
+            slider.builtinKeyNavigation = true;
 
             UISlicedSprite slicedSprite = slider.AddUIComponent<UISlicedSprite>();
             slicedSprite.atlas = atlas;
