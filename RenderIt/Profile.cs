@@ -15,6 +15,9 @@ namespace RenderIt
         public float SkyRayleighScattering { get; set; } = float.NaN;
         public float SkyMieScattering { get; set; } = float.NaN;
         public float SkyExposure { get; set; } = float.NaN;
+        public float SkyRedWaveLength { get; set; } = float.NaN;
+        public float SkyGreenWaveLength { get; set; } = float.NaN;
+        public float SkyBlueWaveLength { get; set; } = float.NaN;
         public bool LightColorsEnabled { get; set; } = false;
         public List<TimedColor> LightColors { get; set; } = new List<TimedColor> { };
         public bool SkyColorsEnabled { get; set; } = false;

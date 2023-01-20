@@ -43,6 +43,10 @@ namespace RenderIt.Panels
         private UIDropDown _optionsDropDown;
 
         private UIPanel _optionsLightingPanel;
+        private UIScrollablePanel _optionsLightingScrollablePanel;
+        private UIScrollbar _optionsLightingScrollbar;
+        private UISlicedSprite _optionsLightingScrollbarTrack;
+        private UISlicedSprite _optionsLightingScrollbarThumb;
         private UILabel _optionsSunTitle;
         private UILabel _optionsSunIntensitySliderLabel;
         private UILabel _optionsSunIntensitySliderNumeral;
@@ -69,6 +73,15 @@ namespace RenderIt.Panels
         private UILabel _optionsSkyExposureSliderLabel;
         private UILabel _optionsSkyExposureSliderNumeral;
         private UISlider _optionsSkyExposureSlider;
+        private UILabel _optionsSkyRedWaveLengthSliderLabel;
+        private UILabel _optionsSkyRedWaveLengthSliderNumeral;
+        private UISlider _optionsSkyRedWaveLengthSlider;
+        private UILabel _optionsSkyGreenWaveLengthSliderLabel;
+        private UILabel _optionsSkyGreenWaveLengthSliderNumeral;
+        private UISlider _optionsSkyGreenWaveLengthSlider;
+        private UILabel _optionsSkyBlueWaveLengthSliderLabel;
+        private UILabel _optionsSkyBlueWaveLengthSliderNumeral;
+        private UISlider _optionsSkyBlueWaveLengthSlider;
         private UIPanel _optionsSkyMessagePanel;
         private UILabel _optionsSkyMessageLabel;
 
@@ -353,6 +366,10 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsDropDown);
 
                 DestroyGameObject(_optionsLightingPanel);
+                DestroyGameObject(_optionsLightingScrollablePanel);
+                DestroyGameObject(_optionsLightingScrollbar);
+                DestroyGameObject(_optionsLightingScrollbarTrack);
+                DestroyGameObject(_optionsLightingScrollbarThumb);
                 DestroyGameObject(_optionsSunTitle);
                 DestroyGameObject(_optionsSunIntensitySliderLabel);
                 DestroyGameObject(_optionsSunIntensitySliderNumeral);
@@ -379,6 +396,15 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsSkyExposureSliderLabel);
                 DestroyGameObject(_optionsSkyExposureSliderNumeral);
                 DestroyGameObject(_optionsSkyExposureSlider);
+                DestroyGameObject(_optionsSkyRedWaveLengthSliderLabel);
+                DestroyGameObject(_optionsSkyRedWaveLengthSliderNumeral);
+                DestroyGameObject(_optionsSkyRedWaveLengthSlider);
+                DestroyGameObject(_optionsSkyGreenWaveLengthSliderLabel);
+                DestroyGameObject(_optionsSkyGreenWaveLengthSliderNumeral);
+                DestroyGameObject(_optionsSkyGreenWaveLengthSlider);
+                DestroyGameObject(_optionsSkyBlueWaveLengthSliderLabel);
+                DestroyGameObject(_optionsSkyBlueWaveLengthSliderNumeral);
+                DestroyGameObject(_optionsSkyBlueWaveLengthSlider);
                 DestroyGameObject(_optionsSkyMessagePanel);
                 DestroyGameObject(_optionsSkyMessageLabel);
 
@@ -920,26 +946,59 @@ namespace RenderIt.Panels
                     _optionsLightingPanel = UIUtils.CreatePanel(panel, "OptionsLightingPanel");
                     _optionsLightingPanel.isVisible = false;
                     _optionsLightingPanel.width = _optionsLightingPanel.parent.width;
-                    _optionsLightingPanel.height = 500f;
-                    _optionsLightingPanel.autoLayout = true;
-                    _optionsLightingPanel.autoLayoutStart = LayoutStart.TopLeft;
-                    _optionsLightingPanel.autoLayoutDirection = LayoutDirection.Vertical;
-                    _optionsLightingPanel.autoLayoutPadding.left = 0;
-                    _optionsLightingPanel.autoLayoutPadding.right = 0;
-                    _optionsLightingPanel.autoLayoutPadding.top = 0;
-                    _optionsLightingPanel.autoLayoutPadding.bottom = 10;
+                    _optionsLightingPanel.height = _optionsLightingPanel.parent.height - 72f;
 
-                    _optionsSunTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSunTitle", "Sun");
+                    _optionsLightingScrollablePanel = UIUtils.CreateScrollablePanel(_optionsLightingPanel, "OptionsLightingScrollablePanel");
+                    _optionsLightingScrollablePanel.width = _optionsLightingScrollablePanel.parent.width - 25f;
+                    _optionsLightingScrollablePanel.height = _optionsLightingScrollablePanel.parent.height;
+                    _optionsLightingScrollablePanel.relativePosition = new Vector3(0f, 0f);
 
-                    _optionsSunIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSunIntensitySliderLabel", "Intensity");
+                    _optionsLightingScrollablePanel.autoLayout = true;
+                    _optionsLightingScrollablePanel.autoLayoutStart = LayoutStart.TopLeft;
+                    _optionsLightingScrollablePanel.autoLayoutDirection = LayoutDirection.Vertical;
+                    _optionsLightingScrollablePanel.autoLayoutPadding.left = 0;
+                    _optionsLightingScrollablePanel.autoLayoutPadding.right = 0;
+                    _optionsLightingScrollablePanel.autoLayoutPadding.top = 0;
+                    _optionsLightingScrollablePanel.autoLayoutPadding.bottom = 10;
+                    _optionsLightingScrollablePanel.scrollWheelDirection = UIOrientation.Vertical;
+                    _optionsLightingScrollablePanel.builtinKeyNavigation = true;
+                    _optionsLightingScrollablePanel.clipChildren = true;
+
+                    _optionsLightingScrollbar = UIUtils.CreateScrollbar(_optionsLightingPanel, "OptionsLightingScrollbar");
+                    _optionsLightingScrollbar.width = 20f;
+                    _optionsLightingScrollbar.height = _optionsLightingScrollablePanel.height;
+                    _optionsLightingScrollbar.relativePosition = new Vector3(_optionsLightingPanel.width - 25f, 0f);
+                    _optionsLightingScrollbar.orientation = UIOrientation.Vertical;
+                    _optionsLightingScrollbar.incrementAmount = 38f;
+
+                    _optionsLightingScrollbarTrack = UIUtils.CreateSlicedSprite(_optionsLightingScrollbar, "OptionsLightingScrollbarTrack");
+                    _optionsLightingScrollbarTrack.width = _optionsLightingScrollbar.width;
+                    _optionsLightingScrollbarTrack.height = _optionsLightingScrollbar.height;
+                    _optionsLightingScrollbarTrack.relativePosition = new Vector3(0f, 0f);
+                    _optionsLightingScrollbarTrack.spriteName = "ScrollbarTrack";
+                    _optionsLightingScrollbarTrack.fillDirection = UIFillDirection.Vertical;
+
+                    _optionsLightingScrollbarThumb = UIUtils.CreateSlicedSprite(_optionsLightingScrollbar, "OptionsLightingScrollbarThumb");
+                    _optionsLightingScrollbarThumb.width = _optionsLightingScrollbar.width - 6f;
+                    _optionsLightingScrollbarThumb.relativePosition = new Vector3(3f, 0f);
+                    _optionsLightingScrollbarThumb.spriteName = "ScrollbarThumb";
+                    _optionsLightingScrollbarThumb.fillDirection = UIFillDirection.Vertical;
+
+                    _optionsLightingScrollablePanel.verticalScrollbar = _optionsLightingScrollbar;
+                    _optionsLightingScrollbar.trackObject = _optionsLightingScrollbarTrack;
+                    _optionsLightingScrollbar.thumbObject = _optionsLightingScrollbarThumb;
+
+                    _optionsSunTitle = UIUtils.CreateTitle(_optionsLightingScrollablePanel, "OptionsSunTitle", "Sun");
+
+                    _optionsSunIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSunIntensitySliderLabel", "Intensity");
                     _optionsSunIntensitySliderLabel.tooltip = "Set the intensity (brightness) of the sun";
 
                     _optionsSunIntensitySliderNumeral = UIUtils.CreateLabel(_optionsSunIntensitySliderLabel, "OptionsSunIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.SunIntensity.ToString());
                     _optionsSunIntensitySliderNumeral.width = 100f;
                     _optionsSunIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                    _optionsSunIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSunIntensitySliderNumeral.width - 10f, 0f);
+                    _optionsSunIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSunIntensitySliderNumeral.width - 10f, 0f);
 
-                    _optionsSunIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunIntensitySlider", _ingameAtlas, 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SunIntensity);
+                    _optionsSunIntensitySlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSunIntensitySlider", _ingameAtlas, 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SunIntensity);
                     _optionsSunIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _optionsSunIntensitySliderNumeral.text = value.ToString();
@@ -954,15 +1013,15 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsSunShadowStrengthSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSunShadowStrengthSliderLabel", "Shadow Strength");
+                    _optionsSunShadowStrengthSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSunShadowStrengthSliderLabel", "Shadow Strength");
                     _optionsSunShadowStrengthSliderLabel.tooltip = "Set the strength (darkness) of cast shadow from the sun";
 
                     _optionsSunShadowStrengthSliderNumeral = UIUtils.CreateLabel(_optionsSunShadowStrengthSliderLabel, "OptionsSunShadowStrengthSliderNumeral", ProfileManager.Instance.ActiveProfile.SunShadowStrength.ToString());
                     _optionsSunShadowStrengthSliderNumeral.width = 100f;
                     _optionsSunShadowStrengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                    _optionsSunShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSunShadowStrengthSliderNumeral.width - 10f, 0f);
+                    _optionsSunShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSunShadowStrengthSliderNumeral.width - 10f, 0f);
 
-                    _optionsSunShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSunShadowStrengthSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.SunShadowStrength);
+                    _optionsSunShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSunShadowStrengthSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.SunShadowStrength);
                     _optionsSunShadowStrengthSlider.eventValueChanged += (component, value) =>
                     {
                         _optionsSunShadowStrengthSliderNumeral.text = value.ToString();
@@ -977,19 +1036,19 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsSunDivider = UIUtils.CreateDivider(_optionsLightingPanel, "OptionsSunDivider", _ingameAtlas);
+                    _optionsSunDivider = UIUtils.CreateDivider(_optionsLightingScrollablePanel, "OptionsSunDivider", _ingameAtlas);
 
-                    _optionsMoonTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsMoonTitle", "Moon");
+                    _optionsMoonTitle = UIUtils.CreateTitle(_optionsLightingScrollablePanel, "OptionsMoonTitle", "Moon");
 
-                    _optionsMoonIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonIntensitySliderLabel", "Intensity");
+                    _optionsMoonIntensitySliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsMoonIntensitySliderLabel", "Intensity");
                     _optionsMoonIntensitySliderLabel.tooltip = "Set the intensity (brightness) of the moon";
 
                     _optionsMoonIntensitySliderNumeral = UIUtils.CreateLabel(_optionsMoonIntensitySliderLabel, "OptionsMoonIntensitySliderNumeral", ProfileManager.Instance.ActiveProfile.MoonIntensity.ToString());
                     _optionsMoonIntensitySliderNumeral.width = 100f;
                     _optionsMoonIntensitySliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                    _optionsMoonIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsMoonIntensitySliderNumeral.width - 10f, 0f);
+                    _optionsMoonIntensitySliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsMoonIntensitySliderNumeral.width - 10f, 0f);
 
-                    _optionsMoonIntensitySlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonIntensitySlider", _ingameAtlas, 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.MoonIntensity);
+                    _optionsMoonIntensitySlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsMoonIntensitySlider", _ingameAtlas, 0f, 8f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.MoonIntensity);
                     _optionsMoonIntensitySlider.eventValueChanged += (component, value) =>
                     {
                         _optionsMoonIntensitySliderNumeral.text = value.ToString();
@@ -1004,15 +1063,15 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsMoonShadowStrengthSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMoonShadowStrengthSliderLabel", "Shadow Strength");
+                    _optionsMoonShadowStrengthSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsMoonShadowStrengthSliderLabel", "Shadow Strength");
                     _optionsMoonShadowStrengthSliderLabel.tooltip = "Set the strength (darkness) of cast shadow from the moon";
 
                     _optionsMoonShadowStrengthSliderNumeral = UIUtils.CreateLabel(_optionsMoonShadowStrengthSliderLabel, "OptionsMoonShadowStrengthSliderNumeral", ProfileManager.Instance.ActiveProfile.MoonShadowStrength.ToString());
                     _optionsMoonShadowStrengthSliderNumeral.width = 100f;
                     _optionsMoonShadowStrengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                    _optionsMoonShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsMoonShadowStrengthSliderNumeral.width - 10f, 0f);
+                    _optionsMoonShadowStrengthSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsMoonShadowStrengthSliderNumeral.width - 10f, 0f);
 
-                    _optionsMoonShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMoonShadowStrengthSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.MoonShadowStrength);
+                    _optionsMoonShadowStrengthSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsMoonShadowStrengthSlider", _ingameAtlas, 0f, 1f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.MoonShadowStrength);
                     _optionsMoonShadowStrengthSlider.eventValueChanged += (component, value) =>
                     {
                         _optionsMoonShadowStrengthSliderNumeral.text = value.ToString();
@@ -1027,21 +1086,21 @@ namespace RenderIt.Panels
                         }
                     };
 
-                    _optionsMoonDivider = UIUtils.CreateDivider(_optionsLightingPanel, "OptionsMoonDivider", _ingameAtlas);
+                    _optionsMoonDivider = UIUtils.CreateDivider(_optionsLightingScrollablePanel, "OptionsMoonDivider", _ingameAtlas);
 
-                    _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingPanel, "OptionsSkyTitle", "Sky");
+                    _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingScrollablePanel, "OptionsSkyTitle", "Sky");
 
                     if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
                     {
-                        _optionsSkyRayleighScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSkyRayleighScatteringSliderLabel", "Rayleigh Scattering");
+                        _optionsSkyRayleighScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSkyRayleighScatteringSliderLabel", "Rayleigh Scattering");
                         _optionsSkyRayleighScatteringSliderLabel.tooltip = "Set the strength of rayleigh scattering in the sky";
 
                         _optionsSkyRayleighScatteringSliderNumeral = UIUtils.CreateLabel(_optionsSkyRayleighScatteringSliderLabel, "OptionsSkyRayleighScatteringSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyRayleighScattering.ToString());
                         _optionsSkyRayleighScatteringSliderNumeral.width = 100f;
                         _optionsSkyRayleighScatteringSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                        _optionsSkyRayleighScatteringSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSkyRayleighScatteringSliderNumeral.width - 10f, 0f);
+                        _optionsSkyRayleighScatteringSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSkyRayleighScatteringSliderNumeral.width - 10f, 0f);
 
-                        _optionsSkyRayleighScatteringSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSkyRayleighScatteringSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyRayleighScattering);
+                        _optionsSkyRayleighScatteringSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSkyRayleighScatteringSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyRayleighScattering);
                         _optionsSkyRayleighScatteringSlider.eventValueChanged += (component, value) =>
                         {
                             _optionsSkyRayleighScatteringSliderNumeral.text = value.ToString();
@@ -1056,15 +1115,15 @@ namespace RenderIt.Panels
                             }
                         };
 
-                        _optionsSkyMieScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsMieScatteringSliderLabel", "Mie Scattering");
+                        _optionsSkyMieScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsMieScatteringSliderLabel", "Mie Scattering");
                         _optionsSkyMieScatteringSliderLabel.tooltip = "Set the strength of mie scattering in the sky";
 
                         _optionsSkyMieScatteringSliderNumeral = UIUtils.CreateLabel(_optionsSkyMieScatteringSliderLabel, "OptionsMieScatteringSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyMieScattering.ToString());
                         _optionsSkyMieScatteringSliderNumeral.width = 100f;
                         _optionsSkyMieScatteringSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                        _optionsSkyMieScatteringSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSkyMieScatteringSliderNumeral.width - 10f, 0f);
+                        _optionsSkyMieScatteringSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSkyMieScatteringSliderNumeral.width - 10f, 0f);
 
-                        _optionsSkyMieScatteringSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsMieScatteringSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyMieScattering);
+                        _optionsSkyMieScatteringSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsMieScatteringSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyMieScattering);
                         _optionsSkyMieScatteringSlider.eventValueChanged += (component, value) =>
                         {
                             _optionsSkyMieScatteringSliderNumeral.text = value.ToString();
@@ -1079,15 +1138,15 @@ namespace RenderIt.Panels
                             }
                         };
 
-                        _optionsSkyExposureSliderLabel = UIUtils.CreateLabel(_optionsLightingPanel, "OptionsSkyExposureSliderLabel", "Exposure");
+                        _optionsSkyExposureSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSkyExposureSliderLabel", "Exposure");
                         _optionsSkyExposureSliderLabel.tooltip = "Set the strength of exposure through the sky";
 
                         _optionsSkyExposureSliderNumeral = UIUtils.CreateLabel(_optionsSkyExposureSliderLabel, "OptionsSkyExposureSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyExposure.ToString());
                         _optionsSkyExposureSliderNumeral.width = 100f;
                         _optionsSkyExposureSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
-                        _optionsSkyExposureSliderNumeral.relativePosition = new Vector3(_optionsLightingPanel.width - _optionsSkyExposureSliderNumeral.width - 10f, 0f);
+                        _optionsSkyExposureSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSkyExposureSliderNumeral.width - 10f, 0f);
 
-                        _optionsSkyExposureSlider = UIUtils.CreateSlider(_optionsLightingPanel, "OptionsSkyExposureSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyExposure);
+                        _optionsSkyExposureSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSkyExposureSlider", _ingameAtlas, 0f, 5f, 0.1f, 0.1f, ProfileManager.Instance.ActiveProfile.SkyExposure);
                         _optionsSkyExposureSlider.eventValueChanged += (component, value) =>
                         {
                             _optionsSkyExposureSliderNumeral.text = value.ToString();
@@ -1104,24 +1163,93 @@ namespace RenderIt.Panels
                     }
                     else
                     {
-                        _optionsSkyMessagePanel = UIUtils.CreatePanel(_optionsLightingPanel, "OptionsSkyMessagePanel");
+                        _optionsSkyMessagePanel = UIUtils.CreatePanel(_optionsLightingScrollablePanel, "OptionsSkyMessagePanel");
                         _optionsSkyMessagePanel.backgroundSprite = "GenericPanelLight";
                         _optionsSkyMessagePanel.color = new Color32(206, 206, 206, 255);
-                        _optionsSkyMessagePanel.height = 60f;
+                        _optionsSkyMessagePanel.height = 80f;
                         _optionsSkyMessagePanel.width = _optionsSkyMessagePanel.parent.width - 16f;
                         _optionsSkyMessagePanel.relativePosition = new Vector3(8f, 8f);
 
-                        _optionsSkyMessageLabel = UIUtils.CreateLabel(_optionsSkyMessagePanel, "OptionsSkyMessageLabel", "Adjustment of sky lighting in Render It! has been disabled because you have Theme Mixer 2 enabled.");
+                        _optionsSkyMessageLabel = UIUtils.CreateLabel(_optionsSkyMessagePanel, "OptionsSkyMessageLabel", "Adjustment of rayleigh scattering, mie scattering and exposure in Render It! has been disabled because you have Theme Mixer 2 enabled.");
                         _optionsSkyMessageLabel.autoHeight = true;
                         _optionsSkyMessageLabel.width = _optionsSkyMessageLabel.parent.width - 16f;
                         _optionsSkyMessageLabel.relativePosition = new Vector3(8f, 8f);
                         _optionsSkyMessageLabel.wordWrap = true;
                     }
 
+                    _optionsSkyRedWaveLengthSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSkyRedWaveLengthSliderLabel", "Red Wave Length");
+                    _optionsSkyRedWaveLengthSliderLabel.tooltip = "Set the wave length of the red color";
+
+                    _optionsSkyRedWaveLengthSliderNumeral = UIUtils.CreateLabel(_optionsSkyRedWaveLengthSliderLabel, "OptionsSkyRedWaveLengthSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyRedWaveLength.ToString());
+                    _optionsSkyRedWaveLengthSliderNumeral.width = 100f;
+                    _optionsSkyRedWaveLengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsSkyRedWaveLengthSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSkyRedWaveLengthSliderNumeral.width - 10f, 0f);
+
+                    _optionsSkyRedWaveLengthSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSkyRedWaveLengthSlider", _ingameAtlas, 0f, 1000f, 10f, 50f, ProfileManager.Instance.ActiveProfile.SkyRedWaveLength);
+                    _optionsSkyRedWaveLengthSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsSkyRedWaveLengthSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.SkyRedWaveLength = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsSkyRedWaveLengthSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsSkyRedWaveLengthSlider.value = (float)DefaultManager.Instance.Get("SkyRedWaveLength");
+                        }
+                    };
+
+                    _optionsSkyGreenWaveLengthSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSkyGreenWaveLengthSliderLabel", "Green Wave Length");
+                    _optionsSkyGreenWaveLengthSliderLabel.tooltip = "Set the wave length of the green color";
+
+                    _optionsSkyGreenWaveLengthSliderNumeral = UIUtils.CreateLabel(_optionsSkyGreenWaveLengthSliderLabel, "OptionsSkyGreenWaveLengthSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyGreenWaveLength.ToString());
+                    _optionsSkyGreenWaveLengthSliderNumeral.width = 100f;
+                    _optionsSkyGreenWaveLengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsSkyGreenWaveLengthSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSkyGreenWaveLengthSliderNumeral.width - 10f, 0f);
+
+                    _optionsSkyGreenWaveLengthSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSkyGreenWaveLengthSlider", _ingameAtlas, 0f, 1000f, 10f, 50f, ProfileManager.Instance.ActiveProfile.SkyGreenWaveLength);
+                    _optionsSkyGreenWaveLengthSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsSkyGreenWaveLengthSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.SkyGreenWaveLength = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsSkyGreenWaveLengthSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsSkyGreenWaveLengthSlider.value = (float)DefaultManager.Instance.Get("SkyGreenWaveLength");
+                        }
+                    };
+
+                    _optionsSkyBlueWaveLengthSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSkyBlueWaveLengthSliderLabel", "Blue Wave Length");
+                    _optionsSkyBlueWaveLengthSliderLabel.tooltip = "Set the wave length of the blue color";
+
+                    _optionsSkyBlueWaveLengthSliderNumeral = UIUtils.CreateLabel(_optionsSkyBlueWaveLengthSliderLabel, "OptionsSkyBlueWaveLengthSliderNumeral", ProfileManager.Instance.ActiveProfile.SkyBlueWaveLength.ToString());
+                    _optionsSkyBlueWaveLengthSliderNumeral.width = 100f;
+                    _optionsSkyBlueWaveLengthSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsSkyBlueWaveLengthSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSkyBlueWaveLengthSliderNumeral.width - 10f, 0f);
+
+                    _optionsSkyBlueWaveLengthSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSkyBlueWaveLengthSlider", _ingameAtlas, 0f, 1000f, 10f, 50f, ProfileManager.Instance.ActiveProfile.SkyBlueWaveLength);
+                    _optionsSkyBlueWaveLengthSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsSkyBlueWaveLengthSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.SkyBlueWaveLength = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsSkyBlueWaveLengthSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsSkyBlueWaveLengthSlider.value = (float)DefaultManager.Instance.Get("SkyBlueWaveLength");
+                        }
+                    };
+
                     _optionsColorsPanel = UIUtils.CreatePanel(panel, "OptionsColorsPanel");
                     _optionsColorsPanel.isVisible = false;
-                    _optionsColorsPanel.width = _optionsLightingPanel.parent.width;
-                    _optionsColorsPanel.height = 500f;
+                    _optionsColorsPanel.width = _optionsColorsPanel.parent.width;
+                    _optionsColorsPanel.height = _optionsColorsPanel.parent.height - 72f;
                     _optionsColorsPanel.autoLayout = true;
                     _optionsColorsPanel.autoLayoutStart = LayoutStart.TopLeft;
                     _optionsColorsPanel.autoLayoutDirection = LayoutDirection.Vertical;
@@ -1373,8 +1501,8 @@ namespace RenderIt.Panels
 
                     _optionsTexturesPanel = UIUtils.CreatePanel(panel, "OptionsTexturesPanel");
                     _optionsTexturesPanel.isVisible = false;
-                    _optionsTexturesPanel.width = _optionsLightingPanel.parent.width;
-                    _optionsTexturesPanel.height = 500f;
+                    _optionsTexturesPanel.width = _optionsTexturesPanel.parent.width;
+                    _optionsTexturesPanel.height = _optionsTexturesPanel.parent.height - 72f;
                     _optionsTexturesPanel.autoLayout = true;
                     _optionsTexturesPanel.autoLayoutStart = LayoutStart.TopLeft;
                     _optionsTexturesPanel.autoLayoutDirection = LayoutDirection.Vertical;
@@ -1548,7 +1676,7 @@ namespace RenderIt.Panels
                     _optionsEnvironmentPanel = UIUtils.CreatePanel(panel, "OptionsEnvironmentPanel");
                     _optionsEnvironmentPanel.isVisible = false;
                     _optionsEnvironmentPanel.width = _optionsEnvironmentPanel.parent.width;
-                    _optionsEnvironmentPanel.height = 500f;
+                    _optionsEnvironmentPanel.height = _optionsEnvironmentPanel.parent.height - 72f;
                     _optionsEnvironmentPanel.autoLayout = true;
                     _optionsEnvironmentPanel.autoLayoutStart = LayoutStart.TopLeft;
                     _optionsEnvironmentPanel.autoLayoutDirection = LayoutDirection.Vertical;
@@ -1826,7 +1954,7 @@ namespace RenderIt.Panels
                     _optionsPostProcessingPanel = UIUtils.CreatePanel(panel, "OptionsPostProcessingPanel");
                     _optionsPostProcessingPanel.isVisible = false;
                     _optionsPostProcessingPanel.width = _optionsPostProcessingPanel.parent.width;
-                    _optionsPostProcessingPanel.height = 500f;
+                    _optionsPostProcessingPanel.height = _optionsPostProcessingPanel.parent.height - 72f;
                     _optionsPostProcessingPanel.autoLayout = true;
                     _optionsPostProcessingPanel.autoLayoutStart = LayoutStart.TopLeft;
                     _optionsPostProcessingPanel.autoLayoutDirection = LayoutDirection.Vertical;
@@ -2022,8 +2150,8 @@ namespace RenderIt.Panels
                     _advancedScrollbarTrack.fillDirection = UIFillDirection.Vertical;
 
                     _advancedScrollbarThumb = UIUtils.CreateSlicedSprite(_advancedScrollbar, "AdvancedScrollbarThumb");
-                    _advancedScrollbarThumb.width = _advancedScrollbar.width - 5f;
-                    _advancedScrollbarThumb.relativePosition = new Vector3(2.5f, 0f);
+                    _advancedScrollbarThumb.width = _advancedScrollbar.width - 6f;
+                    _advancedScrollbarThumb.relativePosition = new Vector3(3f, 0f);
                     _advancedScrollbarThumb.spriteName = "ScrollbarThumb";
                     _advancedScrollbarThumb.fillDirection = UIFillDirection.Vertical;
 
@@ -2920,6 +3048,10 @@ namespace RenderIt.Panels
                         _optionsSkyMieScatteringSlider.value = profile.SkyMieScattering;
                         _optionsSkyExposureSlider.value = profile.SkyExposure;
                     }
+
+                    _optionsSkyRedWaveLengthSlider.value = profile.SkyRedWaveLength;
+                    _optionsSkyGreenWaveLengthSlider.value = profile.SkyGreenWaveLength;
+                    _optionsSkyBlueWaveLengthSlider.value = profile.SkyBlueWaveLength;
 
                     if (!CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
                     {

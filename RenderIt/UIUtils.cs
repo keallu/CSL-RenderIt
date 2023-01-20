@@ -175,6 +175,7 @@ namespace RenderIt
 
             dropDown.listBackground = "OptionsDropboxListbox";
             dropDown.listHeight = 200;
+            dropDown.listPosition = UIDropDown.PopupListPosition.Automatic;
 
             dropDown.itemHeight = 24;
             dropDown.itemHover = "ListItemHover";

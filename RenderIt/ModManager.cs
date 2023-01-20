@@ -299,6 +299,8 @@ namespace RenderIt
                     DayNightProperties.instance.m_MieScattering = ProfileManager.Instance.ActiveProfile.SkyMieScattering;
                     DayNightProperties.instance.m_Exposure = ProfileManager.Instance.ActiveProfile.SkyExposure;
                 }
+
+                DayNightProperties.instance.m_WaveLengths = new Vector3(ProfileManager.Instance.ActiveProfile.SkyRedWaveLength, ProfileManager.Instance.ActiveProfile.SkyGreenWaveLength, ProfileManager.Instance.ActiveProfile.SkyBlueWaveLength);
             }
             catch (Exception e)
             {

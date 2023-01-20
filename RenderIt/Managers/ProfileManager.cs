@@ -170,6 +170,21 @@ namespace RenderIt.Managers
                     _activeProfile.SkyExposure = (float)DefaultManager.Instance.Get("SkyExposure");
                 }
 
+                if (float.IsNaN(_activeProfile.SkyRedWaveLength))
+                {
+                    _activeProfile.SkyRedWaveLength = (float)DefaultManager.Instance.Get("SkyRedWaveLength");
+                }
+
+                if (float.IsNaN(_activeProfile.SkyGreenWaveLength))
+                {
+                    _activeProfile.SkyGreenWaveLength = (float)DefaultManager.Instance.Get("SkyGreenWaveLength");
+                }
+
+                if (float.IsNaN(_activeProfile.SkyBlueWaveLength))
+                {
+                    _activeProfile.SkyBlueWaveLength = (float)DefaultManager.Instance.Get("SkyBlueWaveLength");
+                }
+
                 if (_activeProfile.LightColors.Count < 1)
                 {
                     _activeProfile.LightColors = ColorsHelper.ConvertToTimedColorList((GradientColorKey[])DefaultManager.Instance.Get("LightColors"));

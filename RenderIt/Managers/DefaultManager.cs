@@ -31,6 +31,9 @@ namespace RenderIt.Managers
                 _defaults.Add("SkyRayleighScattering", DayNightProperties.instance.m_RayleighScattering);
                 _defaults.Add("SkyMieScattering", DayNightProperties.instance.m_MieScattering);
                 _defaults.Add("SkyExposure", DayNightProperties.instance.m_Exposure);
+                _defaults.Add("SkyRedWaveLength", DayNightProperties.instance.m_WaveLengths.x);
+                _defaults.Add("SkyGreenWaveLength", DayNightProperties.instance.m_WaveLengths.y);
+                _defaults.Add("SkyBlueWaveLength", DayNightProperties.instance.m_WaveLengths.z);
                 _defaults.Add("LightColors", (GradientColorKey[])DayNightProperties.instance.m_LightColor.colorKeys.Clone());
                 _defaults.Add("SkyColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.skyColor.colorKeys.Clone());
                 _defaults.Add("EquatorColors", (GradientColorKey[])DayNightProperties.instance.m_AmbientColor.equatorColor.colorKeys.Clone());
