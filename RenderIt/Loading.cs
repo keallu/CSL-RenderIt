@@ -13,6 +13,10 @@ namespace RenderIt
         private GameObject _mainPanelGameObject;
         private GameObject _importExportPanelGameObject;
         private GameObject _colorsPanelGameObject;
+        private GameObject _antiAliasingPanelGameObject;
+        private GameObject _ambientOcclusionPanelGameObject;
+        private GameObject _bloomPanelGameObject;
+        private GameObject _colorGradingPanelGameObject;
 
         public override void OnLevelLoaded(LoadMode mode)
         {
@@ -35,6 +39,22 @@ namespace RenderIt
                     _colorsPanelGameObject = new GameObject("RenderItColorsPanel");
                     _colorsPanelGameObject.transform.parent = uiView.transform;
                     _colorsPanelGameObject.AddComponent<ColorsPanel>();
+
+                    _antiAliasingPanelGameObject = new GameObject("RenderItAntiAliasingPanel");
+                    _antiAliasingPanelGameObject.transform.parent = uiView.transform;
+                    _antiAliasingPanelGameObject.AddComponent<AntiAliasingPanel>();
+
+                    _ambientOcclusionPanelGameObject = new GameObject("RenderItAmbientOcclusionPanel");
+                    _ambientOcclusionPanelGameObject.transform.parent = uiView.transform;
+                    _ambientOcclusionPanelGameObject.AddComponent<AmbientOcclusionPanel>();
+
+                    _bloomPanelGameObject = new GameObject("RenderItBloomPanel");
+                    _bloomPanelGameObject.transform.parent = uiView.transform;
+                    _bloomPanelGameObject.AddComponent<BloomPanel>();
+
+                    _colorGradingPanelGameObject = new GameObject("RenderItColorGradingPanel");
+                    _colorGradingPanelGameObject.transform.parent = uiView.transform;
+                    _colorGradingPanelGameObject.AddComponent<ColorGradingPanel>();
                 }
             }
             catch (Exception e)
@@ -47,6 +67,26 @@ namespace RenderIt
         {
             try
             {
+                if (_colorsPanelGameObject != null)
+                {
+                    UnityEngine.Object.Destroy(_colorsPanelGameObject);
+                }
+
+                if (_bloomPanelGameObject != null)
+                {
+                    UnityEngine.Object.Destroy(_bloomPanelGameObject);
+                }
+
+                if (_ambientOcclusionPanelGameObject != null)
+                {
+                    UnityEngine.Object.Destroy(_ambientOcclusionPanelGameObject);
+                }
+
+                if (_antiAliasingPanelGameObject != null)
+                {
+                    UnityEngine.Object.Destroy(_antiAliasingPanelGameObject);
+                }
+
                 if (_colorsPanelGameObject != null)
                 {
                     UnityEngine.Object.Destroy(_colorsPanelGameObject);

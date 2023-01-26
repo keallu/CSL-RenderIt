@@ -13,6 +13,9 @@ namespace RenderIt
         public float PanelPositionX { get; set; } = 0f;
         public float PanelPositionY { get; set; } = 0f;
         public bool AutomaticColorCorrectionOverride { get; set; } = true;
+        public bool KeymappingsEnabled { get; set; } = false;
+        public int KeymappingsNextProfile { get; set; } = 0;
+        public int KeymappingsPreviousProfile { get; set; } = 0;
         public List<Profile> Profiles { get; set; } = new List<Profile> { };
 
         private static ModConfig instance;

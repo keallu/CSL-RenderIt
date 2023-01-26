@@ -79,11 +79,16 @@
     <Compile Include="Helpers\GameOptionsHelper.cs" />
     <Compile Include="Helpers\ColorsHelper.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
+    <Compile Include="KeyChecker.cs" />
     <Compile Include="Loading.cs" />
     <Compile Include="Managers\LutManager.cs" />
     <Compile Include="Managers\AssetManager.cs" />
     <Compile Include="Managers\DefaultManager.cs" />
     <Compile Include="Managers\ProfileManager.cs" />
+    <Compile Include="Panels\ColorGradingPanel.cs" />
+    <Compile Include="Panels\BloomPanel.cs" />
+    <Compile Include="Panels\AmbientOcclusionPanel.cs" />
+    <Compile Include="Panels\AntiAliasingPanel.cs" />
     <Compile Include="Panels\ColorsPanel.cs" />
     <Compile Include="Panels\ImportExportPanel.cs" />
     <Compile Include="Panels\MainPanel.cs" />
