@@ -495,7 +495,7 @@ namespace RenderIt.Panels
             UpdateUI();
         }
 
-        public void ForceProfile(Profile profile)
+        public void ForceActiveProfile()
         {
             _profilesDropDown.items = ProfileManager.Instance.AllProfiles.Select(x => x.Name).ToArray();
             _profilesDropDown.selectedValue = ProfileManager.Instance.ActiveProfile.Name;
@@ -971,7 +971,7 @@ namespace RenderIt.Panels
 
                     _optionsSkyTitle = UIUtils.CreateTitle(_optionsLightingScrollablePanel, "OptionsSkyTitle", "Sky");
 
-                    if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
+                    if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Sky))
                     {
                         _optionsSkyRayleighScatteringSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSkyRayleighScatteringSliderLabel", "Rayleigh Scattering");
                         _optionsSkyRayleighScatteringSliderLabel.tooltip = "Set the strength of rayleigh scattering in the sky";
@@ -1141,7 +1141,7 @@ namespace RenderIt.Panels
 
                     _optionsLightColorsTitle = UIUtils.CreateTitle(_optionsColorsPanel, "OptionsLightColorsTitle", "Directional and Ambient Light Colors");
 
-                    if (!CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
+                    if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.LightColors))
                     {
                         _optionsLightColorsCheckBox = UIUtils.CreateCheckBox(_optionsColorsPanel, "OptionsLightColorsCheckBox", _ingameAtlas, "Sun & Moon Colors Enabled", ProfileManager.Instance.ActiveProfile.LightColorsEnabled);
                         _optionsLightColorsCheckBox.tooltip = "Adjust colors for directional light from sun & moon";
@@ -1568,7 +1568,7 @@ namespace RenderIt.Panels
 
                     _optionsFogTitle = UIUtils.CreateTitle(_optionsEnvironmentPanel, "OptionsFogTitle", "Fog");
 
-                    if (!CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+                    if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Fog))
                     {
                         _optionsFogCheckBox = UIUtils.CreateCheckBox(_optionsEnvironmentPanel, "OptionsFogCheckBox", _ingameAtlas, "Static Fog Enabled", ProfileManager.Instance.ActiveProfile.FogEnabled);
                         _optionsFogCheckBox.tooltip = "Enables static fog - also known as classic fog. Not all sliders below applies to static fog.";
@@ -2169,7 +2169,7 @@ namespace RenderIt.Panels
                     _optionsMoonIntensitySlider.value = profile.MoonIntensity;
                     _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
 
-                    if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
+                    if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Sky))
                     {
                         _optionsSkyRayleighScatteringSlider.value = profile.SkyRayleighScattering;
                         _optionsSkyMieScatteringSlider.value = profile.SkyMieScattering;
@@ -2180,7 +2180,7 @@ namespace RenderIt.Panels
                     _optionsSkyGreenWaveLengthSlider.value = profile.SkyGreenWaveLength;
                     _optionsSkyBlueWaveLengthSlider.value = profile.SkyBlueWaveLength;
 
-                    if (!CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
+                    if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.LightColors))
                     {
                         _optionsLightColorsCheckBox.isChecked = profile.LightColorsEnabled;
                         _optionsSkyColorsCheckBox.isChecked = profile.SkyColorsEnabled;
@@ -2191,7 +2191,7 @@ namespace RenderIt.Panels
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = -1;
                     _optionsSharpnessAssetTypeDropDown.selectedIndex = 0;
 
-                    if (!CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+                    if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Fog))
                     {
                         _optionsFogCheckBox.isChecked = profile.FogEnabled;
                         _optionsFogDayNightCheckBox.isChecked = profile.FogDayNightEnabled;

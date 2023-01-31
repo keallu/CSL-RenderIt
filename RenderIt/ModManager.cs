@@ -293,7 +293,7 @@ namespace RenderIt
                 DayNightProperties.instance.m_MoonIntensity = ProfileManager.Instance.ActiveProfile.MoonIntensity;
                 DayNightProperties.instance.moonLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.MoonShadowStrength;
 
-                if (!CompatibilityHelper.IsAnySkyManipulatingModsEnabled())
+                if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Sky))
                 {
                     DayNightProperties.instance.m_RayleighScattering = ProfileManager.Instance.ActiveProfile.SkyRayleighScattering;
                     DayNightProperties.instance.m_MieScattering = ProfileManager.Instance.ActiveProfile.SkyMieScattering;
@@ -312,7 +312,7 @@ namespace RenderIt
         {
             try
             {
-                if (!CompatibilityHelper.IsAnyLightColorsManipulatingModsEnabled())
+                if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.LightColors))
                 {
                     if (ProfileManager.Instance.ActiveProfile.LightColorsEnabled)
                     {
@@ -399,7 +399,7 @@ namespace RenderIt
         {
             try
             {
-                if (!CompatibilityHelper.IsAnyFogManipulatingModsEnabled())
+                if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Fog))
                 {
                     if (_fogEffect != null)
                     {

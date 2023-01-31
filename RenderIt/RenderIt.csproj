@@ -81,6 +81,7 @@
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="KeyChecker.cs" />
     <Compile Include="Loading.cs" />
+    <Compile Include="Managers\FeatureManager.cs" />
     <Compile Include="Managers\LutManager.cs" />
     <Compile Include="Managers\AssetManager.cs" />
     <Compile Include="Managers\DefaultManager.cs" />

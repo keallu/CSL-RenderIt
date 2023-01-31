@@ -208,7 +208,7 @@ namespace RenderIt.Panels
                         {
                             ProfileManager.Instance.AllProfiles.Add(profile);
                             ProfileManager.Instance.ActiveProfile = profile;
-                            _mainPanel.ForceProfile(profile);
+                            _mainPanel.ForceActiveProfile();
                         }
                         else
                         {
