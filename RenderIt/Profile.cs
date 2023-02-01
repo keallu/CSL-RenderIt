@@ -8,10 +8,17 @@ namespace RenderIt
     {
         public string Name { get; set; } = "Unnamed";
         public bool Active { get; set; } = false;
+        public int ShadowType { get; set; } = -1;
+        public int ShadowResolution { get; set; } = -1;
+        public int ShadowProjection { get; set; } = -1;
         public float SunIntensity { get; set; } = float.NaN;
         public float SunShadowStrength { get; set; } = float.NaN;
+        public bool SunShadowBiasEnabled { get; set; } = false;
+        public float SunShadowBias { get; set; } = float.NaN;
         public float MoonIntensity { get; set; } = float.NaN;
         public float MoonShadowStrength { get; set; } = float.NaN;
+        public bool MoonShadowBiasEnabled { get; set; } = false;
+        public float MoonShadowBias { get; set; } = float.NaN;
         public float SkyRayleighScattering { get; set; } = float.NaN;
         public float SkyMieScattering { get; set; } = float.NaN;
         public float SkyExposure { get; set; } = float.NaN;

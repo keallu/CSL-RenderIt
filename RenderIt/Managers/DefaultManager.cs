@@ -24,10 +24,15 @@ namespace RenderIt.Managers
             {
                 _defaults.Clear();
 
+                _defaults.Add("ShadowType", (int)QualitySettings.shadows);
+                _defaults.Add("ShadowResolution", (int)QualitySettings.shadowResolution);
+                _defaults.Add("ShadowProjection", (int)QualitySettings.shadowProjection);
                 _defaults.Add("SunIntensity", DayNightProperties.instance.m_SunIntensity);
                 _defaults.Add("SunShadowStrength", DayNightProperties.instance.sunLightSource.shadowStrength);
+                _defaults.Add("SunShadowBias", DayNightProperties.instance.sunLightSource.shadowBias);
                 _defaults.Add("MoonIntensity", DayNightProperties.instance.m_MoonIntensity);
                 _defaults.Add("MoonShadowStrength", DayNightProperties.instance.moonLightSource.shadowStrength);
+                _defaults.Add("MoonShadowBias", DayNightProperties.instance.moonLightSource.shadowBias);
                 _defaults.Add("SkyRayleighScattering", DayNightProperties.instance.m_RayleighScattering);
                 _defaults.Add("SkyMieScattering", DayNightProperties.instance.m_MieScattering);
                 _defaults.Add("SkyExposure", DayNightProperties.instance.m_Exposure);

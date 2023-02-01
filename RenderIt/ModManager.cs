@@ -288,6 +288,10 @@ namespace RenderIt
         {
             try
             {
+                QualitySettings.shadows = (ShadowQuality)ProfileManager.Instance.ActiveProfile.ShadowType;
+                QualitySettings.shadowResolution = (ShadowResolution)ProfileManager.Instance.ActiveProfile.ShadowResolution;
+                QualitySettings.shadowProjection = (ShadowProjection)ProfileManager.Instance.ActiveProfile.ShadowProjection;
+
                 DayNightProperties.instance.m_SunIntensity = ProfileManager.Instance.ActiveProfile.SunIntensity;
                 DayNightProperties.instance.sunLightSource.shadowStrength = ProfileManager.Instance.ActiveProfile.SunShadowStrength;
                 DayNightProperties.instance.m_MoonIntensity = ProfileManager.Instance.ActiveProfile.MoonIntensity;

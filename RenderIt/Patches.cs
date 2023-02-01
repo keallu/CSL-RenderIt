@@ -43,4 +43,28 @@ namespace RenderIt
             }
         }
     }
+
+    [HarmonyPatch(typeof(DayNightProperties), "UpdateLighting")]
+    public static class DayNightPropertiesUpdateLightingPatch
+    {
+        static void Postfix()
+        {
+            try
+            {
+                if (ProfileManager.Instance.ActiveProfile.SunShadowBiasEnabled)
+                {
+                    DayNightProperties.instance.sunLightSource.shadowBias = ProfileManager.Instance.ActiveProfile.SunShadowBias;
+                }
+
+                if (ProfileManager.Instance.ActiveProfile.MoonShadowBiasEnabled)
+                {
+                    DayNightProperties.instance.moonLightSource.shadowBias = ProfileManager.Instance.ActiveProfile.MoonShadowBias;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("[Render It!] DayNightPropertiesUpdateLightingPatch:Postfix -> Exception: " + e.Message);
+            }
+        }
+    }
 }

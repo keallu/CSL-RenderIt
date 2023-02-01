@@ -51,6 +51,14 @@ namespace RenderIt.Panels
         private UIScrollbar _optionsLightingScrollbar;
         private UISlicedSprite _optionsLightingScrollbarTrack;
         private UISlicedSprite _optionsLightingScrollbarThumb;
+        private UILabel _optionsQualityTitle;
+        private UILabel _optionsShadowTypeLabel;
+        private UIDropDown _optionsShadowTypeDropDown;
+        private UILabel _optionsShadowResolutionLabel;
+        private UIDropDown _optionsShadowResolutionDropDown;
+        private UILabel _optionsShadowProjectionLabel;
+        private UIDropDown _optionsShadowProjectionDropDown;
+        private UISprite _optionsQualityDivider;
         private UILabel _optionsSunTitle;
         private UILabel _optionsSunIntensitySliderLabel;
         private UILabel _optionsSunIntensitySliderNumeral;
@@ -58,6 +66,10 @@ namespace RenderIt.Panels
         private UILabel _optionsSunShadowStrengthSliderLabel;
         private UILabel _optionsSunShadowStrengthSliderNumeral;
         private UISlider _optionsSunShadowStrengthSlider;
+        private UICheckBox _optionsSunShadowBiasEnabledCheckBox;
+        private UILabel _optionsSunShadowBiasSliderLabel;
+        private UILabel _optionsSunShadowBiasSliderNumeral;
+        private UISlider _optionsSunShadowBiasSlider;
         private UISprite _optionsSunDivider;
         private UILabel _optionsMoonTitle;
         private UILabel _optionsMoonIntensitySliderLabel;
@@ -66,6 +78,10 @@ namespace RenderIt.Panels
         private UILabel _optionsMoonShadowStrengthSliderLabel;
         private UILabel _optionsMoonShadowStrengthSliderNumeral;
         private UISlider _optionsMoonShadowStrengthSlider;
+        private UICheckBox _optionsMoonShadowBiasEnabledCheckBox;
+        private UILabel _optionsMoonShadowBiasSliderLabel;
+        private UILabel _optionsMoonShadowBiasSliderNumeral;
+        private UISlider _optionsMoonShadowBiasSlider;
         private UISprite _optionsMoonDivider;
         private UILabel _optionsSkyTitle;
         private UILabel _optionsSkyRayleighScatteringSliderLabel;
@@ -339,6 +355,14 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsLightingScrollbar);
                 DestroyGameObject(_optionsLightingScrollbarTrack);
                 DestroyGameObject(_optionsLightingScrollbarThumb);
+                DestroyGameObject(_optionsQualityTitle);
+                DestroyGameObject(_optionsShadowTypeLabel);
+                DestroyGameObject(_optionsShadowTypeDropDown);
+                DestroyGameObject(_optionsShadowResolutionLabel);
+                DestroyGameObject(_optionsShadowResolutionDropDown);
+                DestroyGameObject(_optionsShadowProjectionLabel);
+                DestroyGameObject(_optionsShadowProjectionDropDown);
+                DestroyGameObject(_optionsQualityDivider);
                 DestroyGameObject(_optionsSunTitle);
                 DestroyGameObject(_optionsSunIntensitySliderLabel);
                 DestroyGameObject(_optionsSunIntensitySliderNumeral);
@@ -346,6 +370,10 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsSunShadowStrengthSliderLabel);
                 DestroyGameObject(_optionsSunShadowStrengthSliderNumeral);
                 DestroyGameObject(_optionsSunShadowStrengthSlider);
+                DestroyGameObject(_optionsSunShadowBiasEnabledCheckBox);
+                DestroyGameObject(_optionsSunShadowBiasSliderLabel);
+                DestroyGameObject(_optionsSunShadowBiasSliderNumeral);
+                DestroyGameObject(_optionsSunShadowBiasSlider);
                 DestroyGameObject(_optionsSunDivider);
                 DestroyGameObject(_optionsMoonTitle);
                 DestroyGameObject(_optionsMoonIntensitySliderLabel);
@@ -354,6 +382,10 @@ namespace RenderIt.Panels
                 DestroyGameObject(_optionsMoonShadowStrengthSliderLabel);
                 DestroyGameObject(_optionsMoonShadowStrengthSliderNumeral);
                 DestroyGameObject(_optionsMoonShadowStrengthSlider);
+                DestroyGameObject(_optionsMoonShadowBiasEnabledCheckBox);
+                DestroyGameObject(_optionsMoonShadowBiasSliderLabel);
+                DestroyGameObject(_optionsMoonShadowBiasSliderNumeral);
+                DestroyGameObject(_optionsMoonShadowBiasSlider);
                 DestroyGameObject(_optionsMoonDivider);
                 DestroyGameObject(_optionsSkyTitle);
                 DestroyGameObject(_optionsSkyRayleighScatteringSliderLabel);
@@ -832,12 +864,12 @@ namespace RenderIt.Panels
                     _optionsLightingScrollablePanel = UIUtils.CreateScrollablePanel(_optionsLightingPanel, "OptionsLightingScrollablePanel");
                     _optionsLightingScrollablePanel.width = _optionsLightingScrollablePanel.parent.width - 25f;
                     _optionsLightingScrollablePanel.height = _optionsLightingScrollablePanel.parent.height;
-                    _optionsLightingScrollablePanel.relativePosition = new Vector3(0f, 0f);
+                    _optionsLightingScrollablePanel.relativePosition = new Vector3(-5f, 0f);
 
                     _optionsLightingScrollablePanel.autoLayout = true;
                     _optionsLightingScrollablePanel.autoLayoutStart = LayoutStart.TopLeft;
                     _optionsLightingScrollablePanel.autoLayoutDirection = LayoutDirection.Vertical;
-                    _optionsLightingScrollablePanel.autoLayoutPadding.left = 0;
+                    _optionsLightingScrollablePanel.autoLayoutPadding.left = 5;
                     _optionsLightingScrollablePanel.autoLayoutPadding.right = 0;
                     _optionsLightingScrollablePanel.autoLayoutPadding.top = 0;
                     _optionsLightingScrollablePanel.autoLayoutPadding.bottom = 10;
@@ -868,6 +900,55 @@ namespace RenderIt.Panels
                     _optionsLightingScrollablePanel.verticalScrollbar = _optionsLightingScrollbar;
                     _optionsLightingScrollbar.trackObject = _optionsLightingScrollbarTrack;
                     _optionsLightingScrollbar.thumbObject = _optionsLightingScrollbarThumb;
+
+                    _optionsQualityTitle = UIUtils.CreateTitle(_optionsLightingScrollablePanel, "OptionsQualityTitle", "Quality");
+
+                    _optionsShadowTypeLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsShadowTypeLabel", "Shadow Type");
+                    _optionsShadowTypeLabel.tooltip = "Select which type of shadows to use";
+
+                    _optionsShadowTypeDropDown = UIUtils.CreateDropDown(_optionsLightingScrollablePanel, "OptionsShadowTypeDropDown", _ingameAtlas);
+                    _optionsShadowTypeDropDown.items = ModInvariables.ShadowType;
+                    _optionsShadowTypeDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.ShadowType;
+                    _optionsShadowTypeDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.ShadowType = value;
+                            ProfileManager.Instance.Apply();
+                        }
+                    };
+
+                    _optionsShadowResolutionLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsShadowResolutionLabel", "Shadow Resolution");
+                    _optionsShadowResolutionLabel.tooltip = "Select which resolution to render shadows at. The higher the resolution, the greater the processing overhead.";
+
+                    _optionsShadowResolutionDropDown = UIUtils.CreateDropDown(_optionsLightingScrollablePanel, "OptionsShadowResolutionDropDown", _ingameAtlas);
+                    _optionsShadowResolutionDropDown.items = ModInvariables.ShadowResolution;
+                    _optionsShadowResolutionDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.ShadowResolution;
+                    _optionsShadowResolutionDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.ShadowResolution = value;
+                            ProfileManager.Instance.Apply();
+                        }
+                    };
+
+                    _optionsShadowProjectionLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsShadowProjectionLabel", "Shadow Projection");
+                    _optionsShadowProjectionLabel.tooltip = "Select which method to use for projecting shadows from a directional light.\nClose Fit renders higher resolution shadows but they can sometimes wobble slightly if the camera moves.\nStable Fit renders lower resolution shadows but they do not wobble with camera movements.";
+
+                    _optionsShadowProjectionDropDown = UIUtils.CreateDropDown(_optionsLightingScrollablePanel, "OptionsShadowProjectionDropDown", _ingameAtlas);
+                    _optionsShadowProjectionDropDown.items = ModInvariables.ShadowProjection;
+                    _optionsShadowProjectionDropDown.selectedIndex = ProfileManager.Instance.ActiveProfile.ShadowProjection;
+                    _optionsShadowProjectionDropDown.eventSelectedIndexChanged += (component, value) =>
+                    {
+                        if (value != -1)
+                        {
+                            ProfileManager.Instance.ActiveProfile.ShadowProjection = value;
+                            ProfileManager.Instance.Apply();
+                        }
+                    };
+
+                    _optionsQualityDivider = UIUtils.CreateDivider(_optionsLightingScrollablePanel, "OptionsQualityDivider", _ingameAtlas);
 
                     _optionsSunTitle = UIUtils.CreateTitle(_optionsLightingScrollablePanel, "OptionsSunTitle", "Sun");
 
@@ -914,6 +995,37 @@ namespace RenderIt.Panels
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _optionsSunShadowStrengthSlider.value = (float)DefaultManager.Instance.Get("SunShadowStrength");
+                        }
+                    };
+
+                    _optionsSunShadowBiasEnabledCheckBox = UIUtils.CreateCheckBox(_optionsLightingScrollablePanel, "OptionsSunShadowBiasEnabledCheckBox", _ingameAtlas, "Override Shadow Bias", ProfileManager.Instance.ActiveProfile.SunShadowBiasEnabled);
+                    _optionsSunShadowBiasEnabledCheckBox.tooltip = "Overrides shadow bias with static value";
+                    _optionsSunShadowBiasEnabledCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.SunShadowBiasEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsSunShadowBiasSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsSunShadowBiasSliderLabel", "Shadow Bias");
+                    _optionsSunShadowBiasSliderLabel.tooltip = "Set the static shadow bias. This is the distance at which shadows are pushed away from the light.\nThis is useful for avoiding false self-shadowing artifacts";
+
+                    _optionsSunShadowBiasSliderNumeral = UIUtils.CreateLabel(_optionsSunShadowBiasSliderLabel, "OptionsSunShadowBiasSliderNumeral", ProfileManager.Instance.ActiveProfile.SunShadowBias.ToString());
+                    _optionsSunShadowBiasSliderNumeral.width = 100f;
+                    _optionsSunShadowBiasSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsSunShadowBiasSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsSunShadowBiasSliderNumeral.width - 10f, 0f);
+
+                    _optionsSunShadowBiasSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsSunShadowBiasSlider", _ingameAtlas, 0f, 2f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.SunShadowBias);
+                    _optionsSunShadowBiasSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsSunShadowBiasSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.SunShadowBias = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsSunShadowBiasSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsSunShadowBiasSlider.value = (float)DefaultManager.Instance.Get("SunShadowBias");
                         }
                     };
 
@@ -964,6 +1076,37 @@ namespace RenderIt.Panels
                         if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
                         {
                             _optionsMoonShadowStrengthSlider.value = (float)DefaultManager.Instance.Get("MoonShadowStrength");
+                        }
+                    };
+
+                    _optionsMoonShadowBiasEnabledCheckBox = UIUtils.CreateCheckBox(_optionsLightingScrollablePanel, "OptionsMoonShadowBiasEnabledCheckBox", _ingameAtlas, "Override Shadow Bias", ProfileManager.Instance.ActiveProfile.MoonShadowBiasEnabled);
+                    _optionsMoonShadowBiasEnabledCheckBox.tooltip = "Overrides shadow bias with static value";
+                    _optionsMoonShadowBiasEnabledCheckBox.eventCheckChanged += (component, value) =>
+                    {
+                        ProfileManager.Instance.ActiveProfile.MoonShadowBiasEnabled = value;
+                        ProfileManager.Instance.Apply();
+                    };
+
+                    _optionsMoonShadowBiasSliderLabel = UIUtils.CreateLabel(_optionsLightingScrollablePanel, "OptionsMoonShadowBiasSliderLabel", "Shadow Bias");
+                    _optionsMoonShadowBiasSliderLabel.tooltip = "Set the static shadow bias. This is the distance at which shadows are pushed away from the light.\nThis is useful for avoiding false self-shadowing artifacts";
+
+                    _optionsMoonShadowBiasSliderNumeral = UIUtils.CreateLabel(_optionsMoonShadowBiasSliderLabel, "OptionsMoonShadowBiasSliderNumeral", ProfileManager.Instance.ActiveProfile.MoonShadowBias.ToString());
+                    _optionsMoonShadowBiasSliderNumeral.width = 100f;
+                    _optionsMoonShadowBiasSliderNumeral.textAlignment = UIHorizontalAlignment.Right;
+                    _optionsMoonShadowBiasSliderNumeral.relativePosition = new Vector3(_optionsLightingScrollablePanel.width - _optionsMoonShadowBiasSliderNumeral.width - 10f, 0f);
+
+                    _optionsMoonShadowBiasSlider = UIUtils.CreateSlider(_optionsLightingScrollablePanel, "OptionsMoonShadowBiasSlider", _ingameAtlas, 0f, 2f, 0.01f, 0.01f, ProfileManager.Instance.ActiveProfile.MoonShadowBias);
+                    _optionsMoonShadowBiasSlider.eventValueChanged += (component, value) =>
+                    {
+                        _optionsMoonShadowBiasSliderNumeral.text = value.ToString();
+                        ProfileManager.Instance.ActiveProfile.MoonShadowBias = value;
+                        ProfileManager.Instance.Apply();
+                    };
+                    _optionsMoonShadowBiasSlider.eventMouseUp += (component, eventParam) =>
+                    {
+                        if (eventParam.buttons.IsFlagSet(UIMouseButton.Right))
+                        {
+                            _optionsMoonShadowBiasSlider.value = (float)DefaultManager.Instance.Get("MoonShadowBias");
                         }
                     };
 
@@ -2164,10 +2307,18 @@ namespace RenderIt.Panels
             {
                 if (profile != null)
                 {
+                    _optionsShadowTypeDropDown.selectedIndex = profile.ShadowType;
+                    _optionsShadowResolutionDropDown.selectedIndex = profile.ShadowResolution;
+                    _optionsShadowProjectionDropDown.selectedIndex = profile.ShadowProjection;
+
                     _optionsSunIntensitySlider.value = profile.SunIntensity;
                     _optionsSunShadowStrengthSlider.value = profile.SunShadowStrength;
+                    _optionsSunShadowBiasEnabledCheckBox.isChecked = profile.SunShadowBiasEnabled;
+                    _optionsSunShadowBiasSlider.value = profile.SunShadowBias;
                     _optionsMoonIntensitySlider.value = profile.MoonIntensity;
                     _optionsMoonShadowStrengthSlider.value = profile.MoonShadowStrength;
+                    _optionsMoonShadowBiasEnabledCheckBox.isChecked = profile.MoonShadowBiasEnabled;
+                    _optionsMoonShadowBiasSlider.value = profile.MoonShadowBias;
 
                     if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Sky))
                     {

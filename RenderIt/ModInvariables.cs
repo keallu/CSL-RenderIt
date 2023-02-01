@@ -2,6 +2,27 @@
 {
     public static class ModInvariables
     {
+        public static readonly string[] ShadowType =
+        {
+            "None",
+            "Hard Only",
+            "Hard and Soft"
+        };
+
+        public static readonly string[] ShadowResolution =
+        {
+            "Low",
+            "Medium",
+            "High",
+            "Very High"
+        };
+
+        public static readonly string[] ShadowProjection =
+        {
+            "Close Fit",
+            "Stable Fit"
+        };
+
         public static readonly string[] SharpnessAssetType =
         {
             "General",

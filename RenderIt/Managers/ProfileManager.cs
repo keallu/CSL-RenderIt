@@ -135,6 +135,21 @@ namespace RenderIt.Managers
         {
             try
             {
+                if (_activeProfile.ShadowType == -1)
+                {
+                    _activeProfile.ShadowType = (int)DefaultManager.Instance.Get("ShadowType");
+                }
+
+                if (_activeProfile.ShadowResolution == -1)
+                {
+                    _activeProfile.ShadowResolution = (int)DefaultManager.Instance.Get("ShadowResolution");
+                }
+
+                if (_activeProfile.ShadowProjection == -1)
+                {
+                    _activeProfile.ShadowProjection = (int)DefaultManager.Instance.Get("ShadowProjection");
+                }
+
                 if (float.IsNaN(_activeProfile.SunIntensity))
                 {
                     _activeProfile.SunIntensity = (float)DefaultManager.Instance.Get("SunIntensity");
@@ -145,6 +160,11 @@ namespace RenderIt.Managers
                     _activeProfile.SunShadowStrength = (float)DefaultManager.Instance.Get("SunShadowStrength");
                 }
 
+                if (float.IsNaN(_activeProfile.SunShadowBias))
+                {
+                    _activeProfile.SunShadowBias = (float)DefaultManager.Instance.Get("SunShadowBias");
+                }
+
                 if (float.IsNaN(_activeProfile.MoonIntensity))
                 {
                     _activeProfile.MoonIntensity = (float)DefaultManager.Instance.Get("MoonIntensity");
@@ -153,6 +173,11 @@ namespace RenderIt.Managers
                 if (float.IsNaN(_activeProfile.MoonShadowStrength))
                 {
                     _activeProfile.MoonShadowStrength = (float)DefaultManager.Instance.Get("MoonShadowStrength");
+                }
+
+                if (float.IsNaN(_activeProfile.MoonShadowBias))
+                {
+                    _activeProfile.MoonShadowBias = (float)DefaultManager.Instance.Get("MoonShadowBias");
                 }
 
                 if (FeatureManager.Instance.IsAvailable(FeatureManager.Feature.Sky))
