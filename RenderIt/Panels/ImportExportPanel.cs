@@ -239,7 +239,7 @@ namespace RenderIt.Panels
 
                         string fileName = string.Join("", ProfileManager.Instance.ActiveProfile.Name.Split(Path.GetInvalidFileNameChars()));
 
-                        File.WriteAllText("Profiles\\" + fileName + ".renderit", _textField.text);
+                        File.WriteAllText($"Profiles{Path.DirectorySeparatorChar}{fileName}.renderit", _textField.text);
 
                         eventParam.Use();
                     }
